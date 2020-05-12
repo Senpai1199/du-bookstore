@@ -36,7 +36,7 @@ class UserProfile(models.Model):
 
 class Book(models.Model):
     """
-        Contains info of a full book/compiled 'Reading'
+        Book can be of 3 types: Full Book / Reading / Note
         All masters books are to be put in 1 category. (Year - 4, Semester - 7). No further segregation required.
     """
 
@@ -51,7 +51,7 @@ class Book(models.Model):
     description = models.CharField(max_length=200, blank=True)
     category = models.CharField(choices=BOOK_TYPES, null=False, max_length=1, default='S')
     condition = models.CharField(max_length=300, blank=False)
-    year = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(4)]) # 4 for master
+    year = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(4)]) # 4 for masters
     semester = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(7)]) # 7 for masters
     image = models.ImageField(upload_to='book_pics', null=False)
     course = models.ForeignKey('Course', related_name='course_books', on_delete=models.CASCADE)
@@ -73,7 +73,7 @@ class Book(models.Model):
 
 class College(models.Model):
     """
-        Handles college data (to be populated by parsing an excel sheet)
+        Handles college data (to be populated using script)
     """
     COLLEGE_TYPES = (
         ('N', 'North Campus'),
