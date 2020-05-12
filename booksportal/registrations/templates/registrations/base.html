@@ -24,12 +24,12 @@
     <link href="{% static 'registrations/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css' %}" rel="stylesheet">
     <link href="{% static 'registrations/css/style.css' %}" rel="stylesheet">
     <!-- <link href="{% static 'registrations/css/materialize.min.css' %}" rel="stylesheet"> -->
-    <link href="{% static 'registrations/css/themes/theme-deep-purple.css' %}" rel="stylesheet" />
+    <link href="{% static 'registrations/css/themes/theme-orange.min.css' %}" rel="stylesheet" />
 
 
 </head>
 
-<body class="theme-deep-purple">
+<body class="theme-orange">
     <!-- Page Loader -->
     <div class="page-loader-wrapper">
         <div class="loader">
@@ -67,7 +67,7 @@
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" >DU - MaketPlace</a>
+                <a class="navbar-brand" >DU - MarketPlace</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -102,11 +102,11 @@
             <!-- User Info -->
             <div class="user-info">
                 <div class="image">
-                    <img src="{% static 'registrations/images/user.png' %}" width="48" height="48" alt="User" />
+                    <img src="{% static 'registrations/images/user.jpg' %}" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">John Doe</div>
-                    <div class="email">john.doe@example.com</div>
+                    <div class="email">sertiwari@dvm.com</div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
@@ -173,12 +173,12 @@
                     </li>
                     <li class="header">LABELS</li>
                     <li>
-                        <a>
+                        <a href="{% url 'about' %}">
                             <i class="material-icons col-red">donut_large</i>
                             <span>About Us</span>
                         </a>
                     </li>
-                        <a>
+                    <a href="{% url 'contact' %}">                          
                             <i class="material-icons col-light-blue">donut_large</i>
                             <span>Contact Us</span>
                         </a>
