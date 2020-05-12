@@ -39,11 +39,24 @@ class Book(models.Model):
         Contains info of a full book/compiled 'Reading'
         All masters books are to be put in 1 category. (Year - 4, Semester - 7). No further segregation required.
     """
-    title = models.CharField(max_length=200, blank=False)
+
+    BOOK_TYPES = (
+        ('B', 'Book'),
+        ('N', 'Note'),
+        ('R', 'Reading')
+    )
+
+    title = models.CharField(max_length=200, null=True)
+    edition = models.CharField(max_length=200, null=True)
+    description = models.CharField(max_length=200, blank=True)
+    category = models.CharField(choices=BOOK_TYPES, null=False, max_length=1, default='S')
     condition = models.CharField(max_length=300, blank=False)
+    course = models.CharField(max_length=200, blank=True)
     year = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(4)]) # 4 for master
     semester = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(7)]) # 7 for masters
     image = models.ImageField(upload_to='book_pics', null=False)
+    price = models.IntegerField(default=0)
+    sold = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
