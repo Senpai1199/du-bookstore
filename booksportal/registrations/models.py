@@ -36,13 +36,12 @@ class UserProfile(models.Model):
 
 class Book(models.Model):
     """
-        Book can be of 3 types: Full Book / Reading / Note
+        Book can be of 2 types: Full Book / Reading (Each can contain/not contain notes)
         All masters books are to be put in 1 category. (Year - 4, Semester - 7). No further segregation required.
     """
 
     BOOK_TYPES = (
         ('B', 'Book'),
-        ('N', 'Note'),
         ('R', 'Reading')
     )
 
@@ -50,6 +49,7 @@ class Book(models.Model):
     edition = models.CharField(max_length=200, null=True)
     description = models.CharField(max_length=200, blank=True)
     category = models.CharField(choices=BOOK_TYPES, null=False, max_length=1, default='R')
+    contains_notes = models.BooleanField(default=False)
     condition = models.CharField(max_length=300, blank=False)
     year = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(4)]) # 4 for masters
     semester = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(7)]) # 7 for masters

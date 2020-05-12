@@ -7,7 +7,6 @@
 *.swp
 *.fuse_hidden*
 *.log
-*workshop_data*
 booksportal/static/
 booksportal/media/
 __pycache__/
