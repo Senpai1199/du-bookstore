@@ -1,0 +1,13 @@
+*vscode
+*venv*
+*.sqlite3
+*pyc
+*keyconfig*
+*.save
+*.swp
+*.fuse_hidden*
+*.log
+*workshop_data*
+booksportal/static/
+booksportal/media/
+__pycache__/
