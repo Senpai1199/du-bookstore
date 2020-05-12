@@ -1,0 +1,55 @@
+/*.card-aaa .card-title{
+	position: relative !important;
+	color: #000 !important;
+}*/
+body{
+	display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+}
+
+body > *{
+	width: 100vw;
+}
+.bbb{
+	height: 100%;
+	margin: 10px;
+	clear: both;
+	background: #eaeaea !important;
+	box-shadow: 0 2px 3px #7b7b7b !important;
+	/*border-top: 5px solid #ec6e73;*/
+}
+
+.bbb .card-title{
+	/*border-bottom: 1px solid #ec6e73;*/
+
+}
+body> .row > nav{
+	height: fit-content;
+}
+h1{
+	font-size: 3.2em;
+}
+nav .brand-logo{
+	font-size: 1.5rem;
+	padding: 0 30px;
+	position: relative;
+}
+@media only screen and (max-width:768px){
+	nav .brand-logo{
+		font-size: 18px;
+    	text-align: center;
+    	width: 100vw;
+	}
+}
+.contact .row{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.contact .col{
+	margin-bottom: 10px;
+}
