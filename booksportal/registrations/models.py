@@ -49,7 +49,7 @@ class Book(models.Model):
     title = models.CharField(max_length=200, null=True)
     edition = models.CharField(max_length=200, null=True)
     description = models.CharField(max_length=200, blank=True)
-    category = models.CharField(choices=BOOK_TYPES, null=False, max_length=1, default='S')
+    category = models.CharField(choices=BOOK_TYPES, null=False, max_length=1, default='R')
     condition = models.CharField(max_length=300, blank=False)
     year = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(4)]) # 4 for masters
     semester = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(7)]) # 7 for masters
