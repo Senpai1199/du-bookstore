@@ -105,8 +105,8 @@
                     <img src="{% static 'registrations/images/user.jpg' %}" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
-                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">John Doe</div>
-                    <div class="email">sertiwari@dvm.com</div>
+                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ full_name }}</div>
+                    <div class="email">{{ request.user.email }}</div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
@@ -191,16 +191,73 @@
                 <div class="copyright">
                     &copy; 2016 - 2017 <a href="javascript:void(0);">AdminBSB - Material Design</a>.
                 </div>
-                <div class="version">
+                <!-- <div class="version">
                     <b>Version: </b> 1.0.5
-                </div>
+                </div> -->
             </div>
             <!-- #Footer -->
         </aside>
         <!-- #END# Left Sidebar -->
         <!-- Right Sidebar -->
         <!-- #END# Right Sidebar -->
+    </section>>
+    <!-- Dashboard -->>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <h2>DASHBOARD</h2>
+            </div>
+            <!-- Widgets -->
+            <div class="row clearfix">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-pink hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">refresh</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">NEW TASKS</div>
+                            <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-cyan hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">help</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">NEW TICKETS</div>
+                            <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-light-green hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">forum</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">NEW COMMENTS</div>
+                            <div class="number count-to" data-from="0" data-to="243" data-speed="1000" data-fresh-interval="20"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-orange hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">person_add</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">NEW VISITORS</div>
+                            <div class="number count-to" data-from="0" data-to="1225" data-speed="1000" data-fresh-interval="20"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Widgets -->>
+        </div>
     </section>
+    <!-- End Dashboard -->>
 
     <section class="content">
         <div class="container-fluid">
