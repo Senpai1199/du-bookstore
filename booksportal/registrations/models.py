@@ -22,6 +22,7 @@ class UserProfile(models.Model):
     auth_user = models.OneToOneField(User, null=True, on_delete=models.CASCADE, unique=True, related_name="profile")
     college = models.ForeignKey("College", on_delete=models.CASCADE, null=False)
     image = models.ImageField(default="default_male_dp.jpeg", upload_to='profile_pics', null=False)
+    year = models.SmallIntegerField(default=1) # college year of the user
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -57,6 +58,7 @@ class Book(models.Model):
     course = models.ForeignKey('Course', related_name='course_books', on_delete=models.CASCADE)
     price = models.IntegerField(default=0)
     sold = models.BooleanField(default=False)
+    interested_count = models.SmallIntegerField(default=0)
     bookset = models.ForeignKey('BookSet', related_name='set_books', null=True,
         blank=True, on_delete=models.CASCADE)
 
