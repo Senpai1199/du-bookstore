@@ -8,5 +8,6 @@
 *.fuse_hidden*
 *.log
 booksportal/static/
-booksportal/media/
+booksportal/media/book_pics/
+booksportal/media/profile_pics/
 __pycache__/
