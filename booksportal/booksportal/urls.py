@@ -21,8 +21,11 @@ from registrations import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.index, name='index'), # redirect to home
     path('base/', views.base_view, name='base'),
-    path('', views.index, name='index'),
+
+    path('login/', views.login_view, name = 'login'),
+    path('logout/', views.logout_view, name = 'logout'),
 
     path('home/', views.home, name='home'),
 
