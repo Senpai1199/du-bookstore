@@ -21,7 +21,7 @@ class UserProfile(models.Model):
     gender = models.CharField(choices=GENDERS, null=True, max_length=1)
     auth_user = models.OneToOneField(User, null=True, on_delete=models.CASCADE, unique=True, related_name="profile")
     college = models.ForeignKey("College", on_delete=models.CASCADE, null=False)
-    image = models.ImageField(default="default_male_dp.jpeg", upload_to='profile_pics', null=False)
+    image = models.ImageField(default="static/registrations/images/default_male_dp.jpeg", upload_to='profile_pics', null=False)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
