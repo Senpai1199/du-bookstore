@@ -59,6 +59,7 @@ class Book(models.Model):
     price = models.IntegerField(default=0)
     sold = models.BooleanField(default=False)
     interested_count = models.SmallIntegerField(default=0)
+    date_added = models.DateField(auto_now=False, auto_now_add=True)
     bookset = models.ForeignKey('BookSet', related_name='set_books', null=True,
         blank=True, on_delete=models.CASCADE)
 
