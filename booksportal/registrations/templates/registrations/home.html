@@ -1,6 +1,6 @@
 {% extends 'registrations/base.html' %}
 {% load static %}
-
+{% load registrations_tags %}
 {% block body %}
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -29,104 +29,37 @@
                         <div class="media">
                             <div class="media-left media-top">
                                 <a>
-                                    <img class="media-object item-picture" src="{{ book.image.url }}" width="100" height="100">
-                                    <div class="item-price  col-black">₹100</div>
+                                    <img class="media-object item-picture" src="{{ book.image.url }}" width="100" height="100"/>
                                 </a>
+                                <div class="item-price col-black">₹{{book.price}}</div>
                             </div>
                             <div class="media-body">
                                 <h4 class="media-heading">{{ book.title }}</h4>
                                 {% if book.category == "B" %}
                                 <p>
-                                    <b>{{ book.edition }}</b>
+                                    <b>Edition</b>  : {{ book.edition }}
                                 </p>
                                 {% endif %}
+                                <p>
+                                  <b>Used For : </b> <span class="label bg-cyan">{{book.course.name}}</span>
+                                  {% autoescape off %}{% get_year_semester book %}{% endautoescape %}
+                                </p>
                                 {% if book.description != "" %}
                                 <p>
-                                    {{ book.description }}
+                                    <b>Description : </b>{{ book.description }}
                                 </p>
                                 {% endif %}
                                 <p>
-                                    {{ book.condition }}
+                                    <b>Condition : </b>{{ book.condition }}
                                 </p>
                                 {% if book.contains_notes == True %}
                                 <p>
-                                    <b>NOTES INCLUDED</b>
+                                    <span class="label bg-cyan">NOTES INCLUDED</span>
                                 </p>
                                 {% endif %}
                             </div>
                         </div>
                     {% endfor %}
-                    <!-- <div class="media">
-                        <div class="media-left media-top">
-                            <a>
-                                <img class="media-object item-picture" src="http://placehold.it/64x64" width="100" height="100">
-                                <div class="item-price  col-black">₹100</div>
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">{{ book.title }}</h4>
-                            {% if book.category == "B" %}
-                            <p>
-                                <b>{{ book.edition }}</b>
-                            </p>
-                            {% endif %}
-                            {% if book.description != "" %}
-                            <p>
-                                {{ book.description }}
-                            </p>
-                            {% endif %}
-                            <p>
-                                {{ book.condition }}
-                            </p>
-                            {% if book.contains_notes == True %}
-                            <p>
-                                <b>NOTES INCLUDED</b>
-                            </p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="media">
-                        <div class="media-left media-top">
-                            <a href="javascript:void(0);">
-                                <img class="media-object" src="http://placehold.it/64x64" width="100" height="100">
-                                <div class="item-price col-black">₹100</div>
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">Item Title</h4>
-                            <p>
-                                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin
-                                commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.
-                                Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis
-                                in faucibus.
-                            </p>
-                            <p>
-                                Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis
-                                natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="media">
-                        <div class="media-left media-top">
-                            <a href="javascript:void(0);">
-                                <img class="media-object" src="http://placehold.it/64x64" width="100" height="100">
-                                <div class="item-price col-black">₹100</div>
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">Item Title</h4>
-                            <p>
-                                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin
-                                commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.
-                                Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis
-                                in faucibus.
-                            </p>
-                            <p>
-                                Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis
-                                natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                            </p>
-                        </div>
-                    </div> -->
                 </div>
             </div>
         </div>
