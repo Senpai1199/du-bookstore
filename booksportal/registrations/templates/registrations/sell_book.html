@@ -26,7 +26,7 @@
                   <div class="col-lg-6 col-md-3 col-sm-3 col-xs-6">
                     <div class="form-group form-float">
                         <div class="form-line">
-                            <input type="text" class="form-control" name="title" required>
+                            <input type="text" class="form-control" name="title" value="{{ data.title }}" required>
                             <label class="form-label">Title</label>
                         </div>
                   </div>
@@ -34,7 +34,7 @@
                     <div class="col-lg-6 col-md-3 col-sm-3 col-xs-6">
                     <div class="form-group form-float">
                         <div class="form-line">
-                            <input type="text" class="form-control" name="edition">
+                            <input type="text" class="form-control" name="edition" value="{{ data.edition }}">
                             <label class="form-label">Edition (Leave blank for a Reading)</label>
                         </div>
                     </div>
@@ -42,28 +42,19 @@
                     <div class="col-lg-12">
                     <div class="form-group form-float">
                         <div class="form-line">
-                            <input type="text" class="form-control" name="description" required>
+                            <input type="text" class="form-control" name="description" value="{{ data.description }}" required>
                             <label class="form-label">Description</label>
                         </div>
                     </div>
                     </div>
-                    <!-- <div class="form-group form-float">
-                        <div class="form-line">
-                            <textarea name="description" cols="30" rows="5" class="form-control no-resize" required></textarea>
-                            <label class="form-label">Description</label>
-                        </div>
-                    </div> -->
                     <div class="col-lg-6">
                     <div class="form-group form-float">
-                        <!-- <p>
-                            <b>Course for which book/reading was used</b>
-                        </p> -->
-                        <select class="form-control show-tick" size="5" data-live-search="true">
-                            <!-- {% for course in courses %} -->
-                                <!-- <option>{{ course.name }}</option> -->
-                            <!-- {% endfor %} -->
+                        <select class="form-control show-tick" size="5" data-live-search="true" name="course_name" value="course_name">
                             <option disabled> Course for which book/reading was used? </option>
-                            <option>Hot Dog, Fries and a Soda</option>
+                            {% for course in courses %} -->
+                                <option>{{ course.name }}</option>
+                            {% endfor %}
+                            <!-- <option>Hot Dog, Fries and a Soda</option>
                             <option>Burger, Shake and a Smile</option>
                             <option>Sugar, Spice and all things nice</option>
                             <option>Sugar, Spice and all things nice</option>
@@ -109,12 +100,12 @@
                             <option>Sugar, Spice and all things nice</option>
                             <option>Sugar, Spice and all things nice</option>
                             <option>Sugar, Spice and all things nice</option>
-                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option> -->
                         </select>
                     </div>
                     </div>
                     <div class="col-lg-3">
-                        <select class="form-control show-tick">
+                        <select class="form-control show-tick" name="year" value="year">
                             <option value="" disabled>Year for which it was used?</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -123,7 +114,7 @@
                         </select>
                     </div>
                     <div class="col-lg-3">
-                        <select class="form-control show-tick">
+                        <select class="form-control show-tick" name="semester" value="year">
                             <option value="" disabled>Semester for which it was used?</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -134,19 +125,20 @@
                     <div class="col-lg-6">
                     <div class="form-group form-float">
                         <div class="form-line">
-                            <input type="text" class="form-control" name="condition" required>
+                            <input type="text" class="form-control" name="condition" value="{{ data.condition }}" required>
                             <label class="form-label">Condition</label>
                         </div>
                     </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="input-group col-sm-3">
-                            <span class="input-group-addon" style="">
+                            <span class="input-group-addon">
+                                <i class="material-icons">info</i>
                               <b>Price: </b>
                                 <large>₹</large>
                             </span>
                             <div class="form-line form-group col-sm-3">
-                                <input type="text" class="form-control money-dollar">
+                                <input type="text" name="price" value="{{ data.price }}" class="form-control money-dollar" required>
                             </div>
                         </div>
                     </div>
@@ -155,14 +147,14 @@
                     <div class="col-lg-3">
                     <div class="form-group">
                       <b>Type: </b>
-                        <input type="radio" name="gender" id="full_book" class="with-gap">
-                        <label for="male">Full Book</label>
-                        <input type="radio" name="gender" id="reading" class="with-gap" checked>
-                        <label for="female" class="m-l-20">Reading</label>
+                        <input type="radio" name="type" id="full_book" class="with-gap" value="B">
+                        <label for="full_book">Full Book</label>
+                        <input type="radio" name="type" id="reading" class="with-gap" value="R" checked="checked">
+                        <label for="reading" class="m-l-20">Reading</label>
                     </div>
                     <div class="form-group">
-                        <label for="image">Upload a clear image</label>
-                        <input type="file" id="image" name="image">
+                        <label for="file">Upload a clear image</label>
+                        <input type="file" id="file" name="file">
                     </div>
                     </div>
                     <!-- <div class="col-lg-2">
@@ -173,8 +165,8 @@
                     </div> -->
                     <div class="col-lg-2">
                     <div class="form-group">
-                        <input type="checkbox" id="notes" name="notes">
-                        <label for="checkbox">Notes included?</label>
+                        <input type="checkbox" id="notes" name="notes" value="yes">
+                        <label for="notes">Notes included?</label>
                     </div>
                     </div>
                     </div>

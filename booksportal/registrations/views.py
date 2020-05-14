@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from itertools import chain
 
-from registrations.models import Book
+from registrations.models import Book, Course, UserProfile
 
 @login_required(login_url='login')
 def index(request):
@@ -82,89 +82,123 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
-
+@csrf_exempt
+@login_required(login_url='login')
 def sell_book(request):
     """
         Handles the form for adding an individual listing of book/reading to sell
     """
     if request.method == 'GET':
         books = Book.objects.filter(seller__auth_user=request.user)
-        return render(request, 'registrations/sell_book.html', {'books': books})
+        return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
 
     elif request.method == 'POST':
-        data = request.POST.dict()
-        title = data['title']
-        if title == "":
-            messages.warning(request, 'Please don\'t leave title empty.')
-            return redirect(request.META.get('HTTP_REFERER'))
+        data = request.POST
+        try: # for required values
+            title = str(data['title'])
+            condition = str(data['condition'])
+            course_name = str(data['course_name'])
+            year = data['year']
+            semester = int(data['semester'])
+            price = int(data['price'])
+            book_type = str(data["type"]) # contains exact category value 'B' or 'R'
+        except KeyError as e:
+            messages.error(request, "Missing Field {}".format(e))
+            return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
+        except ValueError as value_error:
+            messages.error(request, "Invalid Value: {}".format(value_error))
+            return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
+
+        try:
+            seller = UserProfile.objects.get(auth_user=request.user)
+        except UserProfile.DoesNotExist:
+            messages.error(request, "Please complete your profile details first.")
+            return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
+
+        if book_type == "B":
+            try:
+                edition = data["edition"] # optional for Reading
+                edition = edition.strip()
+            except KeyError as e:
+                messages.warning(request, "You must enter an edition if you're adding a book.")
+                return redirect(request.META.get('HTTP_REFERER'))
+        try:
+            book_image = request.FILES["file"]
+        except Exception as e:
+            print(e)
+            messages.warning(request, "Please upload an image for your listing.")
+            return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
+            # print(book_image)
+            # if book_image is None:
+        
+        try:
+            course = Course.objects.get(name=course_name)
+        except Course.DoesNotExist:
+            messages.warning(request, "Please select a course from the list.")
+            return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
+        
+        if year == "Masters":
+            year = 4
+            semester = 7
+        if semester == 1:
+            offset = 0
         else:
-            try:
-                Participant.objects.get(user__email=data['email'])
-                messages.warning(request, 'Email already registered.')
-                return redirect(request.META.get('HTTP_REFERER'))
-            except:
-                pass
-            participant = Participant()
-            if not data['name']:
-                messages.warning(request, 'Please enter guest name')
-                return redirect(request.META.get('HTTP_REFERER'))
-            if len(data['phone']) != 10:
-                messages.warning(request, 'Please enter a valid phone number')
-                return redirect(request.META.get('HTTP_REFERER'))
-            try:
-                phone = int(data['phone'])
-            except:
-                messages.warning(request, 'Please enter a valid phone number')
-                return redirect(request.META.get('HTTP_REFERER'))
-            # Create User Profile for guest or  not?
-            name = ' '.join(str(data['name']).strip().split())
-            gender = str(data['gender'])
-            email = str(data['email'])
-            user_profile = UserProfile(
-                name=name, gender=gender, email=email, phone=phone)
-            participant.city = str(data['city'])
-            try:
-                college = College.objects.get(name=str(data['college']))
-            except:
-                messages.warning(
-                    request, 'Please select a college from the list.')
-                return redirect(request.META.get('HTTP_REFERER'))
-            participant.college = College.objects.get(
-                name=str(data['college']))
+            offset = 1
 
-            if not re.match(
-                r'^20\d{2}(A[1-578B]([PT]S|A[1-578B]|B[1-5])|[CD]2[TP]S|B[1-5]([PT]S|A[1-578B])|H[DS0-9]\d{2}|PH[X0-9][PF0-9])\d{4}P$',
-                    str(data['bits_id'])):
-                messages.warning(request, 'Please enter a proper bits id')
-                return redirect(request.META.get('HTTP_REFERER'))
-            participant.referral = str(data['bits_id'])
-
-            participant.is_guest = True
-            participant.email_verified = True
-            user_profile.save()
-            participant.user = user_profile
-            participant.save()
-            participant.status = 5
-
-            username = participant.user.name.split(
-                ' ')[0] + str(participant.id)
-            # random alphanumeric password of length 8
-            password = ''.join(choice(chars) for i in range(8))
-            user_1 = User(username=username, password=password)
-            user_1.save()
-            participant.user.auth_user = user_1
-            participant.user.save()
-            participant.save()  # Barcode will automatically be generated and assigned. Django Signals
-            # sendgrid email body is written in a separate file called send_grid.py
+        semester = int(year)*2 + int(offset)
+        title = title.strip()
+        condition = condition.strip()
+        try:
+            contains_notes = data["notes"]
+            contains_notes = True
+        except KeyError:
+            contains_notes = False
+        
+        if book_type == "B":
+            new_book = Book.objects.create(
+                                        title=title, 
+                                        category=book_type, 
+                                        contains_notes=contains_notes, 
+                                        condition=condition, 
+                                        year=year, 
+                                        semester=semester,
+                                        image=book_image,
+                                        course=course,
+                                        price=price,
+                                        seller=seller
+                                    )
+        else:
+            new_book = Book.objects.create(
+                                    title=title, 
+                                    category="R", 
+                                    contains_notes=contains_notes, 
+                                    condition=condition, 
+                                    year=year, 
+                                    semester=semester,
+                                    image=book_image,
+                                    course=course,
+                                    price=price,
+                                    seller=seller
+                                )
+        try:
+            description = str(data["description"])
+            description = description.strip()
+            new_book.description = description
+            new_book.save()
 
             context = {
-                'error_heading': "Emails sent",
-                'message': "Login credentials have been mailed to the corresponding new participants.",
-                'url': request.build_absolute_uri(reverse('regsoft:firewallz_home'))
+                'error_heading': "Success!",
+                'message': "Listing has been added and will be available for the sellers to see.",
+                'url': request.build_absolute_uri(reverse('sell_book'))
             }
-            return render(request, 'registrations/message.html', context)
-
-    return render(request, 'registrations/sell_book.html', context)
+            return render(request, 'registrations/message.html')
+        except KeyError:
+            context = {
+                'error_heading': "Success!",
+                'message': "Listing has been added and will be available for the sellers to see.",
+                'url': request.build_absolute_uri(reverse('sell_book'))
+            }
+            return render(request, 'registrations/message.html')
 
 @login_required(login_url='login')
 def about(request):
