@@ -18,7 +18,7 @@ def index(request):
 
 @login_required(login_url='login')
 def base_view(request):
-    return render(request,'registrations/base.html', context = {"full_name": request.user.first_name + ' ' + request.user.last_name})
+    return render(request,'registrations/base.html', context={})
 
 @login_required(login_url='login')
 def home(request):
@@ -30,7 +30,6 @@ def home(request):
     books = list(chain(books1, books2))
     print("****" + str(len(books)) + "*****")
     context = {
-        "full_name": request.user.first_name + ' ' + request.user.last_name,
         "books": books
     }
     return render(request, 'registrations/home.html', context=context)
@@ -181,3 +180,21 @@ def contact(request):
         The 'Contact Us' page
     """
     return render(request, 'registrations/contact.html')
+
+@login_required(login_url='login')
+def search(request):
+    """
+        The HOME page of the portal where all the book listings would be displayed according to the year of the logged in user
+    """
+
+    if request.method == 'GET':
+        context = {}
+    else:
+        books1 = Book.objects.filter(year=request.user.profile.year, sold=False)
+        books2 = Book.objects.all().exclude(year=request.user.profile.year, sold=False)
+        books = list(chain(books1, books2))
+        print("****" + str(len(books)) + "*****")
+        context = {
+            "books": books
+        }
+    return render(request, 'registrations/search.html', context=context)
