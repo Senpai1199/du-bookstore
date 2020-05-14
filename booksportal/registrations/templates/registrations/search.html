@@ -1,0 +1,163 @@
+{% extends 'registrations/base.html' %}
+{% load static %}
+{% block body %}
+{% load registrations_tags %}
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+                        <div class="header">
+                            <h2>
+                                Search Books
+                            </h2>
+                        </div>
+                        <div class="body">
+                            <form>
+                                <div class="row clearfix">
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                      <p>
+                                          <b>Book Title</b>
+                                      </p>
+                                        <div class="form-group form-float">
+                                            <div class="form-line">
+                                                <input type="text" class="form-control">
+                                                <label class="form-label">(optional)</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                    <p>
+                                        <b>Select Course</b>
+                                    </p>
+                                    <select class="form-control show-tick" data-live-search="true">
+                                      <option value="all">All</option>
+                                        {% get_courses as course_list %}
+                                        {% for course in course_list %}
+                                        <option value="course.id">{{ course.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    </div>
+                                    <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+                                    <p>
+                                        <b>Category</b>
+                                    </p>
+                                    <select class="form-control show-tick" data-live-search="true">
+                                        <option>All</option>
+                                        <option>Book</option>
+                                        <option>Reading</option>
+                                        <option>Book-Set</option>
+                                    </select>
+                                    </div>
+                                    <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+                                    <p>
+                                        <b>Year</b>
+                                    </p>
+                                    <select class="form-control show-tick" data-live-search="true">
+                                        <option>All</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>Masters</option>
+                                    </select>
+                                    </div>
+                                    <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+                                    <p>
+                                        <b>Semester</b>
+                                    </p>
+                                    <select class="form-control show-tick" data-live-search="true">
+                                        <option>All</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                    </select>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                    <p>
+                                        <b>Sort By</b>
+                                    </p>
+                                    <select class="form-control show-tick" data-live-search="true">
+                                      <option>Popularity - High to low</option>
+                                      <option>Popularity - Low to High</option>
+                                        <option>Price - Low to High</option>
+                                        <option>Price - High to Low</option>
+                                        <option>Newest First</option>
+                                    </select>
+                                    </div>
+                                    <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+                                      <br><br>
+                                        <input type="checkbox" id="notes_req" class="filled-in">
+                                        <label for="notes_req">Notes Included</label>
+                                    </div>
+                                    <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+                                      <br>
+                                      <button type="button" class="btn bg-teal waves-effect">
+                                        <i class="material-icons">search</i>
+                                        <span>SEARCH</span>
+                                      </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+        {% if books %}
+        <div class="card">
+            <div class="header">
+                <h2>
+                    BOOKS FOR YOU
+                </h2>
+            </div>
+            <div class="body">
+                <style>
+                    .media {
+                    border-bottom: 1px solid rgba(204, 204, 204, 0.35);
+                    }
+                    .item-price{
+                    text-align: center;
+                    margin-top: 5px;
+                    margin-bottom: 10px;
+                    }
+                    .media-body{
+                    padding-left: 10px;
+                    }
+                </style>
+                <div class="bs-example" data-example-id="media-alignment">
+                    {% for book in books %}
+                        <div class="media">
+                            <div class="media-left media-top">
+                                <a>
+                                    <img class="media-object item-picture" src="{{ book.image.url }}" width="100" height="100"/>
+                                </a>
+                                <div class="item-price col-black">₹{{book.price}}</div>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">{{ book.title }}</h4>
+                                {% if book.category == "B" %}
+                                <p>
+                                    <b>Edition</b>  : {{ book.edition }}
+                                </p>
+                                {% endif %}
+                                <p>
+                                  <b>Used For : </b> <span class="label bg-cyan">{{book.course.name}}</span>
+                                  {% autoescape off %}{% get_year_semester book %}{% endautoescape %}
+                                </p>
+                                {% if book.description != "" %}
+                                <p>
+                                    <b>Description : </b>{{ book.description }}
+                                </p>
+                                {% endif %}
+                                <p>
+                                    <b>Condition : </b>{{ book.condition }}
+                                </p>
+                                {% if book.contains_notes == True %}
+                                <p>
+                                    <span class="label bg-cyan">NOTES INCLUDED</span>
+                                </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

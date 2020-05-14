@@ -29,9 +29,10 @@ urlpatterns = [
 
     path('home/', views.home, name='home'),
     path('sell_book/', views.sell_book, name='sell_book'),
-
+    path('search/', views.search, name='search'),
 
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
+
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

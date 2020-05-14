@@ -1,5 +1,7 @@
 from django import template
 
+from registrations.models import Course
+
 register = template.Library()
 
 @register.simple_tag()
@@ -23,3 +25,8 @@ def get_year_semester(book):
         year_sem_string = '<span class="label bg-cyan">Masters</span>'
 
     return year_sem_string
+
+@register.simple_tag()
+def get_courses():
+    courses = Course.objects.all()
+    return list(courses)

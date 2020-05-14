@@ -33,11 +33,7 @@ def home(request):
         "full_name": request.user.first_name + ' ' + request.user.last_name,
         "books": books
     }
-<<<<<<< 776d002e43057e8f4991b0bea3296e8065e33c0f
-    return render(request, 'registrations/home.html', context)
-=======
     return render(request, 'registrations/home.html', context=context)
->>>>>>> HomePage: added templatetags for rendering book year-sem, fixed some styling components
 
 @csrf_exempt
 def login_view(request):
