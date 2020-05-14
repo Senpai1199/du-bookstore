@@ -28,6 +28,8 @@ urlpatterns = [
     path('logout/', views.logout_view, name = 'logout'),
 
     path('home/', views.home, name='home'),
+    path('sell_book/', views.sell_book, name='sell_book'),
+
 
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),

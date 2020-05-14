@@ -1,0 +1,129 @@
+{% extends 'regsoft/base.html' %}
+
+{% block body %}
+{% if messages %}
+<div class="body">
+{% for message in messages %}
+<div class="alert alert-info alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+    {{message}}
+</div>
+{% endfor %}
+</div>
+{% endif %}
+<form method="POST" action="{% url 'regsoft:add_guest' %}">
+    {% csrf_token %}
+<div class="row clearfix">
+<div class="card">
+    <div class="header">
+        <h2>
+            Add guest
+        </h2>
+    </div>
+
+    <div class="body">
+            <label for="name">Name</label>
+            <div class="form-group">
+                <div class="form-line">
+                    <input type="text" id="name" class="form-control" placeholder="Name" name="name">
+                </div>
+            </div>
+            <label for="gender">Gender</label>
+            <div class="form-group">
+                <select class="form-control show-tick" name="gender" data-live-search="true">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <label for="city">City</label>
+            <div class="form-group">
+                <div class="form-line">
+                    <input type="text" id="city" class="form-control" placeholder="City" name="city">
+                </div>
+            </div>
+            <label for="email">Guest's Email</label>
+            <div class="form-group">
+                <div class="form-line">
+                    <input type="text" id="email" class="form-control" placeholder="Email" name="email">
+                </div>
+            </div>
+            <label for="college">College</label>
+            <select class="form-control show-tick" name="college" data-live-search="true">
+                {% for college in colleges %}
+                    <option value="{{college.name}}">{{college.name}}</option>
+                {% endfor %}
+            </select>
+            <label for="phone">Phone number</label>
+            <div class="form-group">
+                <div class="form-line">
+                    <input type="number" id="phone" class="form-control" placeholder="Phone number" name="phone">
+                </div>
+            </div>
+            <label for="bits_id">Corresponding BITSian ID</label>
+            <div class="form-group">
+                <div class="form-line">
+                    <input type="text" id="bits_id" class="form-control" placeholder="Corresponding BITSian ID(2017B4A70636P)" name="bits_id">
+                </div>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary m-t-15 waves-effect">Add Guest</button>
+        </div>
+    </div>
+</div>
+
+</form>
+<div class="card">
+    <div class="header">
+        <h2>
+            Added Guests
+        </h2>
+    </div>
+    <div class="body">
+        <form action="{% url 'regsoft:remove_guests' %}" method="post">
+            {% csrf_token %}
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>College</th>
+                        <th>Bits Id</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Select</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Name</th>
+                        <th>College</th>
+                        <th>Bits Id</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Select</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% for part in guests %}
+                    <tr>
+                        <td>{{part.user.name}}</td>
+                        <td>{{part.college.name}}</td>
+                        <td>{{part.user.referral}}</td>
+                        <td>{{part.user.auth_user.email}}</td>
+                        <td>{{part.user.phone}}</td>
+                        <td>
+                            <input type="checkbox" name="guest_list" id="{{part.id}}" value="{{part.id}}">
+                            <label for="{{part.id}}"></label>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <br><br>
+            <button type="submit" class="btn btn-primary btn-lg m-l-15 waves-effect">Remove</button>
+        </div>
+    </div>
+</div>
+</form>
+{% endblock %}

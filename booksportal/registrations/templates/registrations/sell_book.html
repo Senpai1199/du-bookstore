@@ -1,0 +1,159 @@
+{% extends 'registrations/base.html' %}
+
+{% block body %}
+{% if messages %}
+<div class="body">
+{% for message in messages %}
+<div class="alert alert-info alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+    {{message}}
+</div>
+{% endfor %}
+</div>
+{% endif %}
+
+<!--Form Div Start-->
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>Add Book Listing</h2>
+            </div>
+            <div class="body">
+                <form id="form_validation" method="POST" enctype="multipart/form-data">
+                    <div class="form-group form-float">
+                        <div class="form-line">
+                            <input type="text" class="form-control" name="name" required>
+                            <label class="form-label">Title</label>
+                        </div>
+                    </div>
+                    <div class="form-group form-float">
+                        <div class="form-line">
+                            <input type="text" class="form-control" name="surname" required>
+                            <label class="form-label">Edition (Leave blank if you're adding a Reading)</label>
+                        </div>
+                    </div>
+                    <div class="form-group form-float">
+                        <div class="form-line">
+                            <input type="text" class="form-control" name="surname" required>
+                            <label class="form-label">Description</label>
+                        </div>
+                    </div>
+                    <div class="form-group form-float">
+                        <div class="form-line">
+                            <input type="email" class="form-control" name="email" required>
+                            <label class="form-label">Condition</label>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group form-float">
+                        <div class="form-line">
+                            <textarea name="description" cols="30" rows="5" class="form-control no-resize" required></textarea>
+                            <label class="form-label">Description</label>
+                        </div>
+                    </div> -->
+                    <h5>Type of Listing: </h5>
+                    <div class="form-group">
+                        <input type="radio" name="gender" id="male" class="with-gap">
+                        <label for="male">Full Book</label>
+
+                        <input type="radio" name="gender" id="female" class="with-gap" checked>
+                        <label for="female" class="m-l-20">Reading</label>
+                    </div>
+                    <div class="col-md-100 form-group form-float">
+                        <p>
+                            <b>Course for which book/reading was used</b>
+                        </p>
+                        <select class="form-control show-tick" size="5" data-live-search="true">
+                            <!-- {% for course in courses %} -->
+                                <!-- <option>{{ course.name }}</option> -->
+                            <!-- {% endfor %} -->
+                            <option>Hot Dog, Fries and a Soda</option>
+                            <option>Burger, Shake and a Smile</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                            <option>Sugar, Spice and all things nice</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <select class="form-control show-tick">
+                            <option value="">Year</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="Masters">Masters</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <select class="form-control show-tick">
+                            <option value="">Semester</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="checkbox" name="checkbox">
+                        <label for="checkbox">Notes included?</label>
+                    </div>
+                    <div class="col-md-50">
+                        <b>Price</b>
+                        <div class="input-group col-sm-3">
+                            <span class="input-group-addon">
+                                <!-- <i class="material-icons">attach_money</i> -->
+                                <small>₹</small>
+                            </span>
+                            <div class="form-line form-group col-sm-3">
+                                <input type="text" class="form-control money-dollar">
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary waves-effect" type="submit">SUBMIT</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Form Div End-->
+
+{% endblock %}

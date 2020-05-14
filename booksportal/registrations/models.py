@@ -60,6 +60,7 @@ class Book(models.Model):
     sold = models.BooleanField(default=False)
     interested_count = models.SmallIntegerField(default=0)
     date_added = models.DateField(auto_now=False, auto_now_add=True)
+    seller = models.ForeignKey("UserProfile", related_name="seller_books", on_delete=models.CASCADE)
     bookset = models.ForeignKey('BookSet', related_name='set_books', null=True,
         blank=True, on_delete=models.CASCADE)
 
