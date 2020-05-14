@@ -20,12 +20,13 @@
                 <h2>Add Book Listing</h2>
             </div>
             <div class="body">
-                <form id="form_validation" method="POST" enctype="multipart/form-data">
+                <form id="form_validation" method="POST" enctype="multipart/form-data" action="{% url 'sell_book' %}">
+                    {% csrf_token %}
                   <div class="row clearfix">
                   <div class="col-lg-6 col-md-3 col-sm-3 col-xs-6">
                     <div class="form-group form-float">
                         <div class="form-line">
-                            <input type="text" class="form-control" name="name" required>
+                            <input type="text" class="form-control" name="title" required>
                             <label class="form-label">Title</label>
                         </div>
                   </div>
@@ -33,7 +34,7 @@
                     <div class="col-lg-6 col-md-3 col-sm-3 col-xs-6">
                     <div class="form-group form-float">
                         <div class="form-line">
-                            <input type="text" class="form-control" name="surname" required>
+                            <input type="text" class="form-control" name="edition">
                             <label class="form-label">Edition (Leave blank for a Reading)</label>
                         </div>
                     </div>
@@ -41,7 +42,7 @@
                     <div class="col-lg-12">
                     <div class="form-group form-float">
                         <div class="form-line">
-                            <input type="text" class="form-control" name="surname" required>
+                            <input type="text" class="form-control" name="description" required>
                             <label class="form-label">Description</label>
                         </div>
                     </div>
@@ -61,7 +62,7 @@
                             <!-- {% for course in courses %} -->
                                 <!-- <option>{{ course.name }}</option> -->
                             <!-- {% endfor %} -->
-                            <option> Course for which book/reading was used </option>
+                            <option disabled> Course for which book/reading was used? </option>
                             <option>Hot Dog, Fries and a Soda</option>
                             <option>Burger, Shake and a Smile</option>
                             <option>Sugar, Spice and all things nice</option>
@@ -114,7 +115,7 @@
                     </div>
                     <div class="col-lg-3">
                         <select class="form-control show-tick">
-                            <option value="">Year</option>
+                            <option value="" disabled>Year for which it was used?</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -123,7 +124,7 @@
                     </div>
                     <div class="col-lg-3">
                         <select class="form-control show-tick">
-                            <option value="">Semester</option>
+                            <option value="" disabled>Semester for which it was used?</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                         </select>
@@ -133,17 +134,16 @@
                     <div class="col-lg-6">
                     <div class="form-group form-float">
                         <div class="form-line">
-                            <input type="text" class="form-control" name="email" required>
+                            <input type="text" class="form-control" name="condition" required>
                             <label class="form-label">Condition</label>
                         </div>
                     </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <div class="input-group col-sm-3">
                             <span class="input-group-addon" style="">
-                              <b>Price : </b>
-                                <!-- <i class="material-icons">attach_money</i> -->
-                                <large>(₹)</large>
+                              <b>Price: </b>
+                                <large>₹</large>
                             </span>
                             <div class="form-line form-group col-sm-3">
                                 <input type="text" class="form-control money-dollar">
@@ -152,18 +152,28 @@
                     </div>
                       </div>
                       <div class="row clearfix">
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                     <div class="form-group">
                       <b>Type: </b>
-                        <input type="radio" name="gender" id="male" class="with-gap">
+                        <input type="radio" name="gender" id="full_book" class="with-gap">
                         <label for="male">Full Book</label>
-                        <input type="radio" name="gender" id="female" class="with-gap" checked>
+                        <input type="radio" name="gender" id="reading" class="with-gap" checked>
                         <label for="female" class="m-l-20">Reading</label>
                     </div>
+                    <div class="form-group">
+                        <label for="image">Upload a clear image</label>
+                        <input type="file" id="image" name="image">
                     </div>
+                    </div>
+                    <!-- <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="image">Upload a clear image</label>
+                            <input type="file" id="image" name="image">
+                        </div>
+                    </div> -->
                     <div class="col-lg-2">
                     <div class="form-group">
-                        <input type="checkbox" id="checkbox" name="checkbox">
+                        <input type="checkbox" id="notes" name="notes">
                         <label for="checkbox">Notes included?</label>
                     </div>
                     </div>

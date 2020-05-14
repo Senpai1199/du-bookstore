@@ -28,7 +28,6 @@ def home(request):
     books1 = Book.objects.filter(year=request.user.profile.year, sold=False)
     books2 = Book.objects.all().exclude(year=request.user.profile.year, sold=False)
     books = list(chain(books1, books2))
-    print("****" + str(len(books)) + "*****")
     context = {
         "books": books
     }
@@ -94,9 +93,9 @@ def sell_book(request):
 
     elif request.method == 'POST':
         data = request.POST.dict()
-        email = data['email']
-        if not re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", email):
-            messages.warning(request, 'Please enter a valid email address.')
+        title = data['title']
+        if title == "":
+            messages.warning(request, 'Please don\'t leave title empty.')
             return redirect(request.META.get('HTTP_REFERER'))
         else:
             try:
