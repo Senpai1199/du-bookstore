@@ -1,0 +1,73 @@
+{% extends 'registrations/base.html' %}
+{% load static %}
+
+{% block body %}
+
+{% for table in tables %}
+
+<div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+{% if messages %}
+<div class="body">
+{% for message in messages %}
+<div class="alert alert-info alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+    {{ message }}
+</div>
+{% endfor %}
+</div>
+{% endif %}
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        {{ table.title }}
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover js-basic-example dataTable">
+                            <thead>
+                                <tr>
+                                    {% for heading in table.headings %}
+                                        <th>{{ heading }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in table.rows %}
+                                <tr>
+                                    {% for data in row.data %}
+                                        {% if data.type == "Price" %}
+                                            <td>₹{{ data.value }}</td>
+                                        {% else %}
+                                            <td>{{ data.value }}</td>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% for link in row.link %}
+                                        {% if row.sold == True %} <!--If Book is already Sold-->
+                                            {% if link.title == "Mark as Sold" %}
+                                                <td><span class="badge bg-teal">SOLD</span></td>
+                                            {% else %}
+                                                <td><a href="{{ link.url }}"><i class="material-icons">mode_edit</i></a></td>
+                                            {% endif %}
+                                        {% else %} <!--If Book is not Sold-->
+                                            {% if link.title == "Mark as Sold" %}
+                                                <td><a href="{{ link.url }}"><button class="btn btn-primary"><b>{{ link.title }}</b></button></a></td>
+                                            {% else %}
+                                                <td><a href="{{ link.url }}"><i class="material-icons">mode_edit</i></a></td>
+                                            {% endif %}
+                                        {% endif %}                                        
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endfor %}
+{% endblock %}

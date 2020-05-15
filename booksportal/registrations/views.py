@@ -245,3 +245,78 @@ def search(request):
             "form_data": form_data
         }
     return render(request, 'registrations/search.html', context=context)
+
+@login_required(login_url='login')
+def view_listings(request):
+    """
+        Allows the seller to view the listings made by him/her
+        Title, Course, Year, Price, Sold, Mark as sold, Edit
+    """
+    seller_books = Book.objects.filter(seller__auth_user=request.user)
+
+    if len(seller_books) == 0:
+        messages.warning(request, "You have no listing so far. You can create one by going to Sell option in the sidebar.")
+        return redirect('home')
+
+    # college_list = []
+
+    # for coll in College.objects.all():
+    #     if coll.participants.filter(status__gte=1).count(): #appending only those colleges whose participants' emails have been verified
+    #         college_list.append(coll)
+
+    rows = [
+            {
+                'data': [
+                            {"value": book.title, "type": "Title"},
+                            {"value": book.course.name, "type": "Course Name"},
+                            {"value": book.year, "type": "Year"},
+                            {"value": book.price, "type": "Price"},
+                        ],
+
+                'link': [
+                            {
+                                'title':'Mark as Sold',
+                                'url':reverse('mark_sold', kwargs={ 'b_id': book.id })
+                            },
+
+                            {
+                                'title':'Edit Details',
+                                'url':reverse('edit_listing_details', kwargs={ 'b_id': book.id })
+                            }
+                        ],
+                'sold': book.sold 
+            }for book in seller_books # user's listings
+           ]
+
+
+    tables = [
+                {
+                    'title': 'My Book Listings',
+                    'rows': rows,
+                    'headings': [
+                        'Title',
+                        'Course',
+                        'Year',
+                        'Price',
+                        '',
+                        'Edit Details',
+                        ]
+                }
+            ]
+    print(tables[0]["rows"][8]["data"][0]["value"], tables[0]["rows"][8]["sold"])
+    return render(request, 'registrations/view_listings.html', {"tables": tables})
+
+@login_required(login_url='login')
+def mark_sold(request, b_id):
+    return 
+
+@login_required(login_url='login')
+def edit_listing_details(request, b_id):
+    return 
+
+
+    
+    
+
+
+
