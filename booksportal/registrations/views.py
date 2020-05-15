@@ -250,19 +250,13 @@ def search_book(request):
 def view_listings(request):
     """
         Allows the seller to view the listings made by him/her
-        Title, Course, Year, Price, Sold, Mark as sold, Edit
+        Title, Course, Year, Price, Sold, Mark as sold, Edit Details
     """
     seller_books = Book.objects.filter(seller__auth_user=request.user)
 
     if len(seller_books) == 0:
         messages.warning(request, "You have no listing so far. You can create one by going to Sell option in the sidebar.")
         return redirect('home')
-
-    # college_list = []
-
-    # for coll in College.objects.all():
-    #     if coll.participants.filter(status__gte=1).count(): #appending only those colleges whose participants' emails have been verified
-    #         college_list.append(coll)
 
     rows = [
             {
@@ -303,12 +297,19 @@ def view_listings(request):
                         ]
                 }
             ]
-    print(tables[0]["rows"][8]["data"][0]["value"], tables[0]["rows"][8]["sold"])
+    # print(tables[0]["rows"][8]["data"][0]["value"], tables[0]["rows"][8]["sold"])
     return render(request, 'registrations/view_listings.html', {"tables": tables})
 
 @login_required(login_url='login')
 def mark_sold(request, b_id):
-    return 
+    try:
+        book = Book.objects.get(id=b_id, seller__auth_user=request.user)
+        book.sold = True
+        book.save()
+        return redirect('my_listings')
+    except Book.DoesNotExist:
+        messages.warning(request, "Book not found or You are not authorized to mark it as SOLD.")
+        return redirect('my_listings')
 
 @login_required(login_url='login')
 def edit_listing_details(request, b_id):
