@@ -29,11 +29,12 @@ urlpatterns = [
 
     path('home/', views.home, name='home'),
     path('sell_book/', views.sell_book, name='sell_book'),
-    path('search_book/', views.search, name='search_book'),
     path('my_listings/', views.view_listings, name='my_listings'),
     path('mark_sold/<int:b_id>/', views.mark_sold, name='mark_sold'),
     path('editing_listing_details/<int:b_id>/', views.edit_listing_details, name='edit_listing_details'),
 
+    path('search_book/', views.search_book, name='search_book'),
+    path('search_bookset/', views.search_bookset, name='search_bookset'),
 
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),

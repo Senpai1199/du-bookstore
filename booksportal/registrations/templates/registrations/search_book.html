@@ -142,7 +142,7 @@
                                   <b>Used For : </b> <span class="label bg-cyan">{{book.course.name}}</span>
                                   {% autoescape off %}{% get_year_semester book %}{% endautoescape %}
                                 </p>
-                                {% if book.description != "" %}
+                                {% if book.additional_details != "" %}
                                 <p>
                                     <b>Additional Details : </b>{{ book.additional_details }}
                                 </p>

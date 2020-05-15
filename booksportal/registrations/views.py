@@ -9,7 +9,7 @@ import re
 
 from itertools import chain
 
-from registrations.models import Book, Course, UserProfile
+from registrations.models import Book, Course, UserProfile, BookSet
 
 @login_required(login_url='login')
 def index(request):
@@ -183,7 +183,7 @@ def contact(request):
     return render(request, 'registrations/contact.html')
 
 @login_required(login_url='login')
-def search(request):
+def search_book(request):
     """
         The HOME page of the portal where all the book listings would be displayed according to the year of the logged in user
     """
@@ -201,7 +201,7 @@ def search(request):
             semester = form_data['semester']
             sort_by = form_data['sort_by']
         except KeyError as missing_key_exception:
-            m = re.search("'([^']*)'", missing_key_exception.message)
+            m = re.search("'([^']*)'", str(missing_key_exception))
             key = m.group(1)
             messages.error(request, 'Missing data in form : {}. If problem persists contact administrator.'.format(key))
             context = {
@@ -234,11 +234,11 @@ def search(request):
             contains_notes = form_data["notes_req"]
             books = Book.objects.filter(course__id__in=course_id, year__in=year,
                 semester__in=semester, title__contains=search_keyword,category__in=category,
-                bookset=None, contains_notes=True).order_by(sort_by)
+                bookset=None, contains_notes=True, sold=False).order_by(sort_by)
         except KeyError:
             books = Book.objects.filter(course__id__in=course_id, year__in=year,
                 semester__in=semester, title__contains=search_keyword,category__in=category,
-                bookset=None).order_by(sort_by)
+                bookset=None,  sold=False).order_by(sort_by)
 
         context = {
             "books": books,
@@ -312,11 +312,61 @@ def mark_sold(request, b_id):
 
 @login_required(login_url='login')
 def edit_listing_details(request, b_id):
-    return 
+    return render(request, 'registrations/search_book.html', context=context)
 
+@login_required(login_url='login')
+def search_bookset(request):
+    """
+        The HOME page of the portal where all the book listings would be displayed according to the year of the logged in user
+    """
 
-    
-    
+    if request.method == 'GET':
+        context = {}
+    else:
+        form_data = request.POST
 
+        try:
+            search_keyword = form_data['search_keyword']
+            course_id = form_data['course_id']
+            year = form_data['year']
+            semester = form_data['semester']
+            sort_by = form_data['sort_by']
+        except KeyError as missing_key_exception:
+            m = re.search("'([^']*)'", str(missing_key_exception))
+            key = m.group(1)
+            print('Missing data in form : {}. If problem persists contact administrator.'.format(key))
+            messages.error(request, 'Missing data in form : {}. If problem persists contact administrator.'.format(key))
+            context = {
+                        'form_data': form_data
+            }
+            return render(request, 'registrations/search_bookset.html', context=context)
 
+        if course_id == 'all':
+            course_id = [course.id for course in Course.objects.all()]
+        else:
+            course_id = [int(course_id)]
 
+        if year == 'all':
+            year = [1,2,3,4]
+        else:
+            year = [int(year)]
+
+        if semester == 'all':
+            semester = [1,2]
+        else:
+            semester = [int(semester)]
+
+        try:
+            contains_notes = form_data["notes_req"]
+            booksets = BookSet.objects.filter(course__id__in=course_id, year__in=year,
+                semester__in=semester, title__contains=search_keyword, contains_notes=True,
+                sold=False).order_by(sort_by)
+        except KeyError:
+            booksets = BookSet.objects.filter(course__id__in=course_id, year__in=year,
+                semester__in=semester, title__contains=search_keyword, sold=False).order_by(sort_by)
+
+        context = {
+            "booksets": booksets,
+            "form_data": form_data
+        }
+    return render(request, 'registrations/search_bookset.html', context=context)
