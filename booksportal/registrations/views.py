@@ -208,7 +208,7 @@ def search_book(request):
                         'form_data': form_data
             }
 
-            return render(request, 'registrations/search.html', context=context)
+            return render(request, 'registrations/search_book.html', context=context)
 
         if course_id == 'all':
             course_id = [course.id for course in Course.objects.all()]
@@ -244,7 +244,7 @@ def search_book(request):
             "books": books,
             "form_data": form_data
         }
-    return render(request, 'registrations/search.html', context=context)
+    return render(request, 'registrations/search_book.html', context=context)
 
 @login_required(login_url='login')
 def view_listings(request):
