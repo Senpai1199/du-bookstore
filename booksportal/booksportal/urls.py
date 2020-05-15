@@ -29,7 +29,8 @@ urlpatterns = [
 
     path('home/', views.home, name='home'),
     path('sell_book/', views.sell_book, name='sell_book'),
-    path('search_book/', views.search, name='search_book'),
+    path('search_book/', views.search_book, name='search_book'),
+    path('search_bookset/', views.search_bookset, name='search_bookset'),
 
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),

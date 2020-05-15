@@ -117,6 +117,7 @@ class BookSet(models.Model):
     contains_books = models.BooleanField(default=False)
     contains_notes = models.BooleanField(default=False)
     contains_readings = models.BooleanField(default=False)
+    interested_count = models.SmallIntegerField(default=0)
 
     def __str__(self):
         return "{} - {}".format(self.id, self.title)
