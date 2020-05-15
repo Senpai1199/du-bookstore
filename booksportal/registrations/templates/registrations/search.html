@@ -11,7 +11,8 @@
                             </h2>
                         </div>
                         <div class="body">
-                            <form>
+                            <form method="POST" enctype="multipart/form-data" action="{% url 'search_book' %}">
+                              {% csrf_token %}
                                 <div class="row clearfix">
                                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
                                       <p>
@@ -19,7 +20,7 @@
                                       </p>
                                         <div class="form-group form-float">
                                             <div class="form-line">
-                                                <input type="text" class="form-control">
+                                                <input type="text" class="form-control" name="search_keyword" value="{{ form_data.search_keyword }}">
                                                 <label class="form-label">(optional)</label>
                                             </div>
                                         </div>
@@ -28,11 +29,11 @@
                                     <p>
                                         <b>Select Course</b>
                                     </p>
-                                    <select class="form-control show-tick" data-live-search="true">
+                                    <select class="form-control show-tick" data-live-search="true" name="course_id">
                                       <option value="all">All</option>
                                         {% get_courses as course_list %}
                                         {% for course in course_list %}
-                                        <option value="course.id">{{ course.name }}</option>
+                                        <option value="{{course.id}}">{{ course.name }}</option>
                                         {% endfor %}
                                     </select>
                                     </div>
@@ -40,55 +41,54 @@
                                     <p>
                                         <b>Category</b>
                                     </p>
-                                    <select class="form-control show-tick" data-live-search="true">
-                                        <option>All</option>
-                                        <option>Book</option>
-                                        <option>Reading</option>
-                                        <option>Book-Set</option>
+                                    <select class="form-control show-tick" data-live-search="true" name="category">
+                                        <option value="all">All</option>
+                                        <option value="B">Full Book</option>
+                                        <option value="R">Reading</option>
                                     </select>
                                     </div>
                                     <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
                                     <p>
                                         <b>Year</b>
                                     </p>
-                                    <select class="form-control show-tick" data-live-search="true">
-                                        <option>All</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>Masters</option>
+                                    <select class="form-control show-tick" data-live-search="true" name="year">
+                                        <option value="all">All</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">Masters</option>
                                     </select>
                                     </div>
                                     <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
                                     <p>
                                         <b>Semester</b>
                                     </p>
-                                    <select class="form-control show-tick" data-live-search="true">
-                                        <option>All</option>
-                                        <option>1</option>
-                                        <option>2</option>
+                                    <select class="form-control show-tick" data-live-search="true" name="semester" value="{{ form_data.semester }}">
+                                        <option value="all">All</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
                                     </select>
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
                                     <p>
                                         <b>Sort By</b>
                                     </p>
-                                    <select class="form-control show-tick" data-live-search="true">
-                                      <option>Popularity - High to low</option>
-                                      <option>Popularity - Low to High</option>
-                                        <option>Price - Low to High</option>
-                                        <option>Price - High to Low</option>
-                                        <option>Newest First</option>
+                                    <select class="form-control show-tick" data-live-search="true" name="sort_by" value="{{ form_data.sort_by }}">
+                                      <option value="interested_count">Popularity - High to low</option>
+                                      <option value="-interested_count">Popularity - Low to High</option>
+                                        <option value="price">Price - Low to High</option>
+                                        <option value="-price">Price - High to Low</option>
+                                        <option value="-date_added">Newest First</option>
                                     </select>
                                     </div>
                                     <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
                                       <br><br>
-                                        <input type="checkbox" id="notes_req" class="filled-in">
+                                        <input type="checkbox" id="notes_req" class="filled-in" name="notes_req" value="yes">
                                         <label for="notes_req">Notes Included</label>
                                     </div>
                                     <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
                                       <br>
-                                      <button type="button" class="btn bg-teal waves-effect">
+                                      <button class="btn bg-teal waves-effect" type="submit">
                                         <i class="material-icons">search</i>
                                         <span>SEARCH</span>
                                       </button>

@@ -29,7 +29,7 @@ urlpatterns = [
 
     path('home/', views.home, name='home'),
     path('sell_book/', views.sell_book, name='sell_book'),
-    path('search/', views.search, name='search'),
+    path('search_book/', views.search, name='search_book'),
 
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
