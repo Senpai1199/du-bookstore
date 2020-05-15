@@ -31,7 +31,7 @@ def home(request):
     books2 = Book.objects.all().exclude(year=request.user.profile.year, sold=False)
     books = list(chain(books1, books2))
     context = {
-        "books": books
+        "books": books[:10]
     }
     return render(request, 'registrations/home.html', context=context)
 
@@ -132,7 +132,7 @@ def sell_book(request):
         except KeyError:
             messages.warning(request, "Please upload an image for your listing.")
             return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
-        
+
         try:
             course = Course.objects.get(name=course_name)
         except Course.DoesNotExist:
@@ -151,20 +151,20 @@ def sell_book(request):
             contains_notes = True
         except KeyError:
             contains_notes = False
-        
+
         new_book = Book.objects.create(
-                                    title=title, 
-                                    category=book_type, 
-                                    contains_notes=contains_notes, 
-                                    condition=condition, 
-                                    year=year, 
+                                    title=title,
+                                    category=book_type,
+                                    contains_notes=contains_notes,
+                                    condition=condition,
+                                    year=year,
                                     semester=semester,
                                     image=book_image,
                                     course=course,
                                     price=price,
                                     seller=seller,
                                     additional_details=str(data["additional_details"]).strip()
-                                )        
+                                )
         messages.success(request, "Success! Book added for the sellers to see.")
         return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
 

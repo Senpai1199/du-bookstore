@@ -41,7 +41,7 @@
                                     <p>
                                         <b>Category</b>
                                     </p>
-                                    <select class="form-control show-tick" name="category" name="category">
+                                    <select class="form-control show-tick" name="category" id="category">
                                         <option value="all">All</option>
                                         <option value="B">Full Book</option>
                                         <option value="R">Reading</option>
@@ -105,7 +105,7 @@
         <div class="card">
             <div class="header">
                 <h2>
-                    BOOKS FOR YOU
+                    Search Results
                 </h2>
             </div>
             <div class="body">
@@ -144,11 +144,11 @@
                                 </p>
                                 {% if book.description != "" %}
                                 <p>
-                                    <b>Additional Details : </b>{{ book.description }}
+                                    <b>Additional Details : </b>{{ book.additional_details }}
                                 </p>
                                 {% endif %}
                                 <p>
-                                    <b>Condition : </b>{{ book.condition }}
+                                    <b>Condition : </b>{{ book.additional_details }}
                                 </p>
                                 {% if book.contains_notes == True %}
                                 <p>
@@ -167,6 +167,9 @@
 <script type="text/javascript">
   document.getElementById('year').value = "{{ form_data.year }}";
   document.getElementById('semester').value = "{{ form_data.semester }}";
+  document.getElementById('category').value = "{{ form_data.category }}";
+  document.getElementById('course_id').value = "{{ form_data.course_id }}";
+  document.getElementById('sort_by').value = "{{ form_data.sort_by }}";
 
 </script>
 {% endblock %}
