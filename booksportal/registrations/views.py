@@ -132,22 +132,13 @@ def sell_book(request):
         except KeyError:
             messages.warning(request, "Please upload an image for your listing.")
             return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
-<<<<<<< HEAD
         
-=======
-            # print(book_image)
-            # if book_image is None:
-
->>>>>>> 1b4e41abfbcc832bf6076a2c2bdb052d63cca299
         try:
             course = Course.objects.get(name=course_name)
         except Course.DoesNotExist:
             messages.warning(request, "Please select a course from the list.")
             return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
-<<<<<<< HEAD
         # end of data validation
-=======
->>>>>>> 1b4e41abfbcc832bf6076a2c2bdb052d63cca299
 
         if year == "Masters":
             year = 4
@@ -160,7 +151,6 @@ def sell_book(request):
             contains_notes = True
         except KeyError:
             contains_notes = False
-<<<<<<< HEAD
         
         new_book = Book.objects.create(
                                     title=title, 
@@ -168,29 +158,6 @@ def sell_book(request):
                                     contains_notes=contains_notes, 
                                     condition=condition, 
                                     year=year, 
-=======
-
-        if book_type == "B":
-            new_book = Book.objects.create(
-                                        title=title,
-                                        category=book_type,
-                                        contains_notes=contains_notes,
-                                        condition=condition,
-                                        year=year,
-                                        semester=semester,
-                                        image=book_image,
-                                        course=course,
-                                        price=price,
-                                        seller=seller
-                                    )
-        else:
-            new_book = Book.objects.create(
-                                    title=title,
-                                    category="R",
-                                    contains_notes=contains_notes,
-                                    condition=condition,
-                                    year=year,
->>>>>>> 1b4e41abfbcc832bf6076a2c2bdb052d63cca299
                                     semester=semester,
                                     image=book_image,
                                     course=course,
