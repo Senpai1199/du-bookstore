@@ -118,34 +118,30 @@ def sell_book(request):
         if book_type == "B":
             try:
                 edition = data["edition"] # optional for Reading
+                if edition == "":
+                    messages.warning(request, "You must enter an edition if you're adding a book.")
+                    return redirect(request.META.get('HTTP_REFERER'))
                 edition = edition.strip()
             except KeyError as e:
                 messages.warning(request, "You must enter an edition if you're adding a book.")
                 return redirect(request.META.get('HTTP_REFERER'))
         try:
             book_image = request.FILES["file"]
-        except Exception as e:
-            print(e)
+        except KeyError:
             messages.warning(request, "Please upload an image for your listing.")
             return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
-            # print(book_image)
-            # if book_image is None:
         
         try:
             course = Course.objects.get(name=course_name)
         except Course.DoesNotExist:
             messages.warning(request, "Please select a course from the list.")
             return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
-        
+        # end of data validation
+
         if year == "Masters":
             year = 4
-            semester = 7
-        if semester == 1:
-            offset = 0
-        else:
-            offset = 1
+            semester = 0
 
-        semester = int(year)*2 + int(offset)
         title = title.strip()
         condition = condition.strip()
         try:
@@ -154,23 +150,9 @@ def sell_book(request):
         except KeyError:
             contains_notes = False
         
-        if book_type == "B":
-            new_book = Book.objects.create(
-                                        title=title, 
-                                        category=book_type, 
-                                        contains_notes=contains_notes, 
-                                        condition=condition, 
-                                        year=year, 
-                                        semester=semester,
-                                        image=book_image,
-                                        course=course,
-                                        price=price,
-                                        seller=seller
-                                    )
-        else:
-            new_book = Book.objects.create(
+        new_book = Book.objects.create(
                                     title=title, 
-                                    category="R", 
+                                    category=book_type, 
                                     contains_notes=contains_notes, 
                                     condition=condition, 
                                     year=year, 
@@ -178,27 +160,11 @@ def sell_book(request):
                                     image=book_image,
                                     course=course,
                                     price=price,
-                                    seller=seller
-                                )
-        try:
-            description = str(data["description"])
-            description = description.strip()
-            new_book.description = description
-            new_book.save()
-
-            context = {
-                'error_heading': "Success!",
-                'message': "Listing has been added and will be available for the sellers to see.",
-                'url': request.build_absolute_uri(reverse('sell_book'))
-            }
-            return render(request, 'registrations/message.html')
-        except KeyError:
-            context = {
-                'error_heading': "Success!",
-                'message': "Listing has been added and will be available for the sellers to see.",
-                'url': request.build_absolute_uri(reverse('sell_book'))
-            }
-            return render(request, 'registrations/message.html')
+                                    seller=seller,
+                                    additional_details=str(data["additional_details"]).strip()
+                                )        
+        messages.success(request, "Success! Book added for the sellers to see.")
+        return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
 
 @login_required(login_url='login')
 def about(request):

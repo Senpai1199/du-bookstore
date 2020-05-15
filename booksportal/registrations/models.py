@@ -48,12 +48,12 @@ class Book(models.Model):
 
     title = models.CharField(max_length=200, null=True)
     edition = models.CharField(max_length=200, null=True)
-    description = models.CharField(max_length=200, blank=True)
+    additional_details = models.CharField(max_length=200, blank=True)
     category = models.CharField(choices=BOOK_TYPES, null=False, max_length=1, default='R')
     contains_notes = models.BooleanField(default=False)
     condition = models.CharField(max_length=300, blank=False)
     year = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(4)]) # 4 for masters
-    semester = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(7)]) # 7 for masters
+    semester = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(2)]) # 0 for masters
     image = models.ImageField(upload_to='book_pics', null=False)
     course = models.ForeignKey('Course', related_name='course_books', on_delete=models.CASCADE)
     price = models.IntegerField(default=0)
@@ -107,11 +107,11 @@ class BookSet(models.Model):
         Contains Information about price, course, etc.
     """
     title = models.CharField(max_length=200, null=True)
-    description = models.CharField(max_length=200, blank=True)
+    additional_details = models.CharField(max_length=200, blank=True)
     course = models.ForeignKey('Course', related_name='course_bookset',
         on_delete=models.CASCADE)
     year = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(4)]) # 4 for master
-    semester = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(7)]) # 7 for masters
+    semester = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(2)]) # 0 for masters
     price = models.IntegerField(default=0)
     sold = models.BooleanField(default=False)
     contains_books = models.BooleanField(default=False)
