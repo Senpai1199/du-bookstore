@@ -47,7 +47,7 @@ class Book(models.Model):
     )
 
     title = models.CharField(max_length=200, null=True)
-    edition = models.CharField(max_length=200, null=True)
+    edition = models.CharField(max_length=200, blank=True)
     additional_details = models.CharField(max_length=200, blank=True)
     category = models.CharField(choices=BOOK_TYPES, null=False, max_length=1, default='R')
     contains_notes = models.BooleanField(default=False)
