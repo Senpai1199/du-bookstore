@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 
+import re
+
 from itertools import chain
 
 from registrations.models import Book, Course, UserProfile
@@ -130,13 +132,22 @@ def sell_book(request):
         except KeyError:
             messages.warning(request, "Please upload an image for your listing.")
             return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
+<<<<<<< HEAD
         
+=======
+            # print(book_image)
+            # if book_image is None:
+
+>>>>>>> 1b4e41abfbcc832bf6076a2c2bdb052d63cca299
         try:
             course = Course.objects.get(name=course_name)
         except Course.DoesNotExist:
             messages.warning(request, "Please select a course from the list.")
             return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
+<<<<<<< HEAD
         # end of data validation
+=======
+>>>>>>> 1b4e41abfbcc832bf6076a2c2bdb052d63cca299
 
         if year == "Masters":
             year = 4
@@ -149,6 +160,7 @@ def sell_book(request):
             contains_notes = True
         except KeyError:
             contains_notes = False
+<<<<<<< HEAD
         
         new_book = Book.objects.create(
                                     title=title, 
@@ -156,6 +168,29 @@ def sell_book(request):
                                     contains_notes=contains_notes, 
                                     condition=condition, 
                                     year=year, 
+=======
+
+        if book_type == "B":
+            new_book = Book.objects.create(
+                                        title=title,
+                                        category=book_type,
+                                        contains_notes=contains_notes,
+                                        condition=condition,
+                                        year=year,
+                                        semester=semester,
+                                        image=book_image,
+                                        course=course,
+                                        price=price,
+                                        seller=seller
+                                    )
+        else:
+            new_book = Book.objects.create(
+                                    title=title,
+                                    category="R",
+                                    contains_notes=contains_notes,
+                                    condition=condition,
+                                    year=year,
+>>>>>>> 1b4e41abfbcc832bf6076a2c2bdb052d63cca299
                                     semester=semester,
                                     image=book_image,
                                     course=course,
@@ -189,11 +224,62 @@ def search(request):
     if request.method == 'GET':
         context = {}
     else:
-        books1 = Book.objects.filter(year=request.user.profile.year, sold=False)
-        books2 = Book.objects.all().exclude(year=request.user.profile.year, sold=False)
-        books = list(chain(books1, books2))
-        print("****" + str(len(books)) + "*****")
+        form_data = request.POST
+
+        try:
+            search_keyword = form_data['search_keyword']
+            course_id = form_data['course_id']
+            category = form_data['category']
+            year = form_data['year']
+            semester = form_data['semester']
+            sort_by = form_data['sort_by']
+        except KeyError as missing_key_exception:
+            m = re.search("'([^']*)'", missing_key_exception.message)
+            key = m.group(1)
+            messages.error(request, 'Missing data in form : {}. If problem persists contact administrator.'.format(key))
+            context = {
+                        'form_data': form_data
+            }
+
+            return render(request, 'registrations/search.html', context=context)
+
+        if course_id == 'all':
+            course_id = [course.id for course in Course.objects.all()]
+        else:
+            course_id = [int(course_id)]
+
+        if year == 'all':
+            year = [1,2,3,4]
+        else:
+            year = [int(year)]
+
+        if semester == 'all':
+            semester = [1,2]
+        else:
+            semester = [int(semester)]
+
+        if category == 'all':
+            category = ['B', 'R']
+        else:
+            category = [category]
+
+        try:
+            contains_notes = form_data["notes_req"]
+            books = Book.objects.filter(course__id__in=course_id, year__in=year,
+                semester__in=semester, title__contains=search_keyword,category__in=category,
+                bookset=None, contains_notes=True).order_by(sort_by)
+        except KeyError:
+            books = Book.objects.filter(course__id__in=course_id, year__in=year,
+                semester__in=semester, title__contains=search_keyword,category__in=category,
+                bookset=None).order_by(sort_by)
+        print(course_id)
+        print(year)
+        print(semester)
+        print(category)
+        
+        print(form_data)
         context = {
-            "books": books
+            "books": books,
+            "form_data": form_data
         }
     return render(request, 'registrations/search.html', context=context)
