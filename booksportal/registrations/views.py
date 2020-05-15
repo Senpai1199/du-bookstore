@@ -239,12 +239,7 @@ def search(request):
             books = Book.objects.filter(course__id__in=course_id, year__in=year,
                 semester__in=semester, title__contains=search_keyword,category__in=category,
                 bookset=None).order_by(sort_by)
-        print(course_id)
-        print(year)
-        print(semester)
-        print(category)
-        
-        print(form_data)
+
         context = {
             "books": books,
             "form_data": form_data

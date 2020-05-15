@@ -29,8 +29,8 @@
                                     <p>
                                         <b>Select Course</b>
                                     </p>
-                                    <select class="form-control show-tick" data-live-search="true" name="course_id">
-                                      <option value="all">All</option>
+                                    <select class="form-control show-tick" data-live-search="true" name="course_id" id="course_id">
+                                      <option value="all" selected>All</option>
                                         {% get_courses as course_list %}
                                         {% for course in course_list %}
                                         <option value="{{course.id}}">{{ course.name }}</option>
@@ -41,7 +41,7 @@
                                     <p>
                                         <b>Category</b>
                                     </p>
-                                    <select class="form-control show-tick" data-live-search="true" name="category">
+                                    <select class="form-control show-tick" name="category" name="category">
                                         <option value="all">All</option>
                                         <option value="B">Full Book</option>
                                         <option value="R">Reading</option>
@@ -51,7 +51,7 @@
                                     <p>
                                         <b>Year</b>
                                     </p>
-                                    <select class="form-control show-tick" data-live-search="true" name="year">
+                                    <select class="form-control show-tick" id="year" name="year">
                                         <option value="all">All</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -63,7 +63,7 @@
                                     <p>
                                         <b>Semester</b>
                                     </p>
-                                    <select class="form-control show-tick" data-live-search="true" name="semester" value="{{ form_data.semester }}">
+                                    <select class="form-control show-tick" name="semester" id="semester">
                                         <option value="all">All</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -73,9 +73,9 @@
                                     <p>
                                         <b>Sort By</b>
                                     </p>
-                                    <select class="form-control show-tick" data-live-search="true" name="sort_by" value="{{ form_data.sort_by }}">
-                                      <option value="interested_count">Popularity - High to low</option>
-                                      <option value="-interested_count">Popularity - Low to High</option>
+                                    <select class="form-control show-tick" name="sort_by" id="sort_by">
+                                      <option value="-interested_count">Popularity - High to low</option>
+                                      <option value="interested_count">Popularity - Low to High</option>
                                         <option value="price">Price - Low to High</option>
                                         <option value="-price">Price - High to Low</option>
                                         <option value="-date_added">Newest First</option>
@@ -83,7 +83,11 @@
                                     </div>
                                     <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
                                       <br><br>
-                                        <input type="checkbox" id="notes_req" class="filled-in" name="notes_req" value="yes">
+                                      {% if form_data.notes_req == 'yes' %}
+                                        <input type="checkbox" id="notes_req" class="filled-in" name="notes_req" id="notes_req" value="yes" checked>
+                                        {% else %}
+                                        <input type="checkbox" id="notes_req" class="filled-in" name="notes_req" id="notes_req" value="yes">
+                                        {% endif %}
                                         <label for="notes_req">Notes Included</label>
                                     </div>
                                     <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
@@ -140,7 +144,7 @@
                                 </p>
                                 {% if book.description != "" %}
                                 <p>
-                                    <b>Description : </b>{{ book.description }}
+                                    <b>Additional Details : </b>{{ book.description }}
                                 </p>
                                 {% endif %}
                                 <p>
@@ -160,4 +164,9 @@
         {% endif %}
     </div>
 </div>
+<script type="text/javascript">
+  document.getElementById('year').value = "{{ form_data.year }}";
+  document.getElementById('semester').value = "{{ form_data.semester }}";
+
+</script>
 {% endblock %}
