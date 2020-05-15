@@ -137,6 +137,52 @@
                                     <span class="label bg-cyan">NOTES INCLUDED</span>
                                 </p>
                                 {% endif %}
+                                <p style="text-align:center;" >
+                                  <button class="btn bg-blue-grey waves-effect btn-xs dropdown-toggle" data-toggle="collapse" data-target="#collapsebooks" aria-expanded="false"
+                                    aria-controls="collapsebooks">
+                                Show Books/Readings
+                                <span class="caret"></span>
+                            </button>
+                            </p>
+                            <div class="collapse" id="collapsebooks">
+                                <div class="well">
+                                  {% for book in bookset.set_books.all %}
+                                  <div class="media">
+                                      <div class="media-left media-top">
+                                          <a>
+                                              <img class="media-object item-picture" src="{{ book.image.url }}" width="100" height="100"/>
+                                          </a>
+                                          <div class="item-price col-black">₹{{book.price}}</div>
+                                      </div>
+                                      <div class="media-body">
+                                          <h4 class="media-heading">{{ book.title }}</h4>
+                                          {% if book.category == "B" %}
+                                          <p>
+                                              <b>Edition</b>  : {{ book.edition }}
+                                          </p>
+                                          {% endif %}
+                                          <p>
+                                            <b>Used For : </b> <span class="label bg-cyan">{{book.course.name}}</span>
+                                            {% autoescape off %}{% get_year_semester book %}{% endautoescape %}
+                                          </p>
+                                          {% if book.additional_details != "" %}
+                                          <p>
+                                              <b>Additional Details : </b>{{ book.additional_details }}
+                                          </p>
+                                          {% endif %}
+                                          <p>
+                                              <b>Condition : </b>{{ book.condition }}
+                                          </p>
+                                          {% if book.contains_notes == True %}
+                                          <p>
+                                              <span class="label bg-cyan">NOTES INCLUDED</span>
+                                          </p>
+                                          {% endif %}
+                                      </div>
+                                  </div>
+                                  {% endfor %}
+                                </div>
+                            </div>
                             </div>
                         </div>
                     {% endfor %}
