@@ -120,6 +120,7 @@ class BookSet(models.Model):
     interested_count = models.SmallIntegerField(default=0)
     ineterested_users = models.ManyToManyField('UserProfile', related_name='booksets_wishlist',
         blank=True)
+    seller = models.ForeignKey('UserProfile', on_delete=models.CASCADE)
 
     def __str__(self):
         return "{} - {}".format(self.id, self.title)

@@ -241,7 +241,13 @@ def search_book(request):
                 semester__in=semester, title__contains=search_keyword,category__in=category,
                 bookset=None,  sold=False).exclude(seller=request.user.profile).order_by(sort_by)
 
+        if books.count() == 0:
+            search_result = "No Matching Results Found"
+        else:
+            search_result = "Search Results"
+
         context = {
+            "search_result": search_result,
             "books": books,
             "form_data": form_data
         }
