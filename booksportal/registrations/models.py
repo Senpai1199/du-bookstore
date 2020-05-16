@@ -59,7 +59,7 @@ class Book(models.Model):
     price = models.IntegerField(default=0)
     sold = models.BooleanField(default=False)
     interested_count = models.SmallIntegerField(default=0)
-    ineterested_users = models.ManyToManyField('UserProfile', related_name='books_wishlist',
+    interested_users = models.ManyToManyField('UserProfile', related_name='books_wishlist',
         blank=True)
     date_added = models.DateField(auto_now=False, auto_now_add=True)
     seller = models.ForeignKey("UserProfile", related_name="seller_books", on_delete=models.CASCADE)

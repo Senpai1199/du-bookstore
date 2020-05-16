@@ -30,6 +30,8 @@ urlpatterns = [
     path('home/', views.home, name='home'),
     path('sell_book/', views.sell_book, name='sell_book'),
     path('my_listings/', views.view_listings, name='my_listings'),
+    path('my_set_listings/', views.view_set_listings, name='my_set_listings'),
+
     path('mark_sold/<int:b_id>/', views.mark_sold, name='mark_sold'),
     path('editing_listing_details/<int:b_id>/', views.edit_listing_details, name='edit_listing_details'),
 

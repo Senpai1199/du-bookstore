@@ -308,6 +308,14 @@ def view_listings(request):
     return render(request, 'registrations/view_listings.html', {"tables": tables})
 
 @login_required(login_url='login')
+def view_set_listings(request):
+    """
+        Allows the seller to view the listings made by him/her
+        Title, Course, Year, Price, Sold, Mark as sold, Edit Details
+    """
+    return 
+
+@login_required(login_url='login')
 def mark_sold(request, b_id):
     try:
         book = Book.objects.get(id=b_id, seller__auth_user=request.user)
