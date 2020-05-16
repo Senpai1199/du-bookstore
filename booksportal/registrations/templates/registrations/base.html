@@ -175,16 +175,22 @@
                             </li>
                         </ul>
                         <li>
-                            <a href="{% url 'my_listings' %}">
+                            <a href="javascript:void(0);" class="menu-toggle">
                                 <i class="material-icons">visibility</i>
-                                <span>My Book Listings</span>
+                                <span>My Listings</span>
                             </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'my_set_listings' %}">
-                                <i class="material-icons">visibility</i>
-                                <span>My Book Set Listings</span>
-                            </a>
+                            <ul class="ml-menu">
+                                <li>
+                                    <a href="{% url 'my_listings' %}">
+                                        <span>Book Listings</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'my_set_listings' %}">
+                                        <span>Book Set Listings</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </li>
                     <li class="header">LABELS</li>
@@ -194,7 +200,8 @@
                             <span>About Us</span>
                         </a>
                     </li>
-                    <a href="{% url 'contact' %}">
+                    <li>
+                        <a href="{% url 'contact' %}">
                             <i class="material-icons col-light-blue">donut_large</i>
                             <span>Contact Us</span>
                         </a>

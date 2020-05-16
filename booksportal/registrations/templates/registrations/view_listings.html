@@ -48,14 +48,18 @@
                                         {% if row.sold == True %} <!--If Book is already Sold-->
                                             {% if link.title == "Mark as Sold" %}
                                                 <td><span class="badge bg-teal">SOLD</span></td>
-                                            {% else %}
+                                            {% elif link.title == "Edit Details" %}
                                                 <td><a href="{{ link.url }}"><i class="material-icons">mode_edit</i></a></td>
+                                            {% else %}
+                                                <td></td>
                                             {% endif %}
                                         {% else %} <!--If Book is not Sold-->
                                             {% if link.title == "Mark as Sold" %}
                                                 <td><a href="{{ link.url }}"><button class="btn btn-primary"><b>{{ link.title }}</b></button></a></td>
-                                            {% else %}
+                                            {% elif link.title == "Edit Details" %}
                                                 <td><a href="{{ link.url }}"><i class="material-icons">mode_edit</i></a></td>
+                                            {% else %}
+                                                <td><a href="{{ link.url }}"><button class="btn btn-danger"><b>{{ link.title }}</b></button></a></td>
                                             {% endif %}
                                         {% endif %}                                        
                                     {% endfor %}

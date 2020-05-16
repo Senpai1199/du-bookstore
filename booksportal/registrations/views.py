@@ -283,6 +283,10 @@ def view_listings(request):
                             {
                                 'title':'Edit Details',
                                 'url':reverse('edit_listing_details', kwargs={ 'b_id': book.id })
+                            },
+                            {
+                                'title':'Remove Book',
+                                'url':reverse('remove_book', kwargs={ 'b_id': book.id })
                             }
                         ],
                 'sold': book.sold
@@ -301,6 +305,7 @@ def view_listings(request):
                         'Price',
                         '',
                         'Edit Details',
+                        'Remove Listing'
                         ]
                 }
             ]
@@ -324,6 +329,20 @@ def mark_sold(request, b_id):
         return redirect('my_listings')
     except Book.DoesNotExist:
         messages.warning(request, "Book not found or You are not authorized to mark it as SOLD.")
+        return redirect('my_listings')
+
+@login_required(login_url='login')
+def remove_book(request, b_id):
+    try:
+        book = Book.objects.get(id=b_id, seller__auth_user=request.user)
+        if book.sold == True:
+            messages.warning(request, "This book is already SOLD!")
+            return redirect('my_listings')
+        book.delete()
+        messages.success(request, "Book listing removed successfully!")
+        return redirect('my_listings')
+    except Book.DoesNotExist:
+        messages.warning(request, "Book not found or You are not authorized remove it.")
         return redirect('my_listings')
 
 @login_required(login_url='login')
