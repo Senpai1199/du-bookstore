@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 
+from registrations.permissions import has_profile_completed
+
 import re
 
 from itertools import chain
@@ -12,6 +14,7 @@ from itertools import chain
 from registrations.models import Book, Course, UserProfile, BookSet, College
 
 @login_required(login_url='login')
+@has_profile_completed
 def index(request):
     """
         Redirect '/' to 'home/'
@@ -23,6 +26,7 @@ def base_view(request):
     return render(request,'registrations/base.html', context={})
 
 @login_required(login_url='login')
+@has_profile_completed
 def home(request):
     """
         The HOME page of the portal where all the book listings would be displayed according to the year of the logged in user
@@ -189,7 +193,9 @@ def complete_profile(request):
             img_path = '../media/default_male_dp.png'
             if gender == "F":
                 img_path = '../media/default_female_dp.png'
-                
+            elif gender == "O":
+                img_path = "../media/default_neutral_dp.jpg"
+
             user_prof = UserProfile.objects.create(
                 auth_user = request.user,
                 gender = gender,
@@ -202,6 +208,7 @@ def complete_profile(request):
         return redirect('home')
 
 @login_required(login_url='login')
+# @has_profile_completed
 def logout_view(request):
     """
         Logout user from portal
@@ -211,6 +218,7 @@ def logout_view(request):
 
 @csrf_exempt
 @login_required(login_url='login')
+@has_profile_completed
 def sell_book(request):
     """
         Handles the form for adding an individual listing of book/reading to sell
@@ -308,6 +316,7 @@ def contact(request):
     return render(request, 'registrations/contact.html')
 
 @login_required(login_url='login')
+@has_profile_completed
 def search_book(request):
     """
         The HOME page of the portal where all the book listings would be displayed according to the year of the logged in user
@@ -378,6 +387,7 @@ def search_book(request):
     return render(request, 'registrations/search_book.html', context=context)
 
 @login_required(login_url='login')
+@has_profile_completed
 def view_listings(request):
     """
         Allows the seller to view the listings made by him/her
@@ -437,6 +447,7 @@ def view_listings(request):
     return render(request, 'registrations/view_listings.html', {"tables": tables})
 
 @login_required(login_url='login')
+@has_profile_completed
 def view_set_listings(request):
     """
         Allows the seller to view the listings made by him/her
@@ -445,6 +456,7 @@ def view_set_listings(request):
     return 
 
 @login_required(login_url='login')
+@has_profile_completed
 def mark_sold(request, b_id):
     try:
         book = Book.objects.get(id=b_id, seller__auth_user=request.user)
@@ -456,6 +468,7 @@ def mark_sold(request, b_id):
         return redirect('my_listings')
 
 @login_required(login_url='login')
+@has_profile_completed
 def remove_book(request, b_id):
     try:
         book = Book.objects.get(id=b_id, seller__auth_user=request.user)
@@ -474,6 +487,7 @@ def edit_listing_details(request, b_id):
     return render(request, 'registrations/search_book.html', context=context)
 
 @login_required(login_url='login')
+@has_profile_completed
 def search_bookset(request):
     """
         The HOME page of the portal where all the book listings would be displayed according to the year of the logged in user
