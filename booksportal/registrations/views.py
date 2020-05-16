@@ -27,8 +27,9 @@ def home(request):
     """
         The HOME page of the portal where all the book listings would be displayed according to the year of the logged in user
     """
-    books1 = Book.objects.filter(year=request.user.profile.year, sold=False)
-    books2 = Book.objects.all().exclude(year=request.user.profile.year, sold=False)
+    books1 = Book.objects.filter(year=request.user.profile.year, sold=False,
+        bookset=None).exclude(seller=request.user.profile)
+    books2 = Book.objects.filter(bookset=None, sold=False).exclude(year=request.user.profile.year).exclude(seller=request.user.profile) #This needs to be changed
     books = list(chain(books1, books2))
     context = {
         "books": books[:10]
@@ -234,11 +235,11 @@ def search_book(request):
             contains_notes = form_data["notes_req"]
             books = Book.objects.filter(course__id__in=course_id, year__in=year,
                 semester__in=semester, title__contains=search_keyword,category__in=category,
-                bookset=None, contains_notes=True, sold=False).order_by(sort_by)
+                bookset=None, contains_notes=True, sold=False).exclude(seller=request.user.profile).order_by(sort_by)
         except KeyError:
             books = Book.objects.filter(course__id__in=course_id, year__in=year,
                 semester__in=semester, title__contains=search_keyword,category__in=category,
-                bookset=None,  sold=False).order_by(sort_by)
+                bookset=None,  sold=False).exclude(seller=request.user.profile).order_by(sort_by)
 
         context = {
             "books": books,
@@ -278,7 +279,7 @@ def view_listings(request):
                                 'url':reverse('edit_listing_details', kwargs={ 'b_id': book.id })
                             }
                         ],
-                'sold': book.sold 
+                'sold': book.sold
             }for book in seller_books # user's listings
            ]
 
