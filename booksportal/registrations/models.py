@@ -21,6 +21,7 @@ class UserProfile(models.Model):
     gender = models.CharField(choices=GENDERS, null=True, max_length=1)
     auth_user = models.OneToOneField(User, null=True, on_delete=models.CASCADE, unique=True, related_name="profile")
     college = models.ForeignKey("College", on_delete=models.CASCADE, null=False)
+    course = models.ForeignKey("Course", on_delete=models.CASCADE, null=False)
     image = models.ImageField(default="default_male_dp.jpeg", upload_to='profile_pics', null=False)
     year = models.SmallIntegerField(default=1) # college year of the user
 
