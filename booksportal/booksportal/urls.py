@@ -39,6 +39,7 @@ urlpatterns = [
 
     path('search_book/', views.search_book, name='search_book'),
     path('search_bookset/', views.search_bookset, name='search_bookset'),
+    path('add_interested/', views.add_interested, name='add_interested'),
 
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),

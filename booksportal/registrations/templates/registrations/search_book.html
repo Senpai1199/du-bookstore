@@ -121,6 +121,9 @@
                     .media-body{
                     padding-left: 10px;
                     }
+                    .item-interested-btn{
+                      padding-bottom: 3px;
+                    }
                 </style>
                 <div class="bs-example" data-example-id="media-alignment">
                     {% for book in books %}
@@ -130,6 +133,9 @@
                                     <img class="media-object item-picture" src="{{ book.image.url }}" width="100" height="100"/>
                                 </a>
                                 <div class="item-price col-black">₹{{book.price}}</div>
+                                <div>
+                                    <button id="{{book.id}}" type="book" class="btn btn-primary waves-effect confirm_interest">Interested</button>
+                                </div>
                             </div>
                             <div class="media-body">
                                 <h4 class="media-heading">{{ book.title }}</h4>
@@ -148,7 +154,7 @@
                                 </p>
                                 {% endif %}
                                 <p>
-                                    <b>Condition : </b>{{ book.additional_details }}
+                                    <b>Condition : </b>{{ book.condition }}
                                 </p>
                                 {% if book.contains_notes == True %}
                                 <p>
@@ -170,6 +176,6 @@
   document.getElementById('category').value = "{{ form_data.category }}";
   document.getElementById('course_id').value = "{{ form_data.course_id }}";
   document.getElementById('sort_by').value = "{{ form_data.sort_by }}";
-
 </script>
+<script src="{% static 'registrations/plugins/sweetalert/sweetalert.min.js' %}"></script>
 {% endblock %}

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 from registrations.permissions import has_profile_completed
 
@@ -114,7 +115,7 @@ def complete_profile(request):
         else:
             messages.warning(request, "Please login first.")
             return redirect('login')
-    
+
     elif request.method == "POST":
         if request.user.is_authenticated:
             try:
@@ -150,7 +151,7 @@ def complete_profile(request):
             messages.error(request, "Invalid Value: {}".format(value_error))
             return render(request, 'registrations/complete_profile.html', context)
 
-        try:   
+        try:
             college = College.objects.get(name=college_name)
         except College.DoesNotExist:
             context = {
@@ -159,8 +160,8 @@ def complete_profile(request):
             }
             messages.error(request, "Please choose college from the list only.")
             return render(request, 'registrations/complete_profile.html', context)
-        
-        try:   
+
+        try:
             course = Course.objects.get(name=course_name)
         except Course.DoesNotExist:
             context = {
@@ -169,12 +170,12 @@ def complete_profile(request):
             }
             messages.error(request, "Please choose course from the list only.")
             return render(request, 'registrations/complete_profile.html', context)
-            
+
         first_name = first_name.strip()
         last_name = last_name.strip()
         if year == "Masters":
             year = 4
-        
+
         request.user.first_name = first_name
         request.user.last_name = last_name
         request.user.save()
@@ -453,7 +454,7 @@ def view_set_listings(request):
         Allows the seller to view the listings made by him/her
         Title, Course, Year, Price, Sold, Mark as sold, Edit Details
     """
-    return 
+    return
 
 @login_required(login_url='login')
 @has_profile_completed
@@ -533,13 +534,46 @@ def search_bookset(request):
             contains_notes = form_data["notes_req"]
             booksets = BookSet.objects.filter(course__id__in=course_id, year__in=year,
                 semester__in=semester, title__contains=search_keyword, contains_notes=True,
-                sold=False).order_by(sort_by)
+                sold=False).exclude(seller=request.user.profile).order_by(sort_by)
         except KeyError:
             booksets = BookSet.objects.filter(course__id__in=course_id, year__in=year,
-                semester__in=semester, title__contains=search_keyword, sold=False).order_by(sort_by)
+                semester__in=semester, title__contains=search_keyword, sold=False).exclude(
+                seller=request.user.profile).order_by(sort_by)
 
         context = {
             "booksets": booksets,
             "form_data": form_data
         }
     return render(request, 'registrations/search_bookset.html', context=context)
+
+def add_interested(request):
+    """
+        add a book/bookset to interested
+    """
+    try:
+        type = request.GET.get('type')
+        id = request.GET.get('id')
+
+        if type == 'book':
+            book_obj = Book.objects.get(id=id)
+            book_obj.interested_users.add(request.user.profile)
+            book_obj.interested_count = book_obj.interested_users.all().count()
+            book_obj.save()
+            response_message = "Success"
+        elif type == 'bookset':
+            bookset = BookSet.objects.get(id=id)
+            bookset_obj.interested_users.add(request.user.profile)
+            bookset_obj.interested_count = book_obj.interested_users.all().count()
+            bookset_obj.save()
+            response_message = "Success"
+        else:
+            response_message = "Invalid entity type"
+
+    except KeyError:
+        response_message = "Invalid Request"
+    except Book.DoesNotExist:
+        response_message = "Invalid Book-Id"
+    except BookSet.DoesNotExist:
+        response_message = "Invalid BookSet-Id"
+    print(response_message)
+    return JsonResponse({'message': response_message})

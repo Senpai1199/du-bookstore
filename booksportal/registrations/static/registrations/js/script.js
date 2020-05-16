@@ -21,3 +21,27 @@
     });
 });
 
+$(document).ready(function() {
+
+  $('.confirm_interest').click(function(){
+    // bookid
+    var entityid = $(this).attr('id');
+    var type = $(this).attr('type');
+    var action_url = $(this).attr('url')
+    // Confirm box
+    if (confirm("Confirm to get seller details.")) {
+         $.ajax({
+           url: "http://127.0.0.1:8000/add_interested" + '?type=' + type + '&id=' + entityid,
+           type: 'GET',
+           success: function(response){
+                     // Removing row from HTML Table
+                     if (response == 'Success'){
+                       console.log(response);
+                     }else{
+                       console.log(response);
+                     }
+                    }
+    });
+  }
+});
+});
