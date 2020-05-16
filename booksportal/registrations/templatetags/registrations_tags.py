@@ -1,6 +1,6 @@
 from django import template
 
-from registrations.models import Course
+from registrations.models import Course, College
 
 register = template.Library()
 
@@ -30,3 +30,15 @@ def get_year_semester(book):
 def get_courses():
     courses = Course.objects.all()
     return list(courses)
+
+@register.simple_tag()
+def getcampus(book):
+
+    campus_opts = {
+                    'N' : '<span class="label bg-red" style="font-size:10px">North Campus</span>',
+                    'S' : '<span class="label bg-green" style="font-size:10px">South Campus</span>',
+                    'O' : '<span class="label bg-grey" style="font-size:10px">Off Campus</span>'
+                }
+    campus = campus_opts[book.seller.college.category]
+
+    return campus
