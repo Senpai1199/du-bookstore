@@ -9,7 +9,7 @@ import re
 
 from itertools import chain
 
-from registrations.models import Book, Course, UserProfile, BookSet
+from registrations.models import Book, Course, UserProfile, BookSet, College
 
 @login_required(login_url='login')
 def index(request):
@@ -27,6 +27,11 @@ def home(request):
     """
         The HOME page of the portal where all the book listings would be displayed according to the year of the logged in user
     """
+    try:
+        profile = UserProfile.objects.get(auth_user=request.user)
+    except UserProfile.DoesNotExist:
+        messages.error(request, "Please complete your profile first.")
+        return redirect('complete_profile')
     books1 = Book.objects.filter(year=request.user.profile.year, sold=False,
         bookset=None).exclude(seller=request.user.profile)
     books2 = Book.objects.filter(bookset=None, sold=False).exclude(year=request.user.profile.year).exclude(seller=request.user.profile) #This needs to be changed
@@ -44,7 +49,19 @@ def login_view(request):
 
     if request.method == 'GET':
         if request.user.is_authenticated:
-            return redirect(reverse('home'))
+            if request.user.is_active:
+                try:
+                    profile = UserProfile.objects.get(auth_user=request.user)
+                    return redirect('home')
+                except UserProfile.DoesNotExist:
+                    messages.warning(request, 'Please complete your profile details.')
+                    return redirect('complete_profile')
+            else:
+                messages.warning(request, 'Invalid username/password. Please try again.')
+                try:
+                    return redirect(request.META.get('HTTP_REFERER'))
+                except:
+                    return redirect('login')
         else:
             return render(request, 'registrations/login.html')
 
@@ -57,25 +74,132 @@ def login_view(request):
             if user.is_active:
                 try:
                     login(request, user)
-                    return redirect('home')
-
+                    try:
+                        profile = UserProfile.objects.get(auth_user=user)
+                        return redirect('home')
+                    except UserProfile.DoesNotExist:
+                        messages.warning(request, 'Please complete your profile details.')
+                        return redirect('complete_profile')
                 except Exception as e:
                     message = "User does not Exist."
                     context = {'error_heading':'No User','message' : message,'url':request.build_absolute_uri(reverse('login'))}
                     return render(request, 'registrations/message.html', context)
-
-            # else:
-            #     message="Your account is currently INACTIVE. To activate it, call the following members of the \
-            #     Department of Publications and Correspondence. Daman: %s - pcr@bits-bosm.org .'%(utils.get_pcr_number()), \
-            #     'url':request.build_absolute_uri(reverse('registrations:login'))"
-            #     context = {'error_heading':'Email not verified','message':message}
-            #     return render(request,'registrations/message.html',context)
         else:
             messages.warning(request, 'Invalid username/password. Please try again.')
             try:
                 return redirect(request.META.get('HTTP_REFERER'))
             except:
                 return redirect('login')
+
+@login_required(login_url='login')
+def complete_profile(request):
+    """
+        Complete user's profile details
+    """
+    if request.method == "GET":
+        if request.user.is_authenticated:
+            try:
+                profile = UserProfile.objects.get(auth_user=request.user)
+                return redirect('home')
+            except UserProfile.DoesNotExist:
+                context = {
+                        "courses": Course.objects.all(),
+                        "colleges": College.objects.all()
+                    }
+                return render(request, 'registrations/complete_profile.html', context)
+        else:
+            messages.warning(request, "Please login first.")
+            return redirect('login')
+    
+    elif request.method == "POST":
+        if request.user.is_authenticated:
+            try:
+                profile = UserProfile.objects.get(auth_user=request.user)
+                return redirect('home')
+            except:
+                pass
+        else:
+            messages.warning(request, "Please login first.")
+            return redirect('login')
+
+        data = request.POST
+
+        try: # for required values
+            first_name = str(data["first_name"])
+            last_name = str(data["last_name"])
+            college_name = str(data["college_name"])
+            course_name = str(data["course_name"])
+            year = data["year"] #1, 2, 3 or Masters
+            gender = str(data["gender"])
+        except KeyError as e:
+            context = {
+                    "courses": Course.objects.all(),
+                    "colleges": College.objects.all()
+                }
+            messages.error(request, "Missing Field {}".format(e))
+            return render(request, 'registrations/complete_profile.html', context)
+        except ValueError as value_error:
+            context = {
+                    "courses": Course.objects.all(),
+                    "colleges": College.objects.all()
+                }
+            messages.error(request, "Invalid Value: {}".format(value_error))
+            return render(request, 'registrations/complete_profile.html', context)
+
+        try:   
+            college = College.objects.get(name=college_name)
+        except College.DoesNotExist:
+            context = {
+                    "courses": Course.objects.all(),
+                    "colleges": College.objects.all()
+            }
+            messages.error(request, "Please choose college from the list only.")
+            return render(request, 'registrations/complete_profile.html', context)
+        
+        try:   
+            course = Course.objects.get(name=course_name)
+        except Course.DoesNotExist:
+            context = {
+                    "courses": Course.objects.all(),
+                    "colleges": College.objects.all()
+            }
+            messages.error(request, "Please choose course from the list only.")
+            return render(request, 'registrations/complete_profile.html', context)
+            
+        first_name = first_name.strip()
+        last_name = last_name.strip()
+        if year == "Masters":
+            year = 4
+        
+        request.user.first_name = first_name
+        request.user.last_name = last_name
+        request.user.save()
+
+        try:
+            profile_pic = request.FILES["file"]
+            user_prof = UserProfile.objects.create(
+                auth_user = request.user,
+                gender = gender,
+                course = course,
+                college = college,
+                image = profile_pic,
+                year = year
+            )
+        except KeyError:
+            img_path = '../media/default_male_dp.png'
+            if gender == "F":
+                img_path = '../media/default_female_dp.png'
+                
+            user_prof = UserProfile.objects.create(
+                auth_user = request.user,
+                gender = gender,
+                course = course,
+                college = college,
+                year = year,
+                image=img_path
+            )
+        messages.success(request, "Profile Complete!")
+        return redirect('home')
 
 @login_required(login_url='login')
 def logout_view(request):

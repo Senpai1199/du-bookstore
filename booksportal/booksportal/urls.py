@@ -24,8 +24,9 @@ urlpatterns = [
     path('', views.index, name='index'), # redirect to home
     path('base/', views.base_view, name='base'),
 
-    path('login/', views.login_view, name = 'login'),
-    path('logout/', views.logout_view, name = 'logout'),
+    path('login/', views.login_view, name='login'),
+    path('complete_profile/', views.complete_profile, name='complete_profile'),
+    path('logout/', views.logout_view, name='logout'),
 
     path('home/', views.home, name='home'),
     path('sell_book/', views.sell_book, name='sell_book'),
