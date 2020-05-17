@@ -53,3 +53,19 @@ $(document).ready(function() {
   }
 });
 });
+$(document).ready(function() {
+
+  $('.item-picture').click(function(){
+    var img_id = $(this).attr('id');
+    var img_src = $(this).attr('src');
+
+    var modal = document.querySelector('.item-img-modal');
+    modal.style.display = "block";
+    var modal_img = modal.querySelector('.modal-content');
+    modal_img.src = img_src;
+    var close_button = modal.querySelector(".close-modal");
+    close_button.onclick = function() {
+    modal.style.display = "none";
+    }
+});
+});

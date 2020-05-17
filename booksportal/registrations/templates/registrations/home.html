@@ -23,37 +23,12 @@
                 </h2>
             </div>
             <div class="body">
-                <style>
-                    .media {
-                    border-bottom: 1px solid rgba(204, 204, 204, 0.35);
-                    }
-                    .item-price{
-                    text-align: center;
-                    margin-top: 5px;
-                    margin-bottom: 10px;
-                    }
-                    .media-body{
-                    padding-left: 10px;
-                    }
-                    .item-interested-btn{
-                      padding-bottom: 3px;
-                    }
-                    .side-info-box{
-                      max-width: 250px;
-                      min-width: 250px;
-                      text-align: center;
-                      vertical-align: middle;
-                    }
-                    .seller-info-box{
-                      border-left: 1px solid rgba(204, 204, 204, 0.35);
-                    }
-                </style>
                 <div class="bs-example" data-example-id="media-alignment">
                     {% for book in books %}
                         <div class="media">
                             <div class="media-left media-top">
                                 <a>
-                                    <img class="media-object item-picture" src="{{ book.image.url }}" width="100" height="100"/>
+                                    <img id="item_{{book.id}}" class="media-object item-picture" src="{{ book.image.url }}" width="100" height="100">
                                 </a>
                                 <div class="item-price col-black">₹{{book.price}}</div>
                             </div>
@@ -132,5 +107,9 @@
             </div>
         </div>
     </div>
+</div>
+<div class="item-img-modal">
+  <span class="close-modal">&times;</span>
+  <img class="modal-content" id="modal_item_{{book.id}}">
 </div>
 {% endblock %}
