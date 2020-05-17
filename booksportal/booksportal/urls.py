@@ -33,10 +33,10 @@ urlpatterns = [
     path('sell_book/', views.sell_book, name='sell_book'),
     path('my_listings/', views.view_listings, name='my_listings'),
     path('my_set_listings/', views.view_set_listings, name='my_set_listings'),
+    path('edit_listing/<int:b_id>/', views.edit_listing_details, name='edit_listing_details'),
 
     path('mark_sold/<int:b_id>/', views.mark_sold, name='mark_sold'),
     path('remove_book/<int:b_id>/', views.remove_book, name='remove_book'),
-    path('editing_listing_details/<int:b_id>/', views.edit_listing_details, name='edit_listing_details'),
 
     path('search_book/', views.search_book, name='search_book'),
     path('search_bookset/', views.search_bookset, name='search_bookset'),
