@@ -47,6 +47,126 @@ def home(request):
     return render(request, 'registrations/home.html', context=context)
 
 @csrf_exempt
+def sign_up(request):
+    """
+        Allows users to register on DUBS
+    """
+    if request.user.is_authenticated:
+        try:
+            profile = UserProfile.objects.get(auth_user=request.user)
+            return redirect('home')
+        except UserProfile.DoesNotExist:
+            messages.warning(request, "Please complete your profile first!")
+            return redirect('complete_profile')
+    
+    context = {
+        "courses": Course.objects.all(),
+        "colleges": College.objects.all()
+    }
+            
+    if request.method == "GET":
+        return render(request, 'registrations/sign_up.html', context)
+    
+    elif request.method == "POST":
+        data = request.data
+        try:
+            first_name = str(data["first_name"])
+            last_name = str(data["last_name"])
+            email = str(data["email"])
+            password = str(data["password"])
+            confirm_pass = str(data["confirm_pass"])
+            college_name = str(data["college_name"])
+            course_name = str(data["course_name"])
+            year = data["year"]
+            gender = str(data["gender"])
+
+            try:
+                email = email.strip()
+                existing_user = User.objects.get(email=email)
+                messages.warning(request, "This email is already registered")
+                try:
+                    return redirect(request.META.get('HTTP_REFERER'))
+                except:
+                    return render(request, 'registrations/sign_up.html', context)
+            except User.DoesNotExist:
+                pass
+
+            if not re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", email):
+                messages.warning(request, "Invalid email")
+                return render(request, 'registrations/sign_up.html', context)
+            
+            password = password.strip()
+            confirm_pass = confirm_pass.strip()
+            if password != confirm_pass:
+                messages.error(request, "Passwords don't match")
+                return render(request, 'registrations/sign_up.html', context)
+
+            try:
+                course = Course.objects.get(name=course_name)
+            except Course.DoesNotExist:
+                messages.error(request, "Please select course from the list only.")
+                return render(request, 'registrations/sign_up.html', context)
+            
+            try:
+                college = College.objects.get(name=college_name)
+            except College.DoesNotExist:
+                messages.error(request, "Please select college from the list only.")
+                return render(request, 'registrations/sign_up.html', context)
+            
+            if year == "Masters":
+                year = 4
+
+            first_name = first_name.strip()
+            last_name = last_name.strip()
+            user = User.objects.create(username=email)
+            user.set_password(password)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.email = email
+            user.save()
+            
+            try:
+                profile_pic = request.FILES["file"]
+                user_prof = UserProfile.objects.create(
+                    auth_user = user,
+                    gender = gender,
+                    course = course,
+                    college = college,
+                    image = profile_pic,
+                    year = year
+                )
+            except KeyError:
+                img_path = '../media/default_male_dp.png'
+                if gender == "F":
+                    img_path = '../media/default_female_dp.png'
+                elif gender == "O":
+                    img_path = "../media/default_neutral_dp.jpg"
+
+                user_prof = UserProfile.objects.create(
+                    auth_user = user,
+                    gender = gender,
+                    course = course,
+                    college = college,
+                    year = year,
+                    image = img_path
+                )
+            messages.success(request, "Registered Successfully!")
+            return redirect('home')
+            
+        except KeyError:
+            messages.warning(request, "Please complete the form.")
+            try:
+                return redirect(request.META.get('HTTP_REFERER'))
+            except:
+                return render(request, 'registrations/sign_up.html', context)
+        except ValueError as value_error:
+            messages.warning(request, "Invalid values entered in the form. Please fill again!")
+            try:
+                return redirect(request.META.get('HTTP_REFERER'))
+            except:
+                return render(request, 'registrations/sign_up.html', context)
+
+@csrf_exempt
 def login_view(request):
     """
         Handles user's login
