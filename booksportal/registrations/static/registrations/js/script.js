@@ -31,7 +31,7 @@ $(document).ready(function() {
     // Confirm box
     if (confirm("Confirm to get seller details.")) {
          $.ajax({
-           url: "http://127.0.0.1:8000/add_interested" + '?type=' + type + '' + entityid,
+           url: "http://127.0.0.1:8000/add_interested" + '?type=' + type + '&id=' + entityid,
            type: 'GET',
            success: function(response){
                      // Removing row from HTML Table

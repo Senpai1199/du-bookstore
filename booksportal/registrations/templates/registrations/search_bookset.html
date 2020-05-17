@@ -111,6 +111,18 @@
                     .media-body{
                     padding-left: 10px;
                     }
+                    .item-interested-btn{
+                      padding-bottom: 3px;
+                    }
+                    .side-info-box{
+                      max-width: 250px;
+                      min-width: 250px;
+                      text-align: center;
+                      vertical-align: middle;
+                    }
+                    .seller-info-box{
+                      border-left: 1px solid rgba(204, 204, 204, 0.35);
+                    }
                 </style>
                 <div class="bs-example" data-example-id="media-alignment">
                     {% for bookset in booksets %}
@@ -138,13 +150,40 @@
                                 </p>
                                 {% endif %}
                                 <p style="text-align:center;" >
-                                  <button class="btn bg-blue-grey waves-effect btn-xs dropdown-toggle" data-toggle="collapse" data-target="#collapsebooks" aria-expanded="false"
+                                  <button class="btn bg-blue-grey waves-effect btn-xs dropdown-toggle" data-toggle="collapse" data-target="#collapsebooks{{bookset.id}}" aria-expanded="false"
                                     aria-controls="collapsebooks">
                                 Show Books/Readings
                                 <span class="caret"></span>
                             </button>
                             </p>
-                            <div class="collapse" id="collapsebooks">
+                            </div>
+                            <div class="media-body side-info-box">
+                              {% if request.user.profile in bookset.interested_users.all %}
+                              <div class="seller-info-box">
+                                <h5><span class="label label-primary bg-blue-grey">Seller Info</span></h5>
+                                <p>
+                                  <b>Name</b>
+                                  <br>
+                                  {{bookset.seller.auth_user.first_name}} {{bookset.seller.auth_user.last_name}}
+                                </p>
+                                <p>
+                                  <b>Email</b>
+                                  <br>
+                                  {{bookset.seller.auth_user.email}}
+                                </p>
+                                  <p>
+                                   <b>College</b>
+                                   <br>
+                                   {{bookset.seller.college.name}}
+                                  </p>
+                                  </div>
+                              {% else %}
+                              <div>
+                                  <button id="{{bookset.id}}" type="bookset" class="btn bg-blue waves-effect confirm_interest">Show Seller</button>
+                              </div>
+                              {% endif %}
+                            </div>
+                            <div class="collapse" id="collapsebooks{{bookset.id}}">
                                 <div class="well">
                                   {% for book in bookset.set_books.all %}
                                   <div class="media">
@@ -182,7 +221,7 @@
                                   </div>
                                   {% endfor %}
                                 </div>
-                            </div>
+
                             </div>
                         </div>
                     {% endfor %}

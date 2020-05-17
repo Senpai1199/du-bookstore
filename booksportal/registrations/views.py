@@ -561,9 +561,9 @@ def add_interested(request):
             book_obj.save()
             response_message = "Success"
         elif type == 'bookset':
-            bookset = BookSet.objects.get(id=id)
+            bookset_obj = BookSet.objects.get(id=id)
             bookset_obj.interested_users.add(request.user.profile)
-            bookset_obj.interested_count = book_obj.interested_users.all().count()
+            bookset_obj.interested_count = bookset_obj.interested_users.all().count()
             bookset_obj.save()
             response_message = "Success"
         else:
@@ -575,5 +575,5 @@ def add_interested(request):
         response_message = "Invalid Book-Id"
     except BookSet.DoesNotExist:
         response_message = "Invalid BookSet-Id"
-    print(response_message)
+
     return JsonResponse({'message': response_message})

@@ -119,7 +119,7 @@ class BookSet(models.Model):
     sold = models.BooleanField(default=False)
     contains_notes = models.BooleanField(default=False)
     interested_count = models.SmallIntegerField(default=0)
-    ineterested_users = models.ManyToManyField('UserProfile', related_name='booksets_wishlist',
+    interested_users = models.ManyToManyField('UserProfile', related_name='booksets_wishlist',
         blank=True)
     seller = models.ForeignKey('UserProfile', on_delete=models.CASCADE)
 
