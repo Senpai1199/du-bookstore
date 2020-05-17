@@ -96,6 +96,7 @@ def login_view(request):
             except:
                 return redirect('login')
 
+@csrf_exempt
 @login_required(login_url='login')
 def complete_profile(request):
     """
@@ -141,7 +142,7 @@ def complete_profile(request):
                     "courses": Course.objects.all(),
                     "colleges": College.objects.all()
                 }
-            messages.error(request, "Missing Field {}".format(e))
+            messages.error(request, "Please complete the form.".format(e))
             return render(request, 'registrations/complete_profile.html', context)
         except ValueError as value_error:
             context = {
