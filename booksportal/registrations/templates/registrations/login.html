@@ -39,7 +39,7 @@
                             <i class="material-icons">person</i>
                         </span>
                         <div class="form-line">
-                            <input type="text" class="form-control" name="username" placeholder="Username" required autofocus id="username">
+                            <input type="text" class="form-control" name="username" placeholder="Username or Email" required autofocus id="username">
                             {% if messages %}
                             <div class="body">
                             {% for message in messages %}
@@ -68,6 +68,11 @@
                     <div class="row">
                         <div class="col-xs-4">
                             <button class="btn btn-block bg-cyan waves-effect" type="submit">SIGN IN</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="m-t-25 m-b--5 align-center">
+                            <a href="{% url 'sign_up' %}">Don't have an account? Sign up!</a>
                         </div>
                     </div>
                 </form>
