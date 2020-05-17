@@ -27,7 +27,10 @@ $(document).ready(function() {
     // bookid
     var entityid = $(this).attr('id');
     var type = $(this).attr('type');
-    var action_url = $(this).attr('url')
+    var action_url = $(this).attr('url');
+    var btn_div = $(this).parent()[0];
+    var info_div = $(this).parent('div').next('.seller-info-box')[0];
+
     // Confirm box
     if (confirm("Confirm to get seller details.")) {
          $.ajax({
@@ -35,8 +38,13 @@ $(document).ready(function() {
            type: 'GET',
            success: function(response){
                      // Removing row from HTML Table
-                     if (response == 'Success'){
-                       alert("Success");
+                     if (response.message == 'Success'){
+                       // alert("Success");
+                       btn_div.remove();
+                       info_div.style.display = "block";
+                       info_div.querySelector("#seller_name").innerHTML = response.seller_name;
+                       info_div.querySelector("#seller_email").innerHTML = response.seller_email;
+                       info_div.querySelector("#seller_college").innerHTML = response.seller_college;
                      }else{
                        alert("Invalid Request, Please try again later.");
                      }

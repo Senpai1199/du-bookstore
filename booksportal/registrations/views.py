@@ -561,12 +561,15 @@ def add_interested(request):
             book_obj.interested_count = book_obj.interested_users.all().count()
             book_obj.save()
             response_message = "Success"
+            seller = book_obj.seller
+
         elif type == 'bookset':
             bookset_obj = BookSet.objects.get(id=id)
             bookset_obj.interested_users.add(request.user.profile)
             bookset_obj.interested_count = bookset_obj.interested_users.all().count()
             bookset_obj.save()
             response_message = "Success"
+            seller = bookset_obj.seller
         else:
             response_message = "Invalid entity type"
 
@@ -577,4 +580,17 @@ def add_interested(request):
     except BookSet.DoesNotExist:
         response_message = "Invalid BookSet-Id"
 
-    return JsonResponse({'message': response_message})
+    if response_message == "Success":
+        seller_name = seller.auth_user.first_name + ' ' + seller.auth_user.last_name
+        seller_email = seller.auth_user.email
+        seller_college = seller.college.name
+        response = {
+                    'message': response_message,
+                    'seller_name': seller_name,
+                    'seller_email': seller_email,
+                    'seller_college': seller_college
+                    }
+    else:
+        response = {'message': response_message}
+
+    return JsonResponse(response)
