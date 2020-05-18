@@ -441,7 +441,7 @@ def contact(request):
 @has_profile_completed
 def search_book(request):
     """
-        The HOME page of the portal where all the book listings would be displayed according to the year of the logged in user
+        Allows users to do a custom search for a book
     """
 
     if request.method == 'GET':
@@ -612,7 +612,7 @@ def edit_listing_details(request, b_id):
 @has_profile_completed
 def search_bookset(request):
     """
-        The HOME page of the portal where all the book listings would be displayed according to the year of the logged in user
+        Allows users to do a custom search for a BookSet
     """
 
     if request.method == 'GET':
