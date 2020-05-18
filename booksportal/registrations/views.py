@@ -68,17 +68,16 @@ def sign_up(request):
         return render(request, 'registrations/sign_up.html', context)
     
     elif request.method == "POST":
-        data = request.data
+        data = request.POST
         try:
             first_name = str(data["first_name"])
-            last_name = str(data["last_name"])
             email = str(data["email"])
             password = str(data["password"])
             confirm_pass = str(data["confirm_pass"])
+            gender = str(data["gender"])
             college_name = str(data["college_name"])
             course_name = str(data["course_name"])
             year = data["year"]
-            gender = str(data["gender"])
 
             try:
                 email = email.strip()
@@ -117,14 +116,14 @@ def sign_up(request):
                 year = 4
 
             first_name = first_name.strip()
-            last_name = last_name.strip()
+            last_name = str(data["last_name"].strip())
             user = User.objects.create(username=email)
             user.set_password(password)
             user.first_name = first_name
             user.last_name = last_name
             user.email = email
             user.save()
-            
+
             try:
                 profile_pic = request.FILES["file"]
                 user_prof = UserProfile.objects.create(
@@ -151,9 +150,11 @@ def sign_up(request):
                     image = img_path
                 )
             messages.success(request, "Registered Successfully!")
+            login(request, user)
             return redirect('home')
             
-        except KeyError:
+        except KeyError as missing_key:
+            print(missing_key)
             messages.warning(request, "Please complete the form.")
             try:
                 return redirect(request.META.get('HTTP_REFERER'))

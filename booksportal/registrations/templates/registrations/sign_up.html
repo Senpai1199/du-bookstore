@@ -1,124 +1,168 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 {% load static %}
+
 <head>
+    <!-- Required meta tags-->
     <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>LOGIN | DUBS</title>
-    <link rel="shortcut icon" href="{% static 'registrations/images/background.jpg' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <!-- Title Page-->
+    <title>SIGN UP | DUBS</title>
 
+    <!-- Icons font CSS-->
+    <link href="{% static 'registrations/vendor/mdi-font/css/material-design-iconic-font.min.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'registrations/vendor/font-awesome-4.7/css/font-awesome.min.css' %}" rel="stylesheet" media="all">
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+
+    <!-- Vendor CSS-->
+    <link href="{% static 'registrations/vendor/select2/select2.min.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'registrations/vendor/datepicker/daterangepicker.css' %}" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="{% static 'registrations/css/main.css' %}" rel="stylesheet" media="all">
+    
     <!-- Bootstrap Core Css -->
-    <link href="{% static 'registrations/plugins/bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+    <!-- <link href="{% static 'registrations/plugins/bootstrap/css/bootstrap.css' %}" rel="stylesheet"> -->
 
     <!-- Waves Effect Css -->
-    <link href="{% static 'registrations/plugins/node-waves/waves.css' %}" rel="stylesheet" />
-
-    <!-- Animation Css -->
-    <link href="{% static 'registrations/plugins/animate-css/animate.css' %}" rel="stylesheet" />
+    <!-- <link href="{% static 'registrations/plugins/node-waves/waves.css' %}" rel="stylesheet" /> -->
 
     <!-- Custom Css -->
-    <link href="{% static 'registrations/css/style.css' %}" rel="stylesheet">
+    <!-- <link href="{% static 'registrations/css/style.css' %}" rel="stylesheet"> -->
 </head>
-<style>
-    .formStyle {
-        width: 1000px;
-        margin: 0 auto;
-    }
-</style>
 
-<body class="login-page">
-    <div class="container-fluid">
-        <div class="logo">
-            <img src="{% static 'registrations/images/dubs_logo.jpg' %}" alt=""><a href="javascript:void(0);"></a></img>
+<body>
+    {% if messages %}
+        <div class="body">
+        {% for message in messages %}
+            <div class="alert alert-info alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    {{message}}
+            </div>
+        {% endfor %}
         </div>
-        <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="card formStyle">
-                    <div class="header">
-                        <h2>SIGN UP!</h2>
-                    </div>
-                    <div class="body">
-                        <form id="form_validation" method="POST" action="{% url 'sign_up' %">
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" name="name" required>
-                                    <label class="form-label">First Name</label>
+    {% endif %}
+
+    <div class="page-wrapper bg-blue p-t-100 p-b-100 font-robo">
+        <div class="wrapper wrapper--w680">
+            <div class="dubsLogoSignUp">
+                <img class="headerLogo" src="{% static 'registrations/images/dubs_signup_logo.jpg' %}"> <br>
+            </div>
+            <div class="card card-1">
+                <div class="card-body">
+                    <h2 class="title">Sign Up!</h2>
+                    <form method="POST" action="{% url 'sign_up' %}">
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input class="input--style-1" type="text" placeholder="First Name*" name="first_name" required>
                                 </div>
                             </div>
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" name="surname" required>
-                                    <label class="form-label">Last Name</label>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input class="input--style-1" type="text" placeholder="Last Name" name="last_name">
                                 </div>
                             </div>
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="email" class="form-control" name="email" required>
-                                    <label class="form-label">Email</label>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input class="input--style-1" type="text" placeholder="Email*" name="email" required>
                                 </div>
                             </div>
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="password" class="form-control" name="password" required>
-                                    <label class="form-label">Password</label>
+                        </div>
+                        
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input class="input--style-1" type="password" placeholder="Password*" name="password" required>
                                 </div>
                             </div>
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="password" class="form-control" name="confirm_pass" required>
-                                    <label class="form-label">Confirm Password</label>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input class="input--style-1" type="password" placeholder="Confirm Password*" name="confirm_pass" required>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <b>Gender: </b> 
-                                  <input type="radio" name="gender" id="male" class="with-gap" value="M" checked="checked">
-                                  <label for="male">Male</label>
-                                  <input type="radio" name="gender" id="female" class="with-gap" value="F">
-                                  <label for="female" class="m-l-20">Female</label>
-                                  <input type="radio" name="gender" id="other" class="with-gap" value="O">
-                                  <label for="other" class="m-l-20">Other</label>
-                            </div>
-                                <div class="form-group form-float">
-                                    <select class="form-control show-tick" size="5" data-live-search="true" name="college_name" value="college_name">
-                                        <option disabled>Which College?</option>
-                                        {% for college in colleges %} -->
-                                            <option>{{ college.name }}</option>
-                                        {% endfor %}
+                        </div>      
+                        <div class="col-2">
+                            <div class="input-group">
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select name="gender">
+                                        <option disabled="disabled" selected="selected">Gender</option>
+                                        <option value="M">Male</option>
+                                        <option value="F">Female</option>
+                                        <option value="O">Other</option>
                                     </select>
+                                    <div class="select-dropdown"></div>
                                 </div>
-                                    <select class="form-control show-tick" size="5" data-live-search="true" name="course_name" value="course_name">
-                                        <option value="" disabled selected>Which Course?</option>
-                                        {% for course in courses %}
-                                            <option>{{ course.name }}</option>
-                                        {% endfor %}
-                                    </select> <br>
-                                    <select class="form-control show-tick" name="year" value="year">
-                                        <option value="" disabled selected>Current Year of Study?</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="Masters">Masters</option>
-                                    </select>
                             </div>
-                            <div class="form-group">
-                                <label for="file">Upload a profile picture (optional)</label>
-                                <input type="file" id="file" name="file">
+                        </div>                  
+                        <div class="input-group">
+                            <div class="rs-select2 js-select-simple" data-live-search="true">
+                                <select name="college_name" value="college_name">
+                                    <option disabled="disabled" selected="selected">College</option>
+                                    {% for college in colleges %}
+                                        <option>{{ college.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="select-dropdown"></div>
                             </div>
-                            <div class="form-group">
-                                <input type="checkbox" id="checkbox" name="checkbox">
-                                <label for="checkbox">I have read and accept the terms</label>
+                        </div>
+                        <div class="input-group">
+                            <div class="rs-select2 js-select-simple" data-live-search="true">
+                                <select name="course_name" value="course_name">
+                                    <option disabled="disabled" selected="selected">Course Pursuing</option>
+                                    {% for course in courses %}
+                                        <option>{{ course.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="select-dropdown"></div>
                             </div>
-                            <button class="btn btn-primary waves-effect" type="submit">SUBMIT</button>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="input-group">
+                            <div class="rs-select2 js-select-simple select--no-search">
+                                <select name="year" value="year">
+                                    <option disabled="disabled" selected="selected">Current Year</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>Masters</option>
+                                </select>
+                                <div class="select-dropdown"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="file">Upload a profile picture (optional)</label>
+                            <input type="file" id="file" name="file">
+                        </div>
+                        <div class="p-t-20">
+                            <button class="btn btn--radius btn--green" type="submit">Submit</button>
+                        </div> <br> 
+                        <div class="row">
+                            <div class="m-t-25 m-b--5 align-center">
+                                <h4 class="title"><a class="alreadyLogin" href="{% url 'login' %}">Already have an account? Login!</a></h4>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Jquery JS-->
+    <script src="{% static 'registrations/vendor/jquery/jquery.min.js' %}"></script>
+    <!-- Vendor JS-->
+    <script src="{% static 'registrations/vendor/select2/select2.min.js' %}"></script>
+    <script src="{% static 'registrations/vendor/datepicker/moment.min.js' %}"></script>
+    <script src="{% static 'registrations/vendor/datepicker/daterangepicker.js' %}"></script>
+
+    <!-- Main JS-->
+    <script src="{% static 'registrations/js/global.js' %}"></script>
 
     <!-- Jquery Core Js -->
     <script src="{% static 'registrations/plugins/jquery/jquery.min.js' %}"></script>
@@ -129,11 +173,7 @@
     <!-- Waves Effect Plugin Js -->
     <script src="{% static 'registrations/plugins/node-waves/waves.js' %}"></script>
 
-    <!-- Validation Plugin Js -->
-    <script src="{% static 'registrations/plugins/jquery-validation/jquery.validate.js' %}"></script>
-    <!-- Custom Js -->
-    <script src="{% static 'registrations/js/admin.js' %}"></script>
-    <script src="{% static 'registrations/js/pages/examples/sign-in.js' %}"></script>
-</body>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 
 </html>
+<!-- end document-->
