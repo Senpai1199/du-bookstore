@@ -337,7 +337,7 @@ def profile(request):
     """
         Allows user to view his/her profile page
     """
-    return 
+    return render(request, 'registrations/profile.html')
 
 @login_required(login_url='login')
 @has_profile_completed
