@@ -11,7 +11,7 @@
                             </h2>
                         </div>
                         <div class="body">
-                            <form method="POST" enctype="multipart/form-data" action="{% url 'search_bookset' %}">
+                            <form id="search-bookset" method="POST" enctype="multipart/form-data" action="{% url 'search_bookset' %}">
                               {% csrf_token %}
                                 <div class="row clearfix">
                                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
@@ -91,11 +91,11 @@
                             </form>
                         </div>
                     </div>
-        {% if booksets %}
+        {% if search_result %}
         <div class="card">
             <div class="header">
                 <h2>
-                    Search Results
+                    {{search_result}}
                 </h2>
             </div>
             <div class="body">
@@ -219,6 +219,27 @@
                         </div>
                     {% endfor %}
                 </div>
+                {% if is_paginated %}
+                    <nav>
+                      <div style="text-align:center;">{{ page_info }}</div>
+                        <ul class="pager">
+                          <li>
+                          {% if booksets.has_previous %}
+                            <button name="page_no" class="btn bg-blue-grey btn-sm" form="search-bookset" type="submit" value="{{ booksets.previous_page_number }}">← Previous</button>
+                            {% else %}
+                            <button class="btn bg-blue-grey btn-sm" disabled="disabled">← Previous</button>
+                            {% endif %}
+                            </li>
+                            <li>
+                            {% if booksets.has_next %}
+                              <button name="page_no" class="btn bg-blue-grey btn-sm" type="submit" form="search-bookset" value="{{ booksets.next_page_number }}">Next →</button>
+                              {% else %}
+                              <button class="btn bg-blue-grey btn-sm" disabled="disabled">Next →</button>
+                              {% endif %}
+                              </li>
+                        </ul>
+                    </nav>
+                {% endif %}
             </div>
         </div>
         {% endif %}

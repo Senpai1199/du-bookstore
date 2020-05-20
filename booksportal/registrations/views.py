@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from registrations.permissions import has_profile_completed
 
@@ -58,15 +59,15 @@ def sign_up(request):
         except UserProfile.DoesNotExist:
             messages.warning(request, "Please complete your profile first!")
             return redirect('complete_profile')
-    
+
     context = {
         "courses": Course.objects.all(),
         "colleges": College.objects.all()
     }
-            
+
     if request.method == "GET":
         return render(request, 'registrations/sign_up.html', context)
-    
+
     elif request.method == "POST":
         data = request.POST
         try:
@@ -93,7 +94,7 @@ def sign_up(request):
             if not re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", email):
                 messages.warning(request, "Invalid email")
                 return render(request, 'registrations/sign_up.html', context)
-            
+
             password = password.strip()
             confirm_pass = confirm_pass.strip()
             if password != confirm_pass:
@@ -105,13 +106,13 @@ def sign_up(request):
             except Course.DoesNotExist:
                 messages.error(request, "Please select course from the list only.")
                 return render(request, 'registrations/sign_up.html', context)
-            
+
             try:
                 college = College.objects.get(name=college_name)
             except College.DoesNotExist:
                 messages.error(request, "Please select college from the list only.")
                 return render(request, 'registrations/sign_up.html', context)
-            
+
             if year == "Masters":
                 year = 4
 
@@ -152,7 +153,7 @@ def sign_up(request):
             messages.success(request, "Registered Successfully!")
             login(request, user)
             return redirect('home')
-            
+
         except KeyError as missing_key:
             print(missing_key)
             messages.warning(request, "Please complete the form.")
@@ -457,6 +458,7 @@ def search_book(request):
             year = form_data['year']
             semester = form_data['semester']
             sort_by = form_data['sort_by']
+
         except KeyError as missing_key_exception:
             m = re.search("'([^']*)'", str(missing_key_exception))
             key = m.group(1)
@@ -497,16 +499,39 @@ def search_book(request):
                 semester__in=semester, title__contains=search_keyword,category__in=category,
                 bookset=None,  sold=False).exclude(seller=request.user.profile).order_by(sort_by)
 
+        try:
+            page_no = int(form_data['page_no'])
+        except KeyError:
+            page_no = 1
+
         if books.count() == 0:
             search_result = "No Matching Results Found"
+            context = {
+                "search_result": search_result,
+                "form_data": form_data,
+            }
         else:
             search_result = "Search Results"
+            paginator = Paginator(books, 1)
 
-        context = {
-            "search_result": search_result,
-            "books": books,
-            "form_data": form_data
-        }
+            try:
+                page_books = paginator.page(page_no)
+            except PageNotAnInteger:
+                page_no = 1
+                page_books = paginator.page(page_no)
+            except EmptyPage:
+                page_no = paginator.num_pages
+                page_books = paginator.page(page_no)
+
+            page_info = "Page {} of {}".format(page_no, paginator.num_pages)
+
+            context = {
+                "search_result": search_result,
+                "books": page_books,
+                "form_data": form_data,
+                "is_paginated": True,
+                "page_info": page_info
+            }
     return render(request, 'registrations/search_book.html', context=context)
 
 @login_required(login_url='login')
@@ -630,7 +655,6 @@ def search_bookset(request):
         except KeyError as missing_key_exception:
             m = re.search("'([^']*)'", str(missing_key_exception))
             key = m.group(1)
-            print('Missing data in form : {}. If problem persists contact administrator.'.format(key))
             messages.error(request, 'Missing data in form : {}. If problem persists contact administrator.'.format(key))
             context = {
                         'form_data': form_data
@@ -662,10 +686,39 @@ def search_bookset(request):
                 semester__in=semester, title__contains=search_keyword, sold=False).exclude(
                 seller=request.user.profile).order_by(sort_by)
 
-        context = {
-            "booksets": booksets,
-            "form_data": form_data
-        }
+        try:
+            page_no = int(form_data['page_no'])
+        except KeyError:
+            page_no = 1
+
+        if booksets.count() == 0:
+            search_result = "No Matching Results Found"
+            context = {
+                "search_result": search_result,
+                "form_data": form_data,
+            }
+        else:
+            search_result = "Search Results"
+            paginator = Paginator(booksets, 1)
+
+            try:
+                page_booksets = paginator.page(page_no)
+            except PageNotAnInteger:
+                page_no = 1
+                page_booksets = paginator.page(page_no)
+            except EmptyPage:
+                page_no = paginator.num_pages
+                page_booksets = paginator.page(page_no)
+
+            page_info = "Page {} of {}".format(page_no, paginator.num_pages)
+
+            context = {
+                "search_result": search_result,
+                "booksets": page_booksets,
+                "form_data": form_data,
+                "is_paginated": True,
+                "page_info": page_info
+            }
     return render(request, 'registrations/search_bookset.html', context=context)
 
 def add_interested(request):
