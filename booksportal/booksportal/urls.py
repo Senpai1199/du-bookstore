@@ -30,6 +30,7 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
 
     path('home/', views.home, name='home'),
+    path('profile/', views.profile, name='profile'),
     path('sell_book/', views.sell_book, name='sell_book'),
     path('my_listings/', views.view_listings, name='my_listings'),
     path('my_set_listings/', views.view_set_listings, name='my_set_listings'),

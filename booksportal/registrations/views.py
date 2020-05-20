@@ -326,13 +326,21 @@ def complete_profile(request):
                 course = course,
                 college = college,
                 year = year,
-                image=img_path
+                image = img_path
             )
         messages.success(request, "Profile Complete!")
         return redirect('home')
 
 @login_required(login_url='login')
-# @has_profile_completed
+@has_profile_completed
+def profile(request):
+    """
+        Allows user to view his/her profile page
+    """
+    return 
+
+@login_required(login_url='login')
+@has_profile_completed
 def logout_view(request):
     """
         Logout user from portal
