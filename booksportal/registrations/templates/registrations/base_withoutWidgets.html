@@ -19,19 +19,20 @@
     <link href="{% static 'registrations/plugins/node-waves/waves.css' %}" rel="stylesheet" />
 
     <link href="{% static 'registrations/plugins/animate-css/animate.css' %}" rel="stylesheet" />
-    <link href="{% static 'registrations/plugins/bootstrap-select/css/bootstrap-select.css' %}" rel="stylesheet" />
-    <!-- <link href="{% static 'registrations/plugins/morrisjs/morris.css' %}" rel="stylesheet" /> -->
-    <link href="{% static 'registrations/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css' %}" rel="stylesheet">
     <link href="{% static 'registrations/css/style.css' %}" rel="stylesheet">
-    <link href="{% static 'registrations/css/display_items.css' %}" rel="stylesheet">
-    <!-- <link href="{% static 'registrations/css/materialize.min.css' %}" rel="stylesheet"> -->
     <link href="{% static 'registrations/css/themes/theme-cyan.css' %}" rel="stylesheet" />
 
+    <!-- <link href="{% static 'registrations/plugins/bootstrap-select/css/bootstrap-select.css' %}" rel="stylesheet" />
+    <link href="{% static 'registrations/plugins/morrisjs/morris.css' %}" rel="stylesheet" />
+    <link href="{% static 'registrations/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'registrations/css/display_items.css' %}" rel="stylesheet">
+    <link href="{% static 'registrations/css/materialize.min.css' %}" rel="stylesheet"> --> -->
+<!-- 
     <style>
         .navbarTitle {
             color: black;
         }
-    </style>
+    </style> -->
 
 </head>
 
@@ -78,19 +79,7 @@
                     <!-- #END# Notifications -->
                     <!-- Tasks -->
                     <!-- #END# Tasks -->
-                    <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true">
-                        <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">more_vert</i>
-                        <ul class="dropdown-menu pull-right">
-                        <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a></li>
-                        <li><a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a></li>
-                        <li><a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="javascript:void(0);"><i class="material-icons">input</i>Sign Out</a></li>
-                        </ul>
-                        </a>
-                    </li>
+                    <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"></li>
                 </ul>
             </div>
         </div>
@@ -222,46 +211,9 @@
     <!-- Dashboard -->
     <section class="content">
         <div class="container-fluid">
-          <!-- <div class="block-header">
-            <p style="font-size:22px;"> If you help us reach 10% of DU's population, every semester we can save: </p>
-        </div> -->
             <!-- Widgets -->
-            <!-- <div class="row clearfix">
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-grey hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">description</i>
-                        </div>
-                        <div class="content">
-                            <div class="text"><h5>Paper Sheets</h5></div>
-                            <div class="number count-to" data-from="0" data-to="1242000" data-speed="15" data-fresh-interval="20"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-light-green hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">nature</i>
-                        </div>
-                        <div class="content">
-                            <div class="text"><h5>Trees</h5></div>
-                            <div class="number count-to" data-from="0" data-to="1242" data-speed="1000" data-fresh-interval="20"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-red hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">spa</i>
-                        </div>
-                        <div class="content">
-                            <div class="text"><h5>CO2 Emissions(Kg)</h5></div>
-                            <div class="number count-to" data-from="0" data-to="744000" data-speed="1000" data-fresh-interval="20"></div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
             <!-- End Widgets -->
+
             {% if messages %}
             <div class="body">
             {% for message in messages %}
@@ -272,7 +224,8 @@
             {% endfor %}
             </div>
             {% endif %}
-                  {% block body %} {% endblock %}
+
+                {% block body %} {% endblock %}
         </div>
     </section>
     <!-- End Dashboard -->>
@@ -294,16 +247,16 @@
     <!-- <script src="{% static 'registrations/js/materialize.min.js' %}"></script> -->
 
 
-    <script src="{% static 'registrations/plugins/jquery-countto/jquery.countTo.js' %}"></script>
+    <!-- <script src="{% static 'registrations/plugins/jquery-countto/jquery.countTo.js' %}"></script> -->
 
 
-    <script src="{% static 'registrations/js/pages/index.js' %}"></script>
+    <!-- <script src="{% static 'registrations/js/pages/index.js' %}"></script> -->
 
     <!-- Demo Js -->
     <script src="{% static 'registrations/js/demo.js' %}"></script>
 
     <!-- Jquery DataTable Plugin Js -->
-    <script src="{% static 'registrations/plugins/jquery-datatable/jquery.dataTables.js' %}"></script>
+    <!-- <script src="{% static 'registrations/plugins/jquery-datatable/jquery.dataTables.js' %}"></script>
     <script src="{% static 'registrations/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js' %}"></script>
     <script src="{% static 'registrations/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js' %}"></script>
     <script src="{% static 'registrations/plugins/jquery-datatable/extensions/export/buttons.flash.min.js' %}"></script>
@@ -312,11 +265,14 @@
     <script src="{% static 'registrations/plugins/jquery-datatable/extensions/export/vfs_fonts.js' %}"></script>
     <script src="{% static 'registrations/plugins/jquery-datatable/extensions/export/buttons.html5.min.js' %}"></script>
     <script src="{% static 'registrations/plugins/jquery-datatable/extensions/export/buttons.print.min.js' %}"></script>
-    <script src="{% static 'registrations/js/pages/tables/jquery-datatable.js' %}"></script>
+    <script src="{% static 'registrations/js/pages/tables/jquery-datatable.js' %}"></script> -->
 
     <script src="{% static 'registrations/js/admin.js' %}"></script>
-    <script src="{% static 'registrations/js/demo.js' %}"></script>
-    <script src="{% static 'registrations/js/script.js' %}"></script>
+    <!-- <script src="{% static 'registrations/js/demo.js' %}"></script> -->
+    <!-- <script src="{% static 'registrations/js/script.js' %}"></script> -->
+
+    <!--Extra for profile-->
+    <script src="{% static 'registrations/js/pages/examples/profile.js' %}"></script>
 
 </body>
 
