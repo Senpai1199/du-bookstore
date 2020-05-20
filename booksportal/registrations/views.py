@@ -337,7 +337,19 @@ def profile(request):
     """
         Allows user to view his/her profile page
     """
-    return render(request, 'registrations/profile.html')
+    context = {
+        "books_count": Book.objects.filter(seller__auth_user=request.user, sold=False).count(),
+        "bookset_count": BookSet.objects.filter(seller__auth_user=request.user, sold=False).count(),
+        "books_sold": Book.objects.filter(seller__auth_user=request.user, sold=True).count(),
+        "first_name": request.user.first_name,
+        "last_name": request.user.last_name,
+        "email": request.user.email,
+        "college_name": request.user.profile.college.name,
+        "college_category": request.user.profile.college.category,
+        "course_name": request.user.profile.course.name,
+    }
+    print(context)
+    return render(request, 'registrations/profile.html', context)
 
 @login_required(login_url='login')
 @has_profile_completed

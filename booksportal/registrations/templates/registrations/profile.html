@@ -8,25 +8,25 @@
             <div class="profile-header">&nbsp;</div>
             <div class="profile-body">
                 <div class="image-area">
-                    <img src="{{ request.user.profile.image.url }}" alt="AdminBSB - Profile Image" />
+                    <img src="{{ request.user.profile.image.url }}" width="150" height="150" alt="AdminBSB - Profile Image" />
                 </div>
                 <div class="content-area">
-                    <h3>Marc K. Hammond</h3>
+                    <h3>{{ first_name }}  {{ last_name }}</h3>
                 </div>
             </div>
             <div class="profile-footer">
                 <ul>
                     <li>
                         <span>Book Listings</span>
-                        <span>1.234</span>
+                        <span>{{ books_count }}</span>
                     </li>
                     <li>
                         <span>BookSet Listings</span>
-                        <span>1.201</span>
+                        <span>{{ bookset_count }}</span>
                     </li>
                     <li>
                         <span>Listings Sold</span>
-                        <span>14.252</span>
+                        <span>{{ books_sold }}</span>
                     </li>
                 </ul>
             </div>
@@ -44,7 +44,8 @@
                             Education
                         </div>
                         <div class="content">
-                            Eco Honours
+                            <b>Course: </b>{{ course_name }} <br>
+                            <b>College: </b>{{ college_name }}
                         </div>
                     </li>
                     <li>
@@ -53,7 +54,13 @@
                             Location
                         </div>
                         <div class="content">
+                            {% if college_category == "N" %}
                             North Campus
+                            {% elif college_category == "S" %}
+                            South Campus
+                            {% else %}
+                            Off Campus
+                            {% endif %}
                         </div>
                     </li>
                 </ul>
@@ -76,15 +83,15 @@
                                     <label for="FirstName" class="col-sm-2 control-label">First Name</label>
                                     <div class="col-sm-10">
                                         <div class="form-line">
-                                            <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First name" value="Marc" required>
+                                            <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First name" value="{{ first_name }}" required>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="Last Name" class="col-sm-2 control-label">Last Name</label>
+                                    <label for="LastName" class="col-sm-2 control-label">Last Name</label>
                                     <div class="col-sm-10">
                                         <div class="form-line">
-                                            <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name" value="Hammond" required>
+                                            <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last name" value="{{ last_name }}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -92,7 +99,7 @@
                                     <label for="Email" class="col-sm-2 control-label">Email</label>
                                     <div class="col-sm-10">
                                         <div class="form-line">
-                                            <input type="email" class="form-control" id="Email" name="Email" placeholder="Email" value="example@example.com" required>
+                                            <input type="email" class="form-control" id="Email" name="Email" placeholder="Email" value="{{ email }}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -105,25 +112,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="InputSkills" class="col-sm-2 control-label">Skills</label>
-
-                                    <div class="col-sm-10">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" id="InputSkills" name="InputSkills" placeholder="Skills">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
                                         <input type="checkbox" id="terms_condition_check" class="chk-col-red filled-in" />
                                         <label for="terms_condition_check">I agree to the <a href="#">terms and conditions</a></label>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
-                                        <button type="submit" class="btn btn-danger">SUBMIT</button>
+                                        <button type="submit" class="btn btn-info">SUBMIT</button>
                                     </div>
                                 </div>
                             </form>
@@ -157,7 +154,7 @@
 
                                 <div class="form-group">
                                     <div class="col-sm-offset-3 col-sm-9">
-                                        <button type="submit" class="btn btn-danger">SUBMIT</button>
+                                        <button type="submit" class="btn btn-info">SUBMIT</button>
                                     </div>
                                 </div>
                             </form>
