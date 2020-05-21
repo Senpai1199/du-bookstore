@@ -3,6 +3,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -193,9 +194,11 @@ def login_view(request):
             return render(request, 'registrations/login.html')
 
     elif request.method == 'POST':
-        username = request.POST['username']
+        username = request.POST['username'] # usernane or email
         password = request.POST['password']
         user = authenticate(username=username, password=password)
+        if user is None: # if username authentication fails, try email
+            user = authenticate(email=username, password=password)
 
         if user is not None:
             if user.is_active:
@@ -333,6 +336,7 @@ def complete_profile(request):
 
 @login_required(login_url='login')
 @has_profile_completed
+@csrf_exempt
 def profile(request):
     """
         Allows user to view his/her profile page
@@ -348,7 +352,6 @@ def profile(request):
         "college_category": request.user.profile.college.category,
         "course_name": request.user.profile.course.name,
     }
-    print(context)
     return render(request, 'registrations/profile.html', context)
 
 @login_required(login_url='login')
@@ -741,6 +744,8 @@ def search_bookset(request):
             }
     return render(request, 'registrations/search_bookset.html', context=context)
 
+@login_required(login_url='login')
+@has_profile_completed
 def add_interested(request):
     """
         add a book/bookset to interested
@@ -788,3 +793,41 @@ def add_interested(request):
         response = {'message': response_message}
 
     return JsonResponse(response)
+
+@login_required(login_url='login')
+@has_profile_completed
+@csrf_exempt
+def change_password(request):
+    """
+        Allows users to change their password
+    """
+    user = request.user
+    data = request.POST
+    try:
+        old_pass = str(data["old_pass"])
+        new_pass = str(data["new_pass"])
+        new_pass_confirm = str(data["new_pass_confirm"])
+        if new_pass == "":
+            messages.warning(request, "New password can't be blank.")
+            return redirect(request.META.get('HTTP_REFERER'))
+        try:
+            existing_user = authenticate(username=user.username, password=old_pass)
+            if new_pass != new_pass_confirm:
+                messages.warning(request, "Passwords don't match.")
+                return redirect(request.META.get('HTTP_REFERER'))
+            else:
+                existing_user.set_password(new_pass)
+                existing_user.save()
+                messages.warning(request, "Password changed successfully!.")
+                update_session_auth_hash(request, existing_user) 
+                return redirect('profile')
+        except User.DoesNotExist:
+            messages.warning(request, "Old password doesn't match.")
+            return redirect(request.META.get('HTTP_REFERER'))
+
+    except KeyError as missing_key:
+        messages.warning(request, "Password change failure! Missing field in the form.")
+        try:
+            return redirect(request.META.get('HTTP_REFERER'))
+        except:
+            return render(request, 'registrations/profile.html', context)

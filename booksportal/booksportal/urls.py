@@ -43,6 +43,8 @@ urlpatterns = [
     path('search_bookset/', views.search_bookset, name='search_bookset'),
     path('add_interested/', views.add_interested, name='add_interested'),
 
+    path('change_password/', views.change_password, name='change_password'),
+
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
 
