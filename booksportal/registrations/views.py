@@ -352,7 +352,44 @@ def profile(request):
         "college_category": request.user.profile.college.category,
         "course_name": request.user.profile.course.name,
     }
-    return render(request, 'registrations/profile.html', context)
+    year = request.user.profile.year
+    if year == 4:
+        year = "Masters"
+    context["year"] = year
+
+    if request.method == "GET":
+        return render(request, 'registrations/profile.html', context)
+    
+    elif request.method == "POST": # edit profile
+        data = request.POST
+
+        try:
+            first_name = str(data["first_name"])
+            last_name = str(data["last_name"])
+            year = data["year"]
+            year = year.strip()
+            valid_years = ["1", "2", "3", "masters", "Masters"]
+            if year not in valid_years:
+                messages.warning(request, "Invalid value for year.")
+                return redirect(request.META.get('HTTP_REFERER'))
+            if year == "Masters" or year == "masters":
+                year = 4
+            else:
+                year = int(year)
+
+            profile = request.user.profile
+            profile.year = year
+            profile.save()
+            first_name = first_name.strip()
+            last_name = last_name.strip()
+            request.user.first_name = first_name
+            request.user.last_name = last_name
+            request.user.save()
+            messages.warning(request, "Profile updated successfully!")
+            return redirect('profile')
+        except KeyError as missing_key:
+            messages.warning(request, "Missing value: !".format(missing_key))
+            return redirect(request.META.get('HTTP_REFERER'))
 
 @login_required(login_url='login')
 @has_profile_completed
@@ -821,7 +858,7 @@ def change_password(request):
                 messages.warning(request, "Password changed successfully!.")
                 update_session_auth_hash(request, existing_user) 
                 return redirect('profile')
-        except User.DoesNotExist:
+        except:
             messages.warning(request, "Old password doesn't match.")
             return redirect(request.META.get('HTTP_REFERER'))
 
