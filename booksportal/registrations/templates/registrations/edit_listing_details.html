@@ -13,16 +13,16 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
             <div class="header">
-                <h2>Add Book Listing</h2>
+                <h2>Edit Book Listing</h2>
             </div>
             <div class="body">
-                <form id="form_validation" method="POST" enctype="multipart/form-data" action="{% url 'sell_book' %}">
+                <form id="form_validation" method="POST" enctype="multipart/form-data" action="{% url 'edit_listing_details' b_id=book.id %}">
                     {% csrf_token %}
                   <div class="row clearfix">
                   <div class="col-lg-6 col-md-3 col-sm-3 col-xs-6">
                     <div class="form-group form-float">
                         <div class="form-line">
-                            <input type="text" class="form-control inputBold" name="title" value="{{ data.title }}" required>
+                            <input type="text" class="form-control inputBold" name="title" value="{{ book.title }}" required>
                             <label class="form-label"><b>Title*</b></label>
                         </div>
                   </div>
@@ -30,23 +30,23 @@
                     <div class="col-lg-6 col-md-3 col-sm-3 col-xs-6">
                     <div class="form-group form-float">
                         <div class="form-line">
-                            <input type="text" class="form-control inputBold" name="edition" value="{{ data.edition }}">
+                            <input type="text" class="form-control inputBold" name="edition" value="{{ book.edition }}">
                             <label class="form-label"><b>Edition (Leave blank for a Reading)</b></label>
                         </div>
                     </div>
                     </div>
                     <div class="col-lg-6">
                     <div class="form-group form-float">
-                        <select class="form-control show-tick" size="5" data-live-search="true" name="course_name" value="course_name">
+                        <select class="form-control show-tick" size="5" id="course" data-live-search="true" name="course_name">
                             <option disabled> Course for which book/reading was used? </option>
                             {% for course in courses %} -->
-                                <option>{{ course.name }}</option>
+                                <option value="{{course.name}}">{{ course.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     </div>
                     <div class="col-lg-3">
-                        <select class="form-control show-tick" name="year" value="year">
+                        <select class="form-control show-tick" id="year" name="year">
                             <option value="" disabled selected>Year for which it was used?</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -55,7 +55,7 @@
                         </select>
                     </div>
                     <div class="col-lg-3">
-                        <select class="form-control show-tick" name="semester" value="year">
+                        <select class="form-control show-tick" id="semester" name="semester">
                             <option value="" disabled selected>Semester for which it was used?</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -67,7 +67,7 @@
                     <div class="col-lg-6">
                     <div class="form-group form-float">
                         <div class="form-line">
-                            <input type="text" class="form-control inputBold" name="condition" value="{{ data.condition }}" required>
+                            <input type="text" class="form-control inputBold" name="condition" value="{{ book.condition }}" required>
                             <label class="form-label"><b>Condition*</b></label>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                                 <large>₹</large>
                             </span>
                             <div class="form-line form-group col-sm-3">
-                                <input type="text" name="price" value="{{ data.price }}" class="form-control money-dollar inputBold" required>
+                                <input type="text" name="price" value="{{ book.price }}" class="form-control money-dollar inputBold" required>
                             </div>
                         </div>
                     </div>
@@ -92,33 +92,41 @@
                     <div class="col-lg-3">
                     <div class="form-group">
                       <b>Type: </b>
+                      {% if book.category == "B" %}
+                        <input type="radio" name="type" id="full_book" class="with-gap" value="B" checked="checked">
+                        <label for="full_book">Full Book</label>
+                        <input type="radio" name="type" id="reading" class="with-gap" value="R">
+                        <label for="reading" class="m-l-20">Reading</label>
+                      {% else %}
                         <input type="radio" name="type" id="full_book" class="with-gap" value="B">
                         <label for="full_book">Full Book</label>
                         <input type="radio" name="type" id="reading" class="with-gap" value="R" checked="checked">
                         <label for="reading" class="m-l-20">Reading</label>
+                      {% endif %}
+                        
                     </div>
                     <div class="form-group">
-                        <label for="file">Upload a clear image*</label>
-                        <input type="file" id="file" name="file" required>
+                        <label for="file">Upload a clear image(optional if you want to retain the old image )</label>
+                        <input type="file" id="file" name="file">
                     </div>
                     </div>
-                    <!-- <div class="col-lg-2">
-                        <div class="form-group">
-                            <label for="image">Upload a clear image</label>
-                            <input type="file" id="image" name="image">
-                        </div>
-                    </div> -->
                     <div class="col-lg-2">
                     <div class="form-group">
-                        <input type="checkbox" id="notes" name="notes" value="yes">
-                        <label for="notes"><b>Notes included?</b></label>
+                        {% if book.contains_notes == True %}
+                            <input type="checkbox" id="notes" name="notes" value="yes" checked>
+                            <label for="notes"><b>Notes included?</b></label>
+
+                        {% else %}
+                            <input type="checkbox" id="notes" name="notes" value="yes">
+                            <label for="notes"><b>Notes included?</b></label>
+                        {% endif %}
                     </div>
                     </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="text" class="form-control inputBold" name="additional_details" value="{{ data.additional_details }}">
+                                <input type="text" class="form-control inputBold" name="additional_details" value="{{ book.additional_details }}">
                                 <label class="form-label"><b>Any additional details that could help the buyer</b></label>
                             </div>
                         </div>
@@ -130,5 +138,10 @@
     </div>
 </div>
 <!--Form Div End-->
+<script type="text/javascript">
+    document.getElementById('course').value = "{{ book.course.name }}";
+    document.getElementById('year').value = "{{ year }}";
+    document.getElementById('semester').value = "{{ book.semester }}";
+  </script>
 
 {% endblock %}

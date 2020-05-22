@@ -457,6 +457,13 @@ def sell_book(request):
             return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
         # end of data validation
 
+        if year != "Masters":
+            if semester == 0:
+                messages.warning(request, "Semester can only be 0 for Masters.")
+                return redirect(request.META.get('HTTP_REFERER'))
+
+                # return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
+
         if year == "Masters":
             year = 4
             semester = 0
@@ -691,8 +698,105 @@ def remove_book(request, b_id):
         return redirect('my_listings')
 
 @login_required(login_url='login')
+@has_profile_completed
 def edit_listing_details(request, b_id):
-    return render(request, 'registrations/search_book.html', context=context)
+    """
+        Allows users to edit their particular listing details
+    """
+    user = request.user
+    try:
+        book = Book.objects.get(id=b_id)
+        if book.sold == True:
+            messages.warning(request, "This book is already sold.")
+            return redirect('my_listings')
+    except Book.DoesNotExist:
+        messages.warning(request, "Book listing not found.")
+        return render(request, 'registrations/edit_listing_details.html', context=context)
+    
+    context = {
+        "book": book,
+        "courses": Course.objects.all(),
+    }
+    if book.year == 4:
+        context["year"] = "Masters"
+    else:
+        context["year"] = book.year
+    
+    if request.method == "GET":
+        return render(request, 'registrations/edit_listing_details.html', context=context)
+    
+    elif request.method == "POST":
+        data = request.POST
+        try: # for required values
+            title = str(data['title'])
+            condition = str(data['condition'])
+            course_name = str(data['course_name'])
+            year = data['year']
+            semester = int(data['semester'])
+            price = int(data['price'])
+            book_type = str(data["type"]) # contains exact category value 'B' or 'R'
+        except KeyError as e:
+            messages.error(request, "Missing Field {}".format(e))
+            return render(request, 'registrations/edit_listing_details.html', context=context)
+        except ValueError as value_error:
+            messages.error(request, "Invalid Value: {}".format(value_error))
+            return render(request, 'registrations/edit_listing_details.html', context=context)
+        
+        try:
+            seller = UserProfile.objects.get(auth_user=request.user)
+        except UserProfile.DoesNotExist:
+            messages.error(request, "Please complete your profile details first.")
+            return redirect('complete_profile')
+
+        if book_type == "B":
+            try:
+                edition = data["edition"] # optional for Reading
+                if edition == "":
+                    messages.warning(request, "You must enter an edition if you're adding a book.")
+                    return render(request, 'registrations/edit_listing_details.html', context=context)
+                edition = edition.strip()
+            except KeyError as e:
+                messages.warning(request, "You must enter an edition if you're adding a book.")
+                return render(request, 'registrations/edit_listing_details.html', context=context)
+
+        try:
+            course = Course.objects.get(name=course_name)
+        except Course.DoesNotExist:
+            messages.warning(request, "Please select a course from the list.")
+            return render(request, 'registrations/edit_listing_details.html', context=context)
+        # end of data validation
+
+        if year == "Masters":
+            year = 4
+            semester = 0
+
+        title = title.strip()
+        condition = condition.strip()
+        try:
+            contains_notes = data["notes"]
+            contains_notes = True
+        except KeyError:
+            contains_notes = False
+
+        book.title = title
+        book.category = book_type
+        book.contains_notes = contains_notes
+        book.condition = condition
+        book.year = year
+        book.semester = semester
+        book.course = course
+        book.price = price
+        book.seller = seller
+        book.additonal_details = str(data["additional_details"]).strip()
+        book.save()
+        try:
+            book_image = request.FILES["file"]
+            book.image = book_image
+            book.save()
+        except KeyError:
+            pass
+        messages.success(request, "Success! Book listing edited successfully!")
+        return redirect('my_listings')
 
 @login_required(login_url='login')
 @has_profile_completed
