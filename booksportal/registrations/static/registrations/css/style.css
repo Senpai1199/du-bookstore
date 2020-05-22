@@ -8171,7 +8171,7 @@ html.ie11 .bs-searchbox .form-control {
       /* For price tooltip */
       .tooltipIcon .tooltiptext {
         visibility: hidden;
-        width: 200px;
+        width: 210px;
         background-color: #555;
         color: #fff;
         text-align: center;
