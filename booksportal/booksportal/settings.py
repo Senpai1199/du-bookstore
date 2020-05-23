@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     'registrations',
-    'corsheaders'
+    'corsheaders',
 
     # for google login
     'allauth',  
@@ -162,8 +162,6 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-CORS_ORIGIN_ALLOW_ALL = True
-
 
 # Django all-auth settings
 AUTHENTICATION_BACKENDS = (
@@ -173,3 +171,4 @@ AUTHENTICATION_BACKENDS = (
 
 SITE_ID = 2
 LOGIN_REDIRECT_URL = '/home'
+CORS_ORIGIN_ALLOW_ALL = True
