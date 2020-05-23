@@ -18,7 +18,7 @@
                     {% endif %}
                     <p>
                       <b>Used For : </b> <span class="label bg-cyan">{{book.course.name}}</span>
-                      <!-- {% autoescape off %}{% get_year_semester book %}{% endautoescape %} -->
+                      {% autoescape off %}{% get_year_semester book %}{% endautoescape %}
                     </p>
                     {% if book.additional_details != "" %}
                     <p>
