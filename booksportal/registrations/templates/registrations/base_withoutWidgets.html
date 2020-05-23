@@ -72,6 +72,11 @@
                     <!-- #END# Call Search -->
                     <!-- Notifications -->
                     <li class="dropdown">
+                        <a href="{% url 'search_book' %}" class="dropdown-toggle" role="button">
+                            <i class="material-icons">search</i>
+                        </a>
+                    </li>
+                    <li class="dropdown">
                         <a href="{% url 'profile' %}" class="dropdown-toggle" role="button">
                             <i class="material-icons">person</i>
                         </a>
@@ -121,7 +126,7 @@
                             <span>Home</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">shopping_cart</i>
                             <span>Buy</span>
@@ -141,7 +146,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">attach_money</i>
                             <span>Sell</span>
@@ -158,7 +163,7 @@
                                 </a>
                             </li>
                         </ul>
-                        <li>
+                        <li class="active">
                             <a href="javascript:void(0);" class="menu-toggle">
                                 <i class="material-icons">visibility</i>
                                 <span>My Listings</span>
