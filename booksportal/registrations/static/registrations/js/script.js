@@ -71,65 +71,79 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-  $(".delete").hide();
   //when the Add Field button is clicked
   $("#add-listing-button").click(function(e) {
     //Append a new row of code to the "#items" div
-     var input_fields = $(".add-listing")
-    $("#add-listing-container").append(
-                        '<div class="row clearfix add-listing"> \
-                                    <div class="col-lg-12">\
-                                    <p>\
-                                    <b>Book/listing</b>&nbsp;<a class="delete-listing"><small>delete</small></a>\
-                                    </p>\
-                                    </div>\
-                                  <div class="col-lg-6">\
-                                    <div class="form-group form-float">\
-                                        <div class="form-line">\
-                                            <input type="text" class="form-control inputBold" name="title" required>\
-                                            <label class="form-label"><b>Title*</b></label>\
-                                        </div>\
-                                  </div>\
-                                    </div>\
-                                    <div class="col-lg-2">\
-                                        <select class="form-control show-tick" name="year" value="year">\
-                                            <option value="" disabled selected>Type</option>\
-                                            <option value="B">Book</option>\
-                                            <option value="R">Reading</option>\
-                                        </select>\
-                                    </div>\
-                                    <div class="col-lg-4">\
-                                      <div class="form-group form-float">\
-                                          <div class="form-line">\
-                                              <input type="text" class="form-control inputBold" name="title" required>\
-                                              <label class="form-label"><b>Edition (Leave blank for reading)</b></label>\
-                                          </div>\
-                                    </div>\
-                                      </div>\
-                                      <div class="col-lg-3">\
-                                        <div class="form-group form-float">\
-                                            <div class="form-line">\
-                                                <input type="text" class="form-control inputBold" name="title" required>\
-                                                <label class="form-label"><b>Condition</b></label>\
-                                            </div>\
-                                      </div>\
-                                        </div>\
-                                      <div class="col-lg-5">\
-                                        <div class="form-group form-float">\
-                                            <div class="form-line">\
-                                                <input type="text" class="form-control inputBold" name="title" required>\
-                                                <label class="form-label"><b>Additional Info (optional)</b></label>\
-                                            </div>\
-                                      </div>\
-                                      </div>\
-                                      <div class="form-group">\
-                                          <input type="file" id="file" name="file">\
-                                          <small><label for="file">* Upload a clear image of book/reading</label></small>\
-                                      </div>\
-                                  </div>'
-    );
+     var book_num = $("#add-listing-container")[0].childElementCount + 1;
+     var button = $(this);
+
+     var input_form = '<div id="listing' + book_num + '" class="row clearfix add-listing"> \
+                 <div class="col-lg-12">\
+                 <p>\
+                 <b>Book/listing - ' + book_num +':\
+                 </p>\
+                 </div>\
+               <div class="col-lg-6">\
+                 <div class="form-group form-float">\
+                     <div class="form-line">\
+                         <input type="text" class="form-control inputBold" name="title" required>\
+                         <label class="form-label"><b>Title*</b></label>\
+                     </div>\
+               </div>\
+                 </div>\
+                 <div class="col-lg-2">\
+                     <select class="form-control show-tick" name="year" value="year">\
+                         <option value="" disabled selected>Type</option>\
+                         <option value="B">Book</option>\
+                         <option value="R">Reading</option>\
+                     </select>\
+                 </div>\
+                 <div class="col-lg-4">\
+                   <div class="form-group form-float">\
+                       <div class="form-line">\
+                           <input type="text" class="form-control inputBold" name="title" required>\
+                           <label class="form-label"><b>Edition (Leave blank for reading)</b></label>\
+                       </div>\
+                 </div>\
+                   </div>\
+                   <div class="col-lg-3">\
+                     <div class="form-group form-float">\
+                         <div class="form-line">\
+                             <input type="text" class="form-control inputBold" name="title" required>\
+                             <label class="form-label"><b>Condition</b></label>\
+                         </div>\
+                   </div>\
+                     </div>\
+                   <div class="col-lg-5">\
+                     <div class="form-group form-float">\
+                         <div class="form-line">\
+                             <input type="text" class="form-control inputBold" name="title" required>\
+                             <label class="form-label"><b>Additional Info (optional)</b></label>\
+                         </div>\
+                   </div>\
+                   </div>\
+                   <div class="form-group">\
+                       <input type="file" id="file" name="file">\
+                       <small><label for="file">* Upload a clear image of book/reading</label></small>\
+                   </div>\
+               </div>';
+    $("#add-listing-container").append(input_form);
+    $("#remove-listing-button")[0].style.display = 'inline';
   });
-  $("body").on("click", ".delete", function(e) {
-    $(".next-referral").last().remove();
+  $("#remove-listing-button").click(function(e) {
+    var container = $("#add-listing-container")[0];
+    var child_count = container.childElementCount;
+
+    if (child_count == 3){
+      container.lastChild.remove();
+      $("#remove-listing-button")[0].style.display="none";
+    }
+    else if (child_count < 3){
+      alert("atleast 2 books must be there in a Bookset!!");
+      $("#remove-listing-button")[0].style.display="none";
+    }
+    else {
+      container.lastChild.remove();
+    }
   });
 });
