@@ -351,7 +351,7 @@ def profile(request):
 
     if request.method == "GET":
         return render(request, 'registrations/profile.html', context)
-    
+
     elif request.method == "POST": # edit profile
         data = request.POST
 
@@ -704,7 +704,7 @@ def edit_listing_details(request, b_id):
     except Book.DoesNotExist:
         messages.warning(request, "Book listing not found.")
         return render(request, 'registrations/edit_listing_details.html', context=context)
-    
+
     context = {
         "book": book,
         "courses": Course.objects.all(),
@@ -713,10 +713,10 @@ def edit_listing_details(request, b_id):
         context["year"] = "Masters"
     else:
         context["year"] = book.year
-    
+
     if request.method == "GET":
         return render(request, 'registrations/edit_listing_details.html', context=context)
-    
+
     elif request.method == "POST":
         data = request.POST
         try: # for required values
@@ -733,7 +733,7 @@ def edit_listing_details(request, b_id):
         except ValueError as value_error:
             messages.error(request, "Invalid Value: {}".format(value_error))
             return render(request, 'registrations/edit_listing_details.html', context=context)
-        
+
         try:
             seller = UserProfile.objects.get(auth_user=request.user)
         except UserProfile.DoesNotExist:
@@ -927,7 +927,6 @@ def add_interested(request):
 
     return JsonResponse(response)
 
-<<<<<<< d8898e26b698a457a3d61ce8d81ed464008b13d2
 @login_required(login_url='login')
 @has_profile_completed
 @csrf_exempt
@@ -953,7 +952,7 @@ def change_password(request):
                 existing_user.set_password(new_pass)
                 existing_user.save()
                 messages.warning(request, "Password changed successfully!.")
-                update_session_auth_hash(request, existing_user) 
+                update_session_auth_hash(request, existing_user)
                 return redirect('profile')
         except:
             messages.warning(request, "Old password doesn't match.")
@@ -965,10 +964,9 @@ def change_password(request):
             return redirect(request.META.get('HTTP_REFERER'))
         except:
             return render(request, 'registrations/profile.html', context)
-=======
+
 def sell_bookset(request):
     """
         Form to add bookset for selling.
     """
     return render(request, 'registrations/sell_bookset.html',context={})
->>>>>>> add bookset in progress

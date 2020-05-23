@@ -78,6 +78,11 @@ $(document).ready(function() {
      var input_fields = $(".add-listing")
     $("#add-listing-container").append(
                         '<div class="row clearfix add-listing"> \
+                                    <div class="col-lg-12">\
+                                    <p>\
+                                    <b>Book/listing</b>&nbsp;<a class="delete-listing"><small>delete</small></a>\
+                                    </p>\
+                                    </div>\
                                   <div class="col-lg-6">\
                                     <div class="form-group form-float">\
                                         <div class="form-line">\
