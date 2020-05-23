@@ -256,8 +256,6 @@ def complete_profile(request):
         data = request.POST
 
         try: # for required values
-            first_name = str(data["first_name"])
-            last_name = str(data["last_name"])
             college_name = str(data["college_name"])
             course_name = str(data["course_name"])
             year = data["year"] #1, 2, 3 or Masters
@@ -297,14 +295,8 @@ def complete_profile(request):
             messages.error(request, "Please choose course from the list only.")
             return render(request, 'registrations/complete_profile.html', context)
 
-        first_name = first_name.strip()
-        last_name = last_name.strip()
         if year == "Masters":
             year = 4
-
-        request.user.first_name = first_name
-        request.user.last_name = last_name
-        request.user.save()
 
         try:
             profile_pic = request.FILES["file"]

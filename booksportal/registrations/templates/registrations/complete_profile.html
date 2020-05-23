@@ -1,16 +1,6 @@
 {% extends 'registrations/base.html' %}
 
 {% block body %}
-{% if messages %}
-<div class="body">
-{% for message in messages %}
-<div class="alert alert-info alert-dismissible" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-    {{message}}
-</div>
-{% endfor %}
-</div>
-{% endif %}
 
 <style type="text/css">
     .inputBold{
@@ -28,27 +18,28 @@
             <div class="body">
                 <form id="form_validation" method="POST" enctype="multipart/form-data" action="{% url 'complete_profile' %}">
                     {% csrf_token %}
-                  <div class="row clearfix">
-                  <div class="col-lg-4 col-md-3 col-sm-3 col-xs-6">
-                    <div class="form-group form-float">
+                  <!-- <div class="row clearfix">
+                  <div class="col-lg-4 col-md-3 col-sm-3 col-xs-6"> -->
+                    <!-- <div class="form-group form-float">
                         <div class="form-line">
                             <input type="text" class="form-control inputBold" name="first_name" value="{{ data.first_name }}" required>
                             <label class="form-label"><b>First Name</b></label>
                         </div>
-                  </div>
-                    </div>
-                    <div class="col-lg-4 col-md-3 col-sm-3 col-xs-6">
+                  </div> -->
+                    <!-- </div> -->
+                    <!-- <div class="col-lg-4 col-md-3 col-sm-3 col-xs-6">
                     <div class="form-group form-float">
                         <div class="form-line">
                             <input type="text" class="form-control inputBold" name="last_name" value="{{ data.last_name }}">
                             <label class="form-label"><b>Last Name</b></label>
                         </div>
                     </div>
-                    </div>
+                    </div> -->
+                    <div class="row clearfix">
                     <div class="col-lg-5">
                     <div class="form-group form-float">
                         <select class="form-control show-tick" size="5" data-live-search="true" name="college_name" value="college_name">
-                            <option disabled>Which College?</option>
+                            <option disabled>Your College?</option>
                             {% for college in colleges %} -->
                                 <option>{{ college.name }}</option>
                             {% endfor %}
@@ -57,7 +48,7 @@
                     </div>
                     <div class="col-lg-3">
                         <select class="form-control show-tick" size="5" data-live-search="true" name="course_name" value="course_name">
-                            <option value="" disabled selected>Which Course?</option>
+                            <option value="" disabled selected>Your  Course?</option>
                             {% for course in courses %}
                                 <option>{{ course.name }}</option>
                             {% endfor %}
@@ -92,7 +83,7 @@
                     </div>
                     <button class="btn btn-primary waves-effect inputBold" type="submit">SUBMIT</button>
                 </form>
-              </div>
+            </div>
         </div>
     </div>
 </div>

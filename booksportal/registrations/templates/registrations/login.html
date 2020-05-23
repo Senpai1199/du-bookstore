@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 {% load static %}
+{% load socialaccount %}
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -83,11 +84,13 @@
                     </div>
                     <!--Google login-->
                     <div style="vertical-align:middle; text-align: center;">
-                            <div style="vertical-align:middle; display:inline-block;" class="oauth-container btn darken-4 white" onclick="window.location.href='/users/google-oauth/'">
+                        <a href="{% provider_login_url 'google' %}">
+                            <div style="vertical-align:middle; display:inline-block;" class="oauth-container btn darken-4 white">
                                 <img width="20px" style="margin-top:4px; margin-bottom:4px; margin-right:5px" alt="Google sign-in"
                                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
                                     Login with Google
                             </div>
+                        </a>
                     </div>
                     <!--Google login end-->
                     <div class="row">
