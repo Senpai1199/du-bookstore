@@ -34,6 +34,7 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('sell_book/', views.sell_book, name='sell_book'),
     path('my_listings/', views.view_listings, name='my_listings'),
+    path('sell_bookset/', views.sell_bookset, name='sell_bookset'),
     path('my_set_listings/', views.view_set_listings, name='my_set_listings'),
     path('edit_listing/<int:b_id>/', views.edit_listing_details, name='edit_listing_details'),
 

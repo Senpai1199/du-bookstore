@@ -69,3 +69,62 @@ $(document).ready(function() {
     }
 });
 });
+
+$(document).ready(function() {
+  $(".delete").hide();
+  //when the Add Field button is clicked
+  $("#add-listing-button").click(function(e) {
+    //Append a new row of code to the "#items" div
+     var input_fields = $(".add-listing")
+    $("#add-listing-container").append(
+                        '<div class="row clearfix add-listing"> \
+                                  <div class="col-lg-6">\
+                                    <div class="form-group form-float">\
+                                        <div class="form-line">\
+                                            <input type="text" class="form-control inputBold" name="title" required>\
+                                            <label class="form-label"><b>Title*</b></label>\
+                                        </div>\
+                                  </div>\
+                                    </div>\
+                                    <div class="col-lg-2">\
+                                        <select class="form-control show-tick" name="year" value="year">\
+                                            <option value="" disabled selected>Type</option>\
+                                            <option value="B">Book</option>\
+                                            <option value="R">Reading</option>\
+                                        </select>\
+                                    </div>\
+                                    <div class="col-lg-4">\
+                                      <div class="form-group form-float">\
+                                          <div class="form-line">\
+                                              <input type="text" class="form-control inputBold" name="title" required>\
+                                              <label class="form-label"><b>Edition (Leave blank for reading)</b></label>\
+                                          </div>\
+                                    </div>\
+                                      </div>\
+                                      <div class="col-lg-3">\
+                                        <div class="form-group form-float">\
+                                            <div class="form-line">\
+                                                <input type="text" class="form-control inputBold" name="title" required>\
+                                                <label class="form-label"><b>Condition</b></label>\
+                                            </div>\
+                                      </div>\
+                                        </div>\
+                                      <div class="col-lg-5">\
+                                        <div class="form-group form-float">\
+                                            <div class="form-line">\
+                                                <input type="text" class="form-control inputBold" name="title" required>\
+                                                <label class="form-label"><b>Additional Info (optional)</b></label>\
+                                            </div>\
+                                      </div>\
+                                      </div>\
+                                      <div class="form-group">\
+                                          <input type="file" id="file" name="file">\
+                                          <small><label for="file">* Upload a clear image of book/reading</label></small>\
+                                      </div>\
+                                  </div>'
+    );
+  });
+  $("body").on("click", ".delete", function(e) {
+    $(".next-referral").last().remove();
+  });
+});

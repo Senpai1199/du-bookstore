@@ -927,6 +927,7 @@ def add_interested(request):
 
     return JsonResponse(response)
 
+<<<<<<< d8898e26b698a457a3d61ce8d81ed464008b13d2
 @login_required(login_url='login')
 @has_profile_completed
 @csrf_exempt
@@ -964,3 +965,10 @@ def change_password(request):
             return redirect(request.META.get('HTTP_REFERER'))
         except:
             return render(request, 'registrations/profile.html', context)
+=======
+def sell_bookset(request):
+    """
+        Form to add bookset for selling.
+    """
+    return render(request, 'registrations/sell_bookset.html',context={})
+>>>>>>> add bookset in progress

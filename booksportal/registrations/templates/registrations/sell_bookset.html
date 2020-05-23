@@ -1,0 +1,218 @@
+{% extends 'registrations/base.html' %}
+
+{% block body %}
+{% if messages %}
+<div class="body">
+{% for message in messages %}
+<div class="alert alert-info alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+    {{message}}
+</div>
+{% endfor %}
+</div>
+{% endif %}
+
+<style type="text/css">
+    .inputBold{
+      font-weight: bold;
+    }
+</style>
+
+<!--Form Div Start-->
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>Add BookSet Listing</h2>
+            </div>
+            <div class="body">
+                <form id="form_validation" method="POST" enctype="multipart/form-data" action="{% url 'sell_book' %}">
+                    {% csrf_token %}
+                  <div class="row clearfix">
+                  <div class="col-lg-6">
+                    <div class="form-group form-float">
+                        <div class="form-line">
+                            <input type="text" class="form-control inputBold" name="title" value="{{ data.title }}" required>
+                            <label class="form-label"><b>Title*</b></label>
+                        </div>
+                  </div>
+                    </div>
+                    <div class="col-lg-4">
+                    <div class="form-group form-float">
+                        <select class="form-control show-tick" size="5" data-live-search="true" name="course_name" value="course_name">
+                            <option disabled> Course for which it was used? </option>
+                            {% for course in courses %}
+                                <option>{{ course.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    </div>
+                    </div>
+                    <div class="row clearfix">
+                    <div class="col-lg-4">
+                        <select class="form-control show-tick" name="year" value="year">
+                            <option value="" disabled selected>Year for which it was used?</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="Masters">Masters</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-4">
+                        <select class="form-control show-tick" name="semester" value="year">
+                            <option value="" disabled selected>Semester for which it was used?</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="input-group col-sm-3">
+                            <span class="input-group-addon">
+                                <i class="material-icons">info</i>
+                              <b>Price: </b>
+                                <large>₹</large>
+                            </span>
+                            <div class="form-line form-group col-sm-3">
+                                <input type="text" name="price" value="{{ data.price }}" class="form-control money-dollar inputBold" required>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                      <div class="row clearfix">
+                        <div class="col-lg-12">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control inputBold" name="additional_details" value="{{ data.additional_details }}">
+                                    <label class="form-label"><b>Description of BookSet</b></label>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="col-lg-3">
+                    <div class="form-group">
+                        <input type="file" id="file" name="file">
+                        <small><label for="file">* Upload a clear image of bookset</label></small>
+                    </div>
+                    </div>
+                    <!-- <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="image">Upload a clear image</label>
+                            <input type="file" id="image" name="image">
+                        </div>
+                    </div> -->
+                    <div class="col-lg-2">
+                    <div class="form-group">
+                        <input type="checkbox" id="notes" name="notes" value="yes">
+                        <label for="notes"><b>Notes included?</b></label>
+                    </div>
+                    </div>
+                    </div>
+                    <div id="add-listing-container">
+                    <div class="row clearfix add-listing">
+                        <div class="col-lg-6">
+                          <div class="form-group form-float">
+                              <div class="form-line">
+                                  <input type="text" class="form-control inputBold" name="title" value="{{ data.title }}" required>
+                                  <label class="form-label"><b>Title*</b></label>
+                              </div>
+                        </div>
+                          </div>
+                          <div class="col-lg-2">
+                              <select class="form-control show-tick" name="year" value="year">
+                                  <option value="" disabled selected>Type</option>
+                                  <option value="B">Book</option>
+                                  <option value="R">Reading</option>
+                              </select>
+                          </div>
+                          <div class="col-lg-4">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control inputBold" name="title" value="{{ data.title }}" required>
+                                    <label class="form-label"><b>Edition (Leave blank for reading)</b></label>
+                                </div>
+                          </div>
+                            </div>
+                            <div class="col-lg-3">
+                              <div class="form-group form-float">
+                                  <div class="form-line">
+                                      <input type="text" class="form-control inputBold" name="title" value="{{ data.title }}" required>
+                                      <label class="form-label"><b>Condition</b></label>
+                                  </div>
+                            </div>
+                              </div>
+                            <div class="col-lg-5">
+                              <div class="form-group form-float">
+                                  <div class="form-line">
+                                      <input type="text" class="form-control inputBold" name="title" value="{{ data.title }}" required>
+                                      <label class="form-label"><b>Additional Info (optional)</b></label>
+                                  </div>
+                            </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="file" id="file" name="file">
+                                <small><label for="file">* Upload a clear image of book/reading</label></small>
+                            </div>
+                        </div>
+                        <div class="row clearfix add-listing">
+                            <div class="col-lg-6">
+                              <div class="form-group form-float">
+                                  <div class="form-line">
+                                      <input type="text" class="form-control inputBold" name="title" value="{{ data.title }}" required>
+                                      <label class="form-label"><b>Title*</b></label>
+                                  </div>
+                            </div>
+                              </div>
+                              <div class="col-lg-2">
+                                  <select class="form-control show-tick" name="year" value="year">
+                                      <option value="" disabled selected>Type</option>
+                                      <option value="B">Book</option>
+                                      <option value="R">Reading</option>
+                                  </select>
+                              </div>
+                              <div class="col-lg-4">
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" class="form-control inputBold" name="title" value="{{ data.title }}" required>
+                                        <label class="form-label"><b>Edition (Leave blank for reading)</b></label>
+                                    </div>
+                              </div>
+                                </div>
+                                <div class="col-lg-3">
+                                  <div class="form-group form-float">
+                                      <div class="form-line">
+                                          <input type="text" class="form-control inputBold" name="title" value="{{ data.title }}" required>
+                                          <label class="form-label"><b>Condition</b></label>
+                                      </div>
+                                </div>
+                                  </div>
+                                <div class="col-lg-5">
+                                  <div class="form-group form-float">
+                                      <div class="form-line">
+                                          <input type="text" class="form-control inputBold" name="title" value="{{ data.title }}" required>
+                                          <label class="form-label"><b>Additional Info (optional)</b></label>
+                                      </div>
+                                </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="file" id="file" name="file">
+                                    <small><label for="file">* Upload a clear image of book/reading</label></small>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-lg-12">
+                    <a href="javascript:void(0);" id="add-listing-button">+ Add Book/Reading</a>
+                    </div>
+                    </div>
+                    <button class="btn btn-primary waves-effect inputBold" type="submit">SUBMIT</button>
+                </form>
+              </div>
+        </div>
+    </div>
+</div>
+<!--Form Div End-->
+<style>
+  .add-listing {
+  margin-bottom: 20px;
+  }
+</style>
+{% endblock %}
