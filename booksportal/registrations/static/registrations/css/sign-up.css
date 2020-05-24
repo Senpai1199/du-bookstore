@@ -1,0 +1,75 @@
+.alert-dismissible .close {
+    color: #fff;
+    opacity: 1;
+    border: none;
+    text-shadow: none; 
+}
+
+.alert-info {
+    background-color: #00b0e4; 
+}
+
+.body {
+    font-size: 14px;
+    color: #555;
+    padding: 20px; 
+}
+
+.alert {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -ms-box-shadow: none;
+    box-shadow: none;
+    border: none;
+    color: #fff !important; 
+}
+
+/* Google Sign Up Button */
+.google-btn {
+    width: 184px;
+    height: 42px;
+    background-color: white;
+    border-radius: 2px;
+    box-shadow: 0 3px 4px 0 rgba(0,0,0,.25);
+    margin-left: 280px;
+    }
+    .google-icon-wrapper {
+        position: absolute;
+        margin-top: 1px;
+        margin-left: 1px;
+        width: 40px;
+        height: 40px;
+        border-radius: 2px;
+        background-color: $white;
+    }
+    .google-icon {
+        position: absolute;
+        margin-top: 11px;
+        margin-left: 11px;
+        width: 18px;
+        height: 18px;
+    }
+    .btn-text {
+        float: right;
+        margin: 11px 11px 0 0;
+        color: $white;
+        font-size: 14px;
+        letter-spacing: 0.2px;
+        font-family: "Roboto";
+    }
+    .span-center {
+        margin-left: 340px;
+    }
+    &:hover {
+        box-shadow: 0 0 6px $google-blue;
+    }
+    &:active {
+        background: $button-active-blue;
+    }
+    .black-text {
+        color: black;
+    }
