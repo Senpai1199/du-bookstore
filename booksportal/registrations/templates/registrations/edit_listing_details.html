@@ -46,20 +46,15 @@
                     </div>
                     </div>
                     <div class="col-lg-3">
-                        <select class="form-control show-tick" id="year" name="year">
-                            <option value="" disabled selected>Year for which it was used?</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="Masters">Masters</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-3">
                         <select class="form-control show-tick" id="semester" name="semester">
                             <option value="" disabled selected>Semester for which it was used?</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
-                            <option value="0">0 (For Masters)</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="Masters">Masters</option>
                         </select>
                     </div>
                     </div>
@@ -140,8 +135,7 @@
 <!--Form Div End-->
 <script type="text/javascript">
     document.getElementById('course').value = "{{ book.course.name }}";
-    document.getElementById('year').value = "{{ year }}";
-    document.getElementById('semester').value = "{{ book.semester }}";
+    document.getElementById('semester').value = "{{ semester }}";
   </script>
 
 {% endblock %}

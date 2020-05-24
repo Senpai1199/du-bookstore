@@ -79,7 +79,7 @@ def sign_up(request):
             gender = str(data["gender"])
             college_name = str(data["college_name"])
             course_name = str(data["course_name"])
-            year = data["year"]
+            semester = data["semester"]
 
             try:
                 email = email.strip()
@@ -113,9 +113,9 @@ def sign_up(request):
             except College.DoesNotExist:
                 messages.error(request, "College selected must be from the list only.")
                 return render(request, 'registrations/sign_up.html', context)
-
-            if year == "Masters":
-                year = 4
+            
+            if semester == "Masters":
+                semester = 7
 
             first_name = first_name.strip()
             last_name = str(data["last_name"].strip()) # received here because lname is optional
@@ -131,7 +131,7 @@ def sign_up(request):
                     gender = gender,
                     course = course,
                     college = college,
-                    year = year
+                    semester = semester
                 )
 
             try:
@@ -256,7 +256,7 @@ def complete_profile(request):
         try: # for required values
             college_name = str(data["college_name"])
             course_name = str(data["course_name"])
-            year = data["year"] #1, 2, 3 or Masters
+            semester = data["semester"] #1 to 6 or Masters
             gender = str(data["gender"])
         except KeyError as e:
             context = {
@@ -293,8 +293,8 @@ def complete_profile(request):
             messages.error(request, "Please choose course from the list only.")
             return render(request, 'registrations/complete_profile.html', context)
 
-        if year == "Masters":
-            year = 4
+        if semester == "Masters":
+            semester = 7
 
         try:
             profile_pic = request.FILES["file"]
@@ -304,7 +304,7 @@ def complete_profile(request):
                 course = course,
                 college = college,
                 image = profile_pic,
-                year = year
+                semester = semester
             )
         except KeyError:
             img_path = '../media/default_male_dp.png'
@@ -318,7 +318,7 @@ def complete_profile(request):
                 gender = gender,
                 course = course,
                 college = college,
-                year = year,
+                semester = semester,
                 image = img_path
             )
         messages.success(request, "Profile Complete!")
@@ -342,10 +342,10 @@ def profile(request):
         "college_category": request.user.profile.college.category,
         "course_name": request.user.profile.course.name,
     }
-    year = request.user.profile.year
-    if year == 4:
-        year = "Masters"
-    context["year"] = year
+    semester = request.user.profile.semester
+    if semester == 7:
+        semester = "Masters"
+    context["semester"] = semester
 
     if request.method == "GET":
         return render(request, 'registrations/profile.html', context)
@@ -356,19 +356,19 @@ def profile(request):
         try:
             first_name = str(data["first_name"])
             last_name = str(data["last_name"])
-            year = data["year"]
-            year = year.strip()
-            valid_years = ["1", "2", "3", "masters", "Masters"]
-            if year not in valid_years:
-                messages.warning(request, "Invalid value for year.")
+            semester = data["semester"]
+            semester = semester.strip()
+            valid_sems = ["1", "2", "3", "4", "5", "6", "masters", "Masters"]
+            if semester not in valid_sems:
+                messages.warning(request, "Invalid value for semester.")
                 return redirect(request.META.get('HTTP_REFERER'))
-            if year == "Masters" or year == "masters":
-                year = 4
+            if semester == "Masters" or semester == "masters":
+                semester = 7
             else:
-                year = int(year)
+                semester = int(semester)
 
             profile = request.user.profile
-            profile.year = year
+            profile.semester = semester
             profile.save()
             first_name = first_name.strip()
             last_name = last_name.strip()
@@ -430,9 +430,8 @@ def sell_book(request):
             title = str(data['title'])
             condition = str(data['condition'])
             course_name = str(data['course_name'])
-            year = data['year']
-            semester = int(data['semester'])
-            price = int(data['price'])
+            semester = data['semester']
+            price = float(data['price'])
             book_type = str(data["type"]) # contains exact category value 'B' or 'R'
         except KeyError as e:
             messages.error(request, "Missing Field {}".format(e))
@@ -464,23 +463,23 @@ def sell_book(request):
             return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
 
         try:
+            course_name = course_name.strip()
             course = Course.objects.get(name=course_name)
         except Course.DoesNotExist:
             messages.warning(request, "Please select a course from the list.")
             return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
         # end of data validation
 
-        if year != "Masters":
-            if semester == 0:
-                messages.warning(request, "Semester can only be 0 for Masters.")
+        semester = semester.strip()
+        if semester == "Masters":
+            if course_name == "Masters":
+                semester = 7
+            else:
+                messages.warning(request, "Invalid course-semester value combination.")
                 return redirect(request.META.get('HTTP_REFERER'))
+        semester = int(semester)
 
-                # return render(request, 'registrations/sell_book.html', {"courses": Course.objects.all()})
-
-        if year == "Masters":
-            year = 4
-            semester = 0
-
+        price = int(price)
         title = title.strip()
         condition = condition.strip()
         try:
@@ -494,7 +493,6 @@ def sell_book(request):
                                     category=book_type,
                                     contains_notes=contains_notes,
                                     condition=condition,
-                                    year=year,
                                     semester=semester,
                                     image=book_image,
                                     course=course,
@@ -626,7 +624,7 @@ def view_listings(request):
                 'data': [
                             {"value": book.title, "type": "Title"},
                             {"value": book.course.name, "type": "Course Name"},
-                            {"value": book.year, "type": "Year"},
+                            {"value": book.semester, "type": "Semester"},
                             {"value": book.price, "type": "Price"},
                         ],
 
@@ -657,7 +655,7 @@ def view_listings(request):
                     'headings': [
                         'Title',
                         'Course',
-                        'Year',
+                        'Semester',
                         'Price',
                         '',
                         'Edit Details',
@@ -724,10 +722,10 @@ def edit_listing_details(request, b_id):
         "book": book,
         "courses": Course.objects.all(),
     }
-    if book.year == 4:
-        context["year"] = "Masters"
+    if book.semester == 7:
+        context["semester"] = "Masters"
     else:
-        context["year"] = book.year
+        context["semester"] = book.semester
 
     if request.method == "GET":
         return render(request, 'registrations/edit_listing_details.html', context=context)
@@ -738,9 +736,8 @@ def edit_listing_details(request, b_id):
             title = str(data['title'])
             condition = str(data['condition'])
             course_name = str(data['course_name'])
-            year = data['year']
-            semester = int(data['semester'])
-            price = int(data['price'])
+            semester = data['semester']
+            price = float(data['price'])
             book_type = str(data["type"]) # contains exact category value 'B' or 'R'
         except KeyError as e:
             messages.error(request, "Missing Field {}".format(e))
@@ -767,16 +764,21 @@ def edit_listing_details(request, b_id):
                 return render(request, 'registrations/edit_listing_details.html', context=context)
 
         try:
+            course_name = course_name.strip()
             course = Course.objects.get(name=course_name)
         except Course.DoesNotExist:
             messages.warning(request, "Please select a course from the list.")
             return render(request, 'registrations/edit_listing_details.html', context=context)
-        # end of data validation
 
-        if year == "Masters":
-            year = 4
-            semester = 0
+        if semester == "Masters":
+            if course_name == "Masters":
+                semester = 7
+            else:
+                messages.warning(request, "Invalid course-semester value combination.")
+                return redirect(request.META.get('HTTP_REFERER'))
+        semester = int(semester)
 
+        price = int(price)
         title = title.strip()
         condition = condition.strip()
         try:
@@ -789,7 +791,6 @@ def edit_listing_details(request, b_id):
         book.category = book_type
         book.contains_notes = contains_notes
         book.condition = condition
-        book.year = year
         book.semester = semester
         book.course = course
         book.price = price
@@ -827,7 +828,7 @@ def search_bookset(request):
             key = m.group(1)
             messages.error(request, 'Missing data in form : {}. If problem persists contact administrator.'.format(key))
             context = {
-                        'form_data': form_data
+                'form_data': form_data
             }
             return render(request, 'registrations/search_bookset.html', context=context)
 
