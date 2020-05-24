@@ -105,20 +105,20 @@ def sign_up(request):
             try:
                 course = Course.objects.get(name=course_name)
             except Course.DoesNotExist:
-                messages.error(request, "Please select course from the list only.")
+                messages.error(request, "Course selected must be from the list only.")
                 return render(request, 'registrations/sign_up.html', context)
 
             try:
                 college = College.objects.get(name=college_name)
             except College.DoesNotExist:
-                messages.error(request, "Please select college from the list only.")
+                messages.error(request, "College selected must be from the list only.")
                 return render(request, 'registrations/sign_up.html', context)
 
             if year == "Masters":
                 year = 4
 
             first_name = first_name.strip()
-            last_name = str(data["last_name"].strip())
+            last_name = str(data["last_name"].strip()) # received here because lname is optional
             user = User.objects.create(username=email)
             user.set_password(password)
             user.first_name = first_name
@@ -126,33 +126,30 @@ def sign_up(request):
             user.email = email
             user.save()
 
-            try:
-                profile_pic = request.FILES["file"]
-                user_prof = UserProfile.objects.create(
+            user_prof = UserProfile.objects.create(
                     auth_user = user,
                     gender = gender,
                     course = course,
                     college = college,
-                    image = profile_pic,
                     year = year
                 )
-            except KeyError:
+
+            try:
+                profile_pic = request.FILES["file"]
+                user_prof.image = profile_pic
+                user_prof.save()    
+            except KeyError: # setting default dp
+                print("*** PIC NOT FOUND ****")
                 img_path = '../media/default_male_dp.png'
                 if gender == "F":
                     img_path = '../media/default_female_dp.png'
                 elif gender == "O":
                     img_path = "../media/default_neutral_dp.jpg"
+                user_prof.image = img_path
+                user_prof.save()
 
-                user_prof = UserProfile.objects.create(
-                    auth_user = user,
-                    gender = gender,
-                    course = course,
-                    college = college,
-                    year = year,
-                    image = img_path
-                )
             messages.success(request, "Registered Successfully!")
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('home')
 
         except KeyError as missing_key:
@@ -163,6 +160,7 @@ def sign_up(request):
             except:
                 return render(request, 'registrations/sign_up.html', context)
         except ValueError as value_error:
+            print(value_error)
             messages.warning(request, "Invalid values entered in the form. Please fill again!")
             try:
                 return redirect(request.META.get('HTTP_REFERER'))
