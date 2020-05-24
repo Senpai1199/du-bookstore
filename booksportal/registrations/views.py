@@ -39,9 +39,9 @@ def home(request):
     except UserProfile.DoesNotExist:
         messages.error(request, "Please complete your profile first.")
         return redirect('complete_profile')
-    books1 = Book.objects.filter(year=request.user.profile.year, sold=False,
+    books1 = Book.objects.filter(semester=request.user.profile.semester, sold=False,
         bookset=None).exclude(seller=request.user.profile)
-    books2 = Book.objects.filter(bookset=None, sold=False).exclude(year=request.user.profile.year).exclude(seller=request.user.profile) #This needs to be changed
+    books2 = Book.objects.filter(bookset=None, sold=False).exclude(semester=request.user.profile.semester).exclude(seller=request.user.profile) #This needs to be changed
     books = list(chain(books1, books2))
     context = {
         "books": books[:10]
@@ -137,7 +137,7 @@ def sign_up(request):
             try:
                 profile_pic = request.FILES["file"]
                 user_prof.image = profile_pic
-                user_prof.save()    
+                user_prof.save()
             except KeyError: # setting default dp
                 print("*** PIC NOT FOUND ****")
                 img_path = '../media/default_male_dp.png'
@@ -535,7 +535,6 @@ def search_book(request):
             search_keyword = form_data['search_keyword']
             course_id = form_data['course_id']
             category = form_data['category']
-            year = form_data['year']
             semester = form_data['semester']
             sort_by = form_data['sort_by']
 
@@ -554,13 +553,8 @@ def search_book(request):
         else:
             course_id = [int(course_id)]
 
-        if year == 'all':
-            year = [1,2,3,4]
-        else:
-            year = [int(year)]
-
         if semester == 'all':
-            semester = [1,2]
+            semester = [1,2,3,4,5,6,7]
         else:
             semester = [int(semester)]
 
@@ -571,13 +565,13 @@ def search_book(request):
 
         try:
             contains_notes = form_data["notes_req"]
-            books = Book.objects.filter(course__id__in=course_id, year__in=year,
-                semester__in=semester, title__contains=search_keyword,category__in=category,
-                bookset=None, contains_notes=True, sold=False).exclude(seller=request.user.profile).order_by(sort_by)
+            books = Book.objects.filter(course__id__in=course_id, semester__in=semester,
+                title__contains=search_keyword,category__in=category, bookset=None,
+                contains_notes=True, sold=False).exclude(seller=request.user.profile).order_by(sort_by)
         except KeyError:
-            books = Book.objects.filter(course__id__in=course_id, year__in=year,
-                semester__in=semester, title__contains=search_keyword,category__in=category,
-                bookset=None,  sold=False).exclude(seller=request.user.profile).order_by(sort_by)
+            books = Book.objects.filter(course__id__in=course_id, semester__in=semester,
+            title__contains=search_keyword,category__in=category, bookset=None,
+            sold=False).exclude(seller=request.user.profile).order_by(sort_by)
 
         try:
             page_no = int(form_data['page_no'])
@@ -826,7 +820,6 @@ def search_bookset(request):
         try:
             search_keyword = form_data['search_keyword']
             course_id = form_data['course_id']
-            year = form_data['year']
             semester = form_data['semester']
             sort_by = form_data['sort_by']
         except KeyError as missing_key_exception:
@@ -843,25 +836,19 @@ def search_bookset(request):
         else:
             course_id = [int(course_id)]
 
-        if year == 'all':
-            year = [1,2,3,4]
-        else:
-            year = [int(year)]
-
         if semester == 'all':
-            semester = [1,2]
+            semester = [1,2,3,4,5,6,7]
         else:
             semester = [int(semester)]
 
         try:
             contains_notes = form_data["notes_req"]
-            booksets = BookSet.objects.filter(course__id__in=course_id, year__in=year,
-                semester__in=semester, title__contains=search_keyword, contains_notes=True,
+            booksets = BookSet.objects.filter(course__id__in=course_id, semester__in=semester,
+                title__contains=search_keyword, contains_notes=True,
                 sold=False).exclude(seller=request.user.profile).order_by(sort_by)
         except KeyError:
-            booksets = BookSet.objects.filter(course__id__in=course_id, year__in=year,
-                semester__in=semester, title__contains=search_keyword, sold=False).exclude(
-                seller=request.user.profile).order_by(sort_by)
+            booksets = BookSet.objects.filter(course__id__in=course_id, semester__in=semester,
+            title__contains=search_keyword, sold=False).exclude(seller=request.user.profile).order_by(sort_by)
 
         try:
             page_no = int(form_data['page_no'])

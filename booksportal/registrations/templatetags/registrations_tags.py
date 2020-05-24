@@ -8,23 +8,23 @@ register = template.Library()
 def get_year_semester(book):
 
     ordinal_indicator = {
-                            1 : 'st',
-                            2 : 'nd',
-                            3 : 'rd'
+                            1 : '1st',
+                            2 : '2nd',
+                            3 : '3rd',
+                            4 : '4th',
+                            5 : '5th',
+                            6 : '6th',
+                            7 : 'Masters'
                          }
 
-    year = book.year
     sem = book.semester
 
-    if year < 4:
-        year_string = str(year) + ordinal_indicator[year]
-        semester_string = str(sem) + ordinal_indicator[sem]
-        year_sem_string = '<span class="label bg-cyan">{} year</span> \
-        <span class="label bg-cyan">{} semester</span>'.format(year_string, semester_string)
+    if sem < 7:
+        sem_string = '<span class="label bg-cyan">{} semester</span>'.format(ordinal_indicator[sem])
     else:
-        year_sem_string = '<span class="label bg-cyan">Masters</span>'
+        sem_string = '<span class="label bg-cyan">{}</span>'.format(ordinal_indicator[sem])
 
-    return year_sem_string
+    return sem_string
 
 @register.simple_tag()
 def get_courses():

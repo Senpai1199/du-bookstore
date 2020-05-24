@@ -39,24 +39,17 @@
                                     </div>
                                     <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
                                     <p>
-                                        <b>Year</b>
-                                    </p>
-                                    <select class="form-control show-tick" id="year" name="year">
-                                        <option value="all">All</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">Masters</option>
-                                    </select>
-                                    </div>
-                                    <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
-                                    <p>
                                         <b>Semester</b>
                                     </p>
                                     <select class="form-control show-tick" name="semester" id="semester">
                                         <option value="all">All</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">Masters</option>
                                     </select>
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
@@ -71,6 +64,7 @@
                                         <option value="-date_added">Newest First</option>
                                     </select>
                                     </div>
+                                  
                                     <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
                                       <br><br>
                                       {% if form_data.notes_req == 'yes' %}
@@ -250,7 +244,6 @@
   <img class="modal-content" id="modal_item_{{book.id}}">
 </div>
 <script type="text/javascript">
-  document.getElementById('year').value = "{{ form_data.year }}";
   document.getElementById('semester').value = "{{ form_data.semester }}";
   document.getElementById('course_id').value = "{{ form_data.course_id }}";
   document.getElementById('sort_by').value = "{{ form_data.sort_by }}";
