@@ -72,21 +72,21 @@ $(document).ready(function() {
 
 $(document).ready(function() {
   //when the Add Field button is clicked
-  $("#add-listing-button").click(function(e) {
+  $("#add-listing-button").on("click", function(e) {
     //Append a new row of code to the "#items" div
      var book_num = $("#add-listing-container")[0].childElementCount + 1;
-     var button = $(this);
+     var button = $("#this-listing-button");
 
-     var input_form = '<div id="listing' + book_num + '" class="row clearfix add-listing"> \
+     var input_form = '<div id="listing-'+book_num+'" class="row clearfix add-listing">\
                  <div class="col-lg-12">\
                  <p>\
-                 <b>Book/listing - ' + book_num +':\
+                 <b>Book/listing - ' + book_num +'</b>\
                  </p>\
                  </div>\
                <div class="col-lg-6">\
                  <div class="form-group form-float">\
                      <div class="form-line">\
-                         <input type="text" class="form-control inputBold" name="title" required>\
+                         <input type="text" class="form-control" name="title" required>\
                          <label class="form-label"><b>Title*</b></label>\
                      </div>\
                </div>\
@@ -127,7 +127,9 @@ $(document).ready(function() {
                        <small><label for="file">* Upload a clear image of book/reading</label></small>\
                    </div>\
                </div>';
-    $("#add-listing-container").append(input_form);
+    var parsed_input_form = $.parseHTML(input_form);
+    console.log(parsed_input_form[0]);
+    $("#add-listing-container").append(parsed_input_form[0]);
     $("#remove-listing-button")[0].style.display = 'inline';
   });
   $("#remove-listing-button").click(function(e) {

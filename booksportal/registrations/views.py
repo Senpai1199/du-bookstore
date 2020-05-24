@@ -990,4 +990,7 @@ def sell_bookset(request):
     """
         Form to add bookset for selling.
     """
-    return render(request, 'registrations/sell_bookset.html',context={})
+    context = {
+                'courses': Course.objects.all()
+    }
+    return render(request, 'registrations/sell_bookset.html',context=context)

@@ -1882,7 +1882,7 @@
     color: #fff !important; }
 
 .bg-blue {
-  background-color: rgb(99, 190, 235) !important;
+  background-color: #2196F3 !important;
   color: #fff; }
   .bg-blue .content .text,
   .bg-blue .content .number {
@@ -8194,7 +8194,7 @@ html.ie11 .bs-searchbox .form-control {
         opacity: 0;
         transition: opacity 0.3s;
       }
-      
+
       .tooltipIcon .tooltiptext::after {
         content: "";
         position: absolute;
@@ -8205,9 +8205,8 @@ html.ie11 .bs-searchbox .form-control {
         border-style: solid;
         border-color: #555 transparent transparent transparent;
       }
-      
+
       .tooltipIcon:hover .tooltiptext {
         visibility: visible;
         opacity: 1;
       }
-
