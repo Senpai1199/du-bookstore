@@ -23,7 +23,8 @@ class UserProfile(models.Model):
     college = models.ForeignKey("College", on_delete=models.CASCADE, null=False)
     course = models.ForeignKey("Course", on_delete=models.CASCADE, null=False)
     image = models.ImageField(default="default_male_dp.png", upload_to='profile_pics', null=False)
-    year = models.SmallIntegerField(default=1) # college year of the user
+    # year = models.SmallIntegerField(default=1) # college year of the user
+    semester = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(7)])
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -53,8 +54,8 @@ class Book(models.Model):
     category = models.CharField(choices=BOOK_TYPES, null=False, max_length=1, default='R')
     contains_notes = models.BooleanField(default=False)
     condition = models.CharField(max_length=300, blank=False)
-    year = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(4)]) # 4 for masters
-    semester = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(2)]) # 0 for masters
+    # year = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(4)]) # 4 for masters
+    semester = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(7)]) # 7 for masters
     image = models.ImageField(upload_to='book_pics', null=False)
     course = models.ForeignKey('Course', related_name='course_books', on_delete=models.CASCADE)
     price = models.IntegerField(default=0)
@@ -113,7 +114,7 @@ class BookSet(models.Model):
     additional_details = models.CharField(max_length=200, blank=True)
     course = models.ForeignKey('Course', related_name='course_bookset',
         on_delete=models.CASCADE)
-    year = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(4)]) # 4 for master
+    # year = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(4)]) # 4 for master
     semester = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(2)]) # 0 for masters
     price = models.IntegerField(default=0)
     sold = models.BooleanField(default=False)
