@@ -8,7 +8,14 @@
             <div class="profile-header">&nbsp;</div>
             <div class="profile-body">
                 <div class="image-area">
-                    <img src="{{ request.user.profile.image.url }}" width="150" height="150" alt="AdminBSB - Profile Image" />
+                    <img src="{{ request.user.profile.image.url }}" width="150" height="150" alt="AdminBSB - Profile Image" /> <br>
+                    <form action="{% url 'change_pic' %}" method="POST" id="dp-change-form" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label for="file-input">
+                            <i style="cursor: pointer;" class="material-icons image-right">add_a_photo</i>
+                        </label>
+                        <input type="file" name="file-input" id="file-input" style="display: none;" />
+                    </form>
                 </div>
                 <div class="content-area">
                     <h3>{{ first_name }}  {{ last_name }}</h3>
@@ -166,5 +173,11 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById("file-input").onchange = function() {
+        document.getElementById("dp-change-form").submit();
+    };
+</script>
 
 {% endblock %}

@@ -8109,6 +8109,15 @@ html.ie11 .bs-searchbox .form-control {
       margin-top: 10px;
       color: #999;
       font-size: 13px; }
+  
+.image-right {
+  margin-left: 100px;
+  margin-top: -50px;
+}
+
+.image-upload>input {
+  display: none;
+}
 
 .panel-post {
   -webkit-border-radius: 0;

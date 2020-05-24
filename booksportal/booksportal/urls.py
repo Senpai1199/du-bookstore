@@ -32,6 +32,7 @@ urlpatterns = [
 
     path('home/', views.home, name='home'),
     path('profile/', views.profile, name='profile'),
+    path('change_pic/', views.change_pic, name='change_pic'),
     path('sell_book/', views.sell_book, name='sell_book'),
     path('my_listings/', views.view_listings, name='my_listings'),
     path('sell_bookset/', views.sell_bookset, name='sell_bookset'),

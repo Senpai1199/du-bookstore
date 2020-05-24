@@ -383,6 +383,29 @@ def profile(request):
 
 @login_required(login_url='login')
 @has_profile_completed
+def change_pic(request):
+    """
+        Allows users to change their profile pic
+    """
+    if request.method == "POST":
+        try:
+            new_dp = request.FILES["file-input"]
+            try:
+                prof = UserProfile.objects.get(auth_user=request.user)
+                prof.image = new_dp
+                prof.save()
+                messages.warning(request, "Profile picture changed successfully!")
+                return redirect('profile')
+            except UserProfile.DoesNotExist:
+                messages.warning(request, "Please complete your profile first.")
+                return redirect('complete_profile')
+        except KeyError:
+            messages.warning(request, "No image was selected")
+            return redirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required(login_url='login')
+@has_profile_completed
 def logout_view(request):
     """
         Logout user from portal
