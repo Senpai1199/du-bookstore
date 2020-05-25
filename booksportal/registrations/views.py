@@ -626,6 +626,7 @@ def view_listings(request):
                             {"value": book.course.name, "type": "Course Name"},
                             {"value": book.semester, "type": "Semester"},
                             {"value": book.price, "type": "Price"},
+                            {"value": book.interested_count, "type": "Interested Count"}
                         ],
 
                 'link': [
@@ -657,6 +658,7 @@ def view_listings(request):
                         'Course',
                         'Semester',
                         'Price',
+                        'Interested Buyers',
                         '',
                         'Edit Details',
                         'Remove Listing'

@@ -29,8 +29,10 @@
                                     {% for data in row.data %}
                                         {% if data.type == "Price" %}
                                             <td>₹{{ data.value }}</td>
+                                        {% elif data.type == "Interested Count" %}
+                                            <td><i class="material-icons">people</i><span>{{ data.value }}</span></td>
                                         {% elif data.type == "Semester" %}
-                                            {% if data.value == 7%}
+                                            {% if data.value == 7 %}
                                                 <td>Masters</td>
                                             {% else %}
                                                 <td>{{ data.value }}</td>
