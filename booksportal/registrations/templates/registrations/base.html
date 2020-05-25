@@ -95,11 +95,11 @@
                     </li>
                     <!--End Notification-->
                     <!--Search-->
-                    <li class="dropdown">
+                    <!-- <li class="dropdown">
                         <a href="{% url 'search_book' %}" class="dropdown-toggle" role="button">
                             <i class="material-icons">search</i>
                         </a>
-                    </li>
+                    </li> -->
                     <!--End Search-->
                     <!--Profile-->
                     <!-- <li class="dropdown">
@@ -121,13 +121,15 @@
                         </ul>
                         </a>
                     </li> -->
-                    <!-- Notifications -->
+                    <!-- User Menu -->
                     <li class="dropdown">
-                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
-                            <i class="material-icons">more_vert</i>
+                        <a style="display: inline-block;" href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                          <img src="{{ request.user.profile.image.url }}" width="48" height="48" style="display: inline-block; border-radius:50%; margin-top:-20px; margin-right:5px;" alt="user" />
+                          <!-- <div class="text" style="display: inline-block; font-size:17px; margin-right:2px; margin-top:-10px;">{{request.user.first_name}}</div> -->
+                            <i class="material-icons">keyboard_arrow_down</i>
                         </a>
                         <ul class="dropdown-menu pull-right">
-                            <li class="header">Hello, {{request.user.first_name}}</li>
+                            <li class="header">Hello, {{request.user.first_name}} {{request.user.last_name}}<br><span style="font-weight: normal; margin-top:3px;">{{request.user.email}}</span></li>
                             <li><a href="{% url 'profile' %}"><i class="material-icons">person</i>Profile</a></li>
                             <li role="separator" class="divider"></li>
                             <!-- <li><a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a></li> -->
@@ -137,7 +139,7 @@
                             <li><a href="{% url 'logout' %}"><i class="material-icons">input</i>Log Out</a></li>
                         </ul>
                     </li>
-                    <!-- #END# Notifications -->
+                    <!-- #END# User MEnu -->
                     <!-- <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a></li> -->
                 </ul>
             </div>
@@ -149,13 +151,13 @@
         <aside id="leftsidebar" class="sidebar">
             <!-- User Info -->
             <div class="user-info">
-                <div class="image">
+                <!-- <div class="image">
                     <img src="{{ request.user.profile.image.url }}" width="48" height="48" alt="user" />
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ request.user.first_name }} {{ request.user.last_name }}</div>
                     <div class="email">{{ request.user.email }}</div>
-                    <!-- <div class="btn-group user-helper-dropdown">
+                    <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
                             <li><a href="{% url 'profile' %}"><i class="material-icons">person</i>Profile</a></li>
@@ -166,8 +168,8 @@
                             <li role="separator" class="divider"></li>
                             <li><a href="{% url 'logout' %}"><i class="material-icons">input</i>Log Out</a></li>
                         </ul>
-                    </div> -->
-                </div>
+                    </div>
+                </div> -->
             </div>
             <!-- #User Info -->
             <!-- Menu -->
